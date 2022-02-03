@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div v-for="post of posts" v-bind:key="post" class="article-container">
+    <div v-for="post of posts" v-bind:key="post.id" class="article-container">
       <PostDetail></PostDetail>
     </div>
   </main>

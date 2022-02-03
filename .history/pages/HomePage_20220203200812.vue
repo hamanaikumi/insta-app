@@ -1,8 +1,12 @@
 <template>
   <main>
-    <div v-for="post of posts" v-bind:key="post" class="article-container">
+    <section
+      v-for="post of posts"
+      v-bind:key="post.id"
+      class="article-container"
+    >
       <PostDetail></PostDetail>
-    </div>
+    </section>
   </main>
 </template>
 
@@ -20,14 +24,7 @@ export default {
 </script>
 
 <style scoped>
-main {
-  width: 100%;
-  max-width: 428px;
-  margin: 0 auto;
-
-  padding: 0.63rem;
-}
 .article-container {
-  border-bottom: 0.3px solid #b3b3b3;
+  border-top: 0.5px solid #b3b3b3;
 }
 </style>
