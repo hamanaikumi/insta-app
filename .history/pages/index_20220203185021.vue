@@ -10,7 +10,7 @@ export default Vue.extend({
 })
 </script>
 <style>
-body {
+html {
   max-width: 428px;
 }
 </style>

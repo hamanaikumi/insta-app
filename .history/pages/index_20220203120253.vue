@@ -9,8 +9,3 @@ export default Vue.extend({
   name: 'IndexPage',
 })
 </script>
-<style>
-body {
-  max-width: 428px;
-}
-</style>
