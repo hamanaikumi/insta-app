@@ -45,7 +45,6 @@ export default {}
 main {
   width: 100%;
   max-width: 428px;
-  margin: 0 auto;
 }
 
 .top-container {

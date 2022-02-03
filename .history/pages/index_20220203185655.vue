@@ -10,9 +10,10 @@ export default Vue.extend({
 })
 </script>
 <style>
-main {
-  width: 100%;
+body {
   max-width: 428px;
-  margin: 0 auto;
+}
+@media (min-width: 429px) {
+  width: 428px;
 }
 </style>
