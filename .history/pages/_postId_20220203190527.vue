@@ -22,15 +22,15 @@
       <div class="activity-container">
         <div class="flex flex-row">
           <div><i class="far fa-heart"></i></div>
-          <div class="ml-2"><i class="far fa-comment"></i></div>
+          <div><i class="far fa-comment"></i></div>
         </div>
         <div class="liked-container">
           <span> Liked by 20 !</span>
         </div>
       </div>
       <div class="caption-container">
-        <div class="user-name">@_XXXXX</div>
-        <div class="caption-container">texttexttexttexttext</div>
+        <div>_XXXXXXXX</div>
+        <div>texttexttexttexttext</div>
         <div>January 1,2022</div>
       </div>
     </div>
@@ -46,13 +46,12 @@ main {
   width: 100%;
   max-width: 428px;
   margin: 0 auto;
-
-  padding: 0.63rem;
+  font-size: 62.5%;
 }
 
 .top-container {
   max-width: 100%;
-
+  padding: 0.63rem;
   align-items: center;
   box-sizing: border-box;
 }
@@ -96,9 +95,7 @@ main {
 .caption-container {
   max-width: 100%;
   width: 100%;
-  font-weight: 300;
 }
 
-/* .activity-container {
-} */
+.activity-container;
 </style>

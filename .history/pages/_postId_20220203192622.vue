@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="caption-container">
-        <div class="user-name">@_XXXXX</div>
+        <div class="user-name">_XXXXX</div>
         <div class="caption-container">texttexttexttexttext</div>
         <div>January 1,2022</div>
       </div>
