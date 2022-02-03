@@ -1,5 +1,7 @@
 <template>
-  <main></main>
+  <main>
+    <PostDetail></PostDetail>
+  </main>
 </template>
 
 <script>

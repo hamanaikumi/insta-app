@@ -1,5 +1,7 @@
 <template>
-  <main></main>
+  <main>
+    <PostDetail params="1"></PostDetail>
+  </main>
 </template>
 
 <script>

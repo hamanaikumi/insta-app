@@ -3,9 +3,8 @@
 </template>
 
 <script>
-import PostDetail from './_postId.vue'
 export default {
-  components: [PostDetail],
+  s,
 }
 </script>
 
