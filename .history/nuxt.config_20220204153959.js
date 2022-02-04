@@ -13,7 +13,6 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-
       // fontAwesome icon CDN
       {
         rel: 'stylesheet',
