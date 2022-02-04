@@ -171,6 +171,7 @@ export const mutations = {
         state.post.filter((aPost: any) => aPost.userId === id)
       )
     }
+    console.dir('mutation' + JSON.stringify(state.followingUserPostList))
   },
 }
 

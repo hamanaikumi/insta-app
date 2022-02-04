@@ -1,10 +1,6 @@
 <template>
   <article>
-    <div
-      class="article-container"
-      v-for="post of followingPostList"
-      v-bind:key="post.postId"
-    >
+    <div class="article-container">
       <PostDetail></PostDetail>
     </div>
   </article>

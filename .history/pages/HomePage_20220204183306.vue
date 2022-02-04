@@ -1,10 +1,6 @@
 <template>
   <article>
-    <div
-      class="article-container"
-      v-for="post of followingPostList"
-      v-bind:key="post.postId"
-    >
+    <div class="article-container">
       <PostDetail></PostDetail>
     </div>
   </article>
@@ -13,9 +9,9 @@
 <script lang="ts">
 // ↓書かないとstoreが呼び出せない
 /* eslint no-unused-expressions: "off" */
-import Vue from 'vue'
+
 import PostDetail from '../components/PostDetail.vue'
-export default Vue.extend({
+export default {
   components: { PostDetail },
 
   data() {
@@ -46,7 +42,7 @@ export default Vue.extend({
       'フォローしている人の投稿' + JSON.stringify(this.followingPostList)
     )
   },
-})
+}
 </script>
 <style scoped>
 article {

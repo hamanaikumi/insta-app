@@ -2,8 +2,8 @@
   <article>
     <div
       class="article-container"
-      v-for="post of followingPostList"
-      v-bind:key="post.postId"
+      v-for=" post.postId of followingPostList"
+      :key="post.postId"
     >
       <PostDetail></PostDetail>
     </div>

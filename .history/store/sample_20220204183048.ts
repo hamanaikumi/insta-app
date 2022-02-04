@@ -112,12 +112,12 @@ export const state = () => ({
     },
     {
       postId: 6,
-      userId: 5,
+      userId: 1,
       imageUrl: [
         'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2',
       ],
       caption:
-        'ユーザー５だよ吾輩は猫である。名前はまだない。どこで生れたか頓（とん）と見当がつかぬ。何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。吾輩はここで始めて人間というものを見た。しかもあとで聞くとそれは書生という人間中で一番獰悪（どうあく）な種族であったそうだ。この書生というのは時々我々を捕（つかま）えて煮て食うという話である。しかしその当時は何という考（かんがえ）もなかったから別段恐しいとも思わなかった。ただ彼の掌（てのひら）に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。',
+        '吾輩は猫である。名前はまだない。どこで生れたか頓（とん）と見当がつかぬ。何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。吾輩はここで始めて人間というものを見た。しかもあとで聞くとそれは書生という人間中で一番獰悪（どうあく）な種族であったそうだ。この書生というのは時々我々を捕（つかま）えて煮て食うという話である。しかしその当時は何という考（かんがえ）もなかったから別段恐しいとも思わなかった。ただ彼の掌（てのひら）に載せられてスーと持ち上げられた時何だかフワフワした感じがあったばかりである。',
       prefecture: { 'JP-27': 'Osaka' },
       postDate: new Date(2021, 4, 15, 17),
       favorites: ['test_user2', 'test_user3', 'test_user4', 'test_user5'],
@@ -166,19 +166,19 @@ export const mutations = {
    * postの中からuseridで投稿を絞り込むんでstate.followingUserPostListにpush
    */
   getPostByFollowingUserId(state: any) {
-    for (const id of state.loginUser.follow) {
-      state.followingUserPostList.push(
-        state.post.filter((aPost: any) => aPost.userId === id)
-      )
-    }
-  },
+
+     for(let id of state.loginUser.follow){
+     state.followingUserPostList.push(state.post.filter((aPost: any) => aPost.userId === id)
+     )}
+  
 }
 
 //  Array②.push(
 //  for (let  id   of   Array①  ) {
-//   PostsArray.filter((post)=> post.userID === id )
+//   PostsArray.filter((post)=> post.userID === id ) 
 //       }
 //    )
+  
 
 // getters
 export const getters = {
@@ -201,7 +201,7 @@ export const getters = {
   /**
    *
    */
-  getFollowingUserPostList(state: any) {
-    return state.followingUserPostList
+  getPostByMyUserId(state: any) {
+    return state.myPostList
   },
 }
