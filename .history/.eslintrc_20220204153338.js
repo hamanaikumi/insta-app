@@ -12,7 +12,7 @@ module.exports = {
   plugins: [],
   // add your custom rules here
   rules: {
-    // Pagesの名前を自由に付けれるようにした?
-    'vue/multi-word-component-names': 'off',
-  },
+  
+      'vue/multi-word-component-names': 'off',
+  
 }
