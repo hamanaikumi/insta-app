@@ -41,27 +41,7 @@
               /></span>
             </label>
           </div>
-          <div v-if="!isBeforeSelect">
-            <!-- :img-styleで読み込んだ画像の大きさを指定
-           :aspect-ratioで比率を指定 -->
-            <!-- <vue-cropper
-              ref="cropper"
-              :guides="true"
-              :view-mode="1"
-              drag-mode="crop"
-              :auto-crop-area="1"
-              :background="true"
-              :rotatable="false"
-              :src="selectedImage"
-              alt="Source Image"
-              :min-container-width="130"
-              :min-container-height="130"
-              :img-style="{ width: '130px', height: '130px' }"
-              :aspect-ratio="1"
-            >
-            </vue-cropper> -->
-            <!-- <button type="button" @click="cropImage">Add</button> -->
-          </div>
+          <!-- modal -->
           <client-only>
             <modal
               name="hello-world"
@@ -70,6 +50,8 @@
               height="auto"
             >
               <div class="modal-body my-4 flex flex-col">
+                <!-- :img-styleで読み込んだ画像の大きさを指定
+                :aspect-ratioで比率を指定 -->
                 <vue-cropper
                   ref="cropper"
                   :guides="true"
@@ -126,8 +108,8 @@
             v-if="index === i"
             :src="image"
             alt="Cropped Image"
-            width="150px"
-            height="150px"
+            width="100%"
+            height="100%"
             class="mt-12"
           />
         </div>
@@ -226,7 +208,7 @@ export default Vue.extend({
       // トリミング後の画像のソース(変換前)
       cropImageCode: '',
       // トリミング後の画像のソース(変換後)
-      cropImageFile: {} || any,
+      cropImageFile: {},
       // トリミング後の画像のソース(変換前)を格納する配列
       // eslint-disable-next-line no-array-constructor
       cropImageCodes: Array<any>(),
@@ -337,7 +319,7 @@ export default Vue.extend({
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-          body: this.cropImageFile,
+          body: this.cropImageFile as any,
         })
 
         imageUrl = url.split('?')[0]
