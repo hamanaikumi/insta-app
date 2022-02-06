@@ -18,7 +18,10 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~/plugins/vue-cropper', ssr: false }],
+  plugins: [
+    { src: '~/plugins/vue-cropper', mode: 'client' },
+    { src: '~/plugins/vue-js-modal.js', mode: 'client' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

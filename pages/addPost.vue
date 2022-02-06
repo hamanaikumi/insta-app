@@ -4,12 +4,12 @@
     <!-- image -->
     <div class="flex justify-center grid grid-cols-6 gap-1 mb-4 mx-2">
       <div
-        class="flex justify-center pt-5 pb-6 border-2 border-gray-300 col-span-3"
+        class="flex justify-center pt-5 pb-6 border-2 border-gray-300 col-span-3 h-64"
       >
-        <div class="space-y-1 text-center">
+        <div class="space-y-1 text-center mt-12">
           <svg
             v-if="isBeforeSelect"
-            class="mx-auto h-12 w-24 text-gray-400"
+            class="mx-auto mt-4 h-12 w-24 text-gray-400"
             stroke="currentColor"
             fill="none"
             viewBox="0 0 48 48"
@@ -44,7 +44,7 @@
           <div v-if="!isBeforeSelect">
             <!-- :img-styleで読み込んだ画像の大きさを指定
            :aspect-ratioで比率を指定 -->
-            <vue-cropper
+            <!-- <vue-cropper
               ref="cropper"
               :guides="true"
               :view-mode="1"
@@ -54,33 +54,93 @@
               :rotatable="false"
               :src="selectedImage"
               alt="Source Image"
-              :min-container-width="120"
-              :min-container-height="120"
-              :img-style="{ width: '120px', height: '120px' }"
+              :min-container-width="130"
+              :min-container-height="130"
+              :img-style="{ width: '130px', height: '130px' }"
               :aspect-ratio="1"
             >
-            </vue-cropper>
-            <button type="button" @click="cropImage">トリミングする</button>
+            </vue-cropper> -->
+            <!-- <button type="button" @click="cropImage">Add</button> -->
           </div>
+          <client-only>
+            <modal
+              name="hello-world"
+              :click-to-close="false"
+              width="60%"
+              height="auto"
+            >
+              <div class="modal-body my-4 flex flex-col">
+                <vue-cropper
+                  ref="cropper"
+                  :guides="true"
+                  :view-mode="1"
+                  drag-mode="crop"
+                  :auto-crop-area="1"
+                  :background="true"
+                  :rotatable="false"
+                  :src="selectedImage"
+                  alt="Source Image"
+                  :min-container-width="30"
+                  :min-container-height="30"
+                  :img-style="{ width: '100%', height: '100%' }"
+                  :aspect-ratio="1"
+                >
+                </vue-cropper>
+                <div>
+                  <button
+                    class="inline-flex justify-center py-2 px-4 text-xl"
+                    type="button"
+                    @click="hide"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    class="inline-flex justify-center py-2 px-4 text-xl"
+                    type="button"
+                    @click="cropImage"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </modal>
+          </client-only>
         </div>
       </div>
       <!-- トリミング後の画像 -->
       <div
-        class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 col-span-3"
+        class="flex justify-center px-6 pt-5 pb-4 border-2 border-gray-300 col-span-3"
       >
-        <div>
-          <button type="button" @click="prev">prev</button>
-          <div v-for="(image, i) of cropImageCodes" :key="i">
-            <img
-              v-if="index === i"
-              :src="image"
-              alt="Cropped Image"
-              width="200"
-              height="200"
-            />
-          </div>
-          <br />
-          <button type="button" @click="next">next</button>
+        <div class="w-5">
+          <button
+            v-if="cropImageCodes.length > 1 && index > 0"
+            type="button"
+            @click="prev"
+          >
+            prev
+          </button>
+        </div>
+
+        <div v-for="(image, i) of cropImageCodes" :key="i">
+          <img
+            v-if="index === i"
+            :src="image"
+            alt="Cropped Image"
+            width="150px"
+            height="150px"
+            class="mt-12"
+          />
+        </div>
+        <div class="w-5">
+          <button
+            v-if="
+              cropImageCodes.length > 1 && index < cropImageCodes.length - 1
+            "
+            type="button"
+            @click="next"
+          >
+            next
+          </button>
         </div>
       </div>
     </div>
@@ -128,13 +188,13 @@
     <!-- caption -->
     <div class="mx-2">
       <textarea
-        rows="3"
+        rows="4"
         class="block w-full sm:text-sm border border-gray-300 p-2"
         placeholder="Write a caption..."
       />
     </div>
     <!-- button -->
-    <div class="px-4 py-3 text-center mt-4">
+    <div class="px-4 py-3 text-center mt-2">
       <button
         type="button"
         class="inline-flex justify-center py-2 px-4 text-xl"
@@ -142,8 +202,9 @@
         Cancel
       </button>
       <button
-        type="button"
         class="inline-flex justify-center py-2 px-4 text-xl"
+        type="button"
+        @click="submit"
       >
         Share
       </button>
@@ -153,6 +214,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
   components: {},
   data() {
@@ -164,12 +226,13 @@ export default Vue.extend({
       // トリミング後の画像のソース(変換前)
       cropImageCode: '',
       // トリミング後の画像のソース(変換後)
-      cropImageFile: {},
-      // cropImageFileを入れた配列
-      imageUrlArray: Array,
+      cropImageFile: {} || any,
       // トリミング後の画像のソース(変換前)を格納する配列
       // eslint-disable-next-line no-array-constructor
       cropImageCodes: Array<any>(),
+      // cropImageFileを入れた配列
+      // eslint-disable-next-line no-array-constructor
+      imageUrlArray: Array<any>(),
       // 表示している画像のインデックス
       index: 0,
     }
@@ -194,7 +257,7 @@ export default Vue.extend({
           this.selectedImage = event.target.result
           // rebuild cropperjs with the updated source
           if (this.$refs.cropper) {
-            this.$refs.cropper.replace(event.target.result)
+            ;(this as any).$refs.cropper.replace(event.target.result)
           }
         }
         reader.readAsDataURL(file)
@@ -203,6 +266,7 @@ export default Vue.extend({
       }
       // 表示切り替え
       this.isBeforeSelect = false
+      this.show()
     },
 
     /**
@@ -210,7 +274,9 @@ export default Vue.extend({
      */
     cropImage(): void {
       if (this.$refs.cropper) {
-        const fileData = this.$refs.cropper.getCroppedCanvas().toDataURL()
+        const fileData = (this as any).$refs.cropper
+          .getCroppedCanvas()
+          .toDataURL()
         // Base64データ
         this.cropImageCode = fileData
         // base64をデコード
@@ -234,6 +300,7 @@ export default Vue.extend({
       }
       // 表示切り替え
       this.isBeforeSelect = true
+      this.hide()
     },
     /**
      * 次の画像を表示する.
@@ -247,6 +314,50 @@ export default Vue.extend({
     prev() {
       this.index -= 1
     },
+    /**
+     * 画像を送信する.
+     */
+    async submit(): Promise<void> {
+      const urlArray = []
+      // get secure url from our server
+      for (let i = 0; i < this.cropImageCodes.length; i++) {
+        const { url } = await fetch('http://localhost:8080/s3Url').then((res) =>
+          res.json()
+        )
+
+        urlArray.push(url)
+        // console.log(urlArray)
+      }
+
+      // post the image directly to the s3 bucket
+      let imageUrl = ''
+      for (const url of urlArray) {
+        await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          body: this.cropImageFile,
+        })
+
+        imageUrl = url.split('?')[0]
+        await this.imageUrlArray.push(imageUrl)
+        // console.log(this.imageUrlArray)
+      }
+      // sqlにpost する
+      // const res: any = await this.$axios.post('http://localhost:8080/', {
+      //   url: this.imageUrlArray, // 配列のポストの仕方？
+      // })
+      // console.log(res)
+    },
+    show() {
+      ;(this as any).$modal.show('hello-world')
+    },
+    hide() {
+      ;(this as any).$modal.hide('hello-world')
+      // 表示切り替え
+      this.isBeforeSelect = true
+    },
   },
 })
 </script>
@@ -254,5 +365,12 @@ export default Vue.extend({
 <style scoped>
 .location-dot {
   color: gray;
+}
+.modal-header,
+.modal-body {
+  padding: 5px 25px;
+}
+.modal-header {
+  border-bottom: 1px solid #ddd;
 }
 </style>
