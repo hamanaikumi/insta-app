@@ -200,6 +200,7 @@
       <button
         type="button"
         class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
+        @click="cancel"
       >
         Cancel
       </button>
@@ -347,22 +348,23 @@ export default Vue.extend({
         imageUrl = url.split('?')[0]
         await this.imageUrlArray.push(imageUrl)
       }
-      // ログインしているユーザーIDを取得. Vuex作成すること
-      const userInfo = await this.$store.getters['user/getLoginUserInformation']
-      const userId = userInfo.userId
-
+      // ログインしているユーザーIDを取得. 仮で１にしているが、Vuex作成すること
+      // const userInfo = await this.$store.getters['user/getLoginUserInformation']
+      // const userId = userInfo.userId
+      const userId = 1
       // APIに投稿情報をPOST
-      // const res: any = await this.$axios.post(
-      //   'https://api-instagram-app.herokuapp.com/post',
-      //   {
-      //     userId,
-      //     imageUrl: this.imageUrlArray,
-      //     caption: this.caption,
-      //     prefecture: this.selectedPrefecture,
-      //     postDate: new Date(),
-      //   }
-      // )
-      // console.log(res)
+      const res: any = await this.$axios.post(
+        'https://api-instagram-app.herokuapp.com/post',
+        {
+          userId,
+          imageUrl: this.imageUrlArray,
+          caption: this.caption,
+          prefecture: this.selectedPrefecture,
+          postDate: new Date(),
+        }
+      )
+      console.log(res)
+      // 確認用
       console.log({
         userId,
         imageUrl: this.imageUrlArray,
@@ -417,6 +419,12 @@ export default Vue.extend({
     addPrefecture() {
       this.showPrefecture = this.selectedPrefecture.name
       this.hidePrefectureModal()
+    },
+    /**
+     * ホーム画面に遷移する.
+     */
+    cancel() {
+      this.$router.push('/Home')
     },
   },
 })
