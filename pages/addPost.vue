@@ -44,9 +44,9 @@
           <!-- modal -->
           <client-only>
             <modal
-              name="hello-world"
+              name="image-modal"
               :click-to-close="false"
-              width="60%"
+              width="80%"
               height="auto"
             >
               <div class="modal-body my-4 flex flex-col">
@@ -72,7 +72,7 @@
                   <button
                     class="inline-flex justify-center py-2 px-4 text-xl"
                     type="button"
-                    @click="hide"
+                    @click="hideImageModal"
                   >
                     Cancel
                   </button>
@@ -149,22 +149,43 @@
               class="cursor-pointer rounded-md font-medium"
             >
               <span class="text-lg">
-                Add Prefecture
-                <input
-                  id="file-upload"
-                  name="file-upload"
-                  type="file"
-                  class="sr-only"
-              /></span>
+                <button type="button" @click="showPrefectureModal">
+                  Add Prefecture
+                </button>
+              </span>
             </label>
           </div>
+          <client-only>
+            <modal name="prefecture-modal" :click-to-close="false" width="80%">
+              <div class="modal-body my-8 flex flex-col">
+                <SelectPrefecture @givePrefecture="catchPrefecture" />
+
+                <div class="mt-8">
+                  <button
+                    class="inline-flex justify-center py-2 px-4 text-xl"
+                    type="button"
+                    @click="hidePrefectureModal"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    class="inline-flex justify-center py-2 px-4 text-xl"
+                    type="button"
+                    @click="addPrefecture"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </modal>
+          </client-only>
         </div>
       </div>
       <!-- 選択したprefecture -->
       <div
         class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 col-span-3"
       >
-        Prefecture
+        {{ showPrefecture }}
       </div>
     </div>
     <!-- caption -->
@@ -196,9 +217,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import SelectPrefecture from '~/components/SelectPrefecture.vue'
 
 export default Vue.extend({
-  components: {},
+  components: { SelectPrefecture },
   data() {
     return {
       // 画像が選択されたかの判定（選択窓の表示切替）
@@ -217,6 +239,9 @@ export default Vue.extend({
       imageUrlArray: Array<any>(),
       // 表示している画像のインデックス
       index: 0,
+
+      selectedPrefecture: '',
+      showPrefecture: '',
     }
   },
   methods: {
@@ -248,7 +273,7 @@ export default Vue.extend({
       }
       // 表示切り替え
       this.isBeforeSelect = false
-      this.show()
+      this.showImageModal()
     },
 
     /**
@@ -282,7 +307,7 @@ export default Vue.extend({
       }
       // 表示切り替え
       this.isBeforeSelect = true
-      this.hide()
+      this.hideImageModal()
     },
     /**
      * 次の画像を表示する.
@@ -332,13 +357,49 @@ export default Vue.extend({
       // })
       // console.log(res)
     },
-    show() {
-      ;(this as any).$modal.show('hello-world')
+    /**
+     * 画像追加のモーダルウィンドウを表示する.
+     */
+    showImageModal() {
+      ;(this as any).$modal.show('image-modal')
     },
-    hide() {
-      ;(this as any).$modal.hide('hello-world')
+
+    /**
+     * 画像追加のモーダルウィンドウを閉じる.
+     */
+    hideImageModal() {
+      ;(this as any).$modal.hide('image-modal')
       // 表示切り替え
       this.isBeforeSelect = true
+    },
+
+    /**
+     * 都道府県追加のモーダルウィンドウを表示する.
+     */
+    showPrefectureModal() {
+      ;(this as any).$modal.show('prefecture-modal')
+    },
+
+    /**
+     * 都道府県追加のモーダルウィンドウを閉じる.
+     */
+    hidePrefectureModal() {
+      ;(this as any).$modal.hide('prefecture-modal')
+      // 表示切り替え
+      this.isBeforeSelect = true
+    },
+
+    catchPrefecture(prefecture: string) {
+      console.log(prefecture)
+
+      this.selectedPrefecture = prefecture
+    },
+    /**
+     * 都道府県を追加する.
+     */
+    addPrefecture() {
+      this.showPrefecture = this.selectedPrefecture
+      this.hidePrefectureModal()
     },
   },
 })
