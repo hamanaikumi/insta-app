@@ -4,12 +4,12 @@
     <!-- image -->
     <div class="flex justify-center grid grid-cols-6 gap-1 mb-4 mx-2">
       <div
-        class="flex justify-center pt-5 pb-6 border-2 border-gray-300 col-span-3 h-64"
+        class="flex justify-center pt-5 pb-6 border border-light-gray col-span-3 h-64"
       >
         <div class="space-y-1 text-center mt-12">
           <svg
             v-if="isBeforeSelect"
-            class="mx-auto mt-4 h-12 w-24 text-gray-400"
+            class="mx-auto mt-4 h-12 w-24 text-light-gray"
             stroke="currentColor"
             fill="none"
             viewBox="0 0 48 48"
@@ -24,12 +24,9 @@
           </svg>
           <div
             v-if="isBeforeSelect"
-            class="flex justify-center text-sm text-gray-600"
+            class="flex justify-center text-light-gray"
           >
-            <label
-              for="file-upload"
-              class="cursor-pointer rounded-md font-medium"
-            >
+            <label for="file-upload" class="cursor-pointer rounded-md">
               <span class="text-lg">
                 Select Image
                 <input
@@ -50,8 +47,6 @@
               height="auto"
             >
               <div class="modal-body my-4 flex flex-col">
-                <!-- :img-styleで読み込んだ画像の大きさを指定
-                :aspect-ratioで比率を指定 -->
                 <vue-cropper
                   ref="cropper"
                   :guides="true"
@@ -70,14 +65,14 @@
                 </vue-cropper>
                 <div>
                   <button
-                    class="inline-flex justify-center py-2 px-4 text-xl"
+                    class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
                     type="button"
                     @click="hideImageModal"
                   >
                     Cancel
                   </button>
                   <button
-                    class="inline-flex justify-center py-2 px-4 text-xl"
+                    class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
                     type="button"
                     @click="cropImage"
                   >
@@ -91,7 +86,7 @@
       </div>
       <!-- トリミング後の画像 -->
       <div
-        class="flex justify-center px-6 pt-5 pb-4 border-2 border-gray-300 col-span-3"
+        class="flex justify-center px-3 pt-5 pb-4 border border-light-gray col-span-3"
       >
         <div class="grid content-center w-32">
           <button
@@ -129,11 +124,11 @@
     <!-- prefecture -->
     <div class="flex grid grid-cols-6 gap-1 mb-4 mx-2">
       <div
-        class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 col-span-3"
+        class="flex justify-center px-6 pt-5 pb-6 border border-light-gray col-span-3"
       >
-        <div class="space-y-1 text-center">
+        <div class="space-y-1 text-center location-dot">
           <svg
-            class="mx-auto h-12 w-24 text-gray-400"
+            class="mx-auto h-12 w-24 text-light-gray"
             aria-hidden="true"
             data-icon="location-dot"
             xmlns="http://www.w3.org/2000/svg"
@@ -143,7 +138,7 @@
               d="M168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2H168.3zM192 256C227.3 256 256 227.3 256 192C256 156.7 227.3 128 192 128C156.7 128 128 156.7 128 192C128 227.3 156.7 256 192 256z"
             ></path>
           </svg>
-          <div class="flex justify-center text-sm text-gray-600">
+          <div class="flex justify-center text-light-gray">
             <label
               for="file-upload"
               class="cursor-pointer rounded-md font-medium"
@@ -155,6 +150,7 @@
               </div>
             </label>
           </div>
+          <!-- modal -->
           <client-only>
             <modal name="prefecture-modal" :click-to-close="false" width="80%">
               <div class="modal-body my-8 flex flex-col">
@@ -162,14 +158,14 @@
 
                 <div class="mt-8">
                   <button
-                    class="inline-flex justify-center py-2 px-4 text-xl"
+                    class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
                     type="button"
                     @click="hidePrefectureModal"
                   >
                     Cancel
                   </button>
                   <button
-                    class="inline-flex justify-center py-2 px-4 text-xl"
+                    class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
                     type="button"
                     @click="addPrefecture"
                   >
@@ -183,9 +179,9 @@
       </div>
       <!-- 選択したprefecture -->
       <div
-        class="grid content-center px-6 pt-5 pb-6 border-2 border-gray-300 col-span-3"
+        class="grid content-center px-6 pt-5 pb-6 border border-light-gray col-span-3"
       >
-        <div class="text-center text-gray-600 text-lg">
+        <div class="text-center text-input-value-color text-lg">
           {{ showPrefecture }}
         </div>
       </div>
@@ -195,7 +191,7 @@
       <textarea
         v-model="caption"
         rows="4"
-        class="block w-full sm:text-sm border border-gray-300 p-2"
+        class="block w-full sm:text-sm border border-light-gray p-2"
         placeholder="Write a caption..."
       />
     </div>
@@ -203,12 +199,12 @@
     <div class="px-4 py-3 text-center mt-2">
       <button
         type="button"
-        class="inline-flex justify-center py-2 px-4 text-xl"
+        class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
       >
         Cancel
       </button>
       <button
-        class="inline-flex justify-center py-2 px-4 text-xl"
+        class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
         type="button"
         @click="submit"
       >
@@ -237,33 +233,27 @@ export default Vue.extend({
       // トリミング後の画像のソース(変換前)を格納する配列
       // eslint-disable-next-line no-array-constructor
       cropImageCodes: Array<any>(),
-      // cropImageFileを入れた配列
+      // cropImageFileを入れた配列(APIにPOST)
       // eslint-disable-next-line no-array-constructor
       imageUrlArray: Array<any>(),
       // 表示している画像のインデックス
       index: 0,
       // 選択した都道府県オブジェクト（子コンポーネントからの値を格納）
       selectedPrefecture: { id: '', name: '' },
-      // 都道府県名
+      // 都道府県名(APIにPOST)
       showPrefecture: '',
-      // キャプション
+      // キャプション(APIにPOST)
       caption: '',
     }
   },
-  async created() {
-    const userInfo = await this.$store.getters['sample/getUserInformation']
-    const userId = userInfo.userId
-    console.log(userInfo)
-  },
+
   methods: {
     /**
      * 画像を選択し、添付する.
-     * @param - 添付ファイル
+     * @param e - 添付ファイル
      */
     fileSelected(e: any): void {
       const file = e.target.files[0]
-      // console.log(file)
-
       if (!file.type.includes('image/')) {
         alert('画像ファイルを選択してください')
         return
@@ -332,19 +322,18 @@ export default Vue.extend({
       this.index -= 1
     },
     /**
-     * 画像、都道府県、キャプションを送信する.
+     * ユーザーID、画像、都道府県、キャプションを送信する.
      */
     async submit(): Promise<void> {
       const urlArray = []
-      // get secure url from our server
+      // S3からURLを取得
       for (let i = 0; i < this.cropImageCodes.length; i++) {
         const { url } = await fetch('http://localhost:8080/s3Url').then((res) =>
           res.json()
         )
         urlArray.push(url)
       }
-
-      // post the image directly to the s3 bucket
+      // S3のバケットに写真をPOST
       this.imageUrlArray = []
       let imageUrl = ''
       for (const url of urlArray) {
@@ -355,12 +344,11 @@ export default Vue.extend({
           },
           body: this.cropImageFile as any,
         })
-
         imageUrl = url.split('?')[0]
         await this.imageUrlArray.push(imageUrl)
       }
-      // ユーザーIDを取得
-      const userInfo = await this.$store.getters['sample/getUserInformation']
+      // ログインしているユーザーIDを取得. Vuex作成すること
+      const userInfo = await this.$store.getters['user/getLoginUserInformation']
       const userId = userInfo.userId
 
       // APIに投稿情報をPOST
@@ -414,19 +402,19 @@ export default Vue.extend({
       // 表示切り替え
       this.isBeforeSelect = true
     },
+
     /**
      * 子コンポーネントから選択された都道府県を受け取る.
-     * @params - 都道府県
+     * @param prefecture - 都道府県
      */
     catchPrefecture(prefecture: any) {
-      // console.log(prefecture)
       this.selectedPrefecture = prefecture
     },
+
     /**
      * 都道府県を画面表示する.
      */
     addPrefecture() {
-      // console.log(this.selectedPrefecture.name)
       this.showPrefecture = this.selectedPrefecture.name
       this.hidePrefectureModal()
     },
@@ -436,13 +424,14 @@ export default Vue.extend({
 
 <style scoped>
 .location-dot {
-  color: gray;
+  fill: #b3b3b3;
 }
-.modal-header,
+
 .modal-body {
   padding: 5px 25px;
 }
-.modal-header {
-  border-bottom: 1px solid #ddd;
+
+::placeholder {
+  color: #8a8a8a;
 }
 </style>

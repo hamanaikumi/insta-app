@@ -16,6 +16,9 @@ export default Vue.extend({
       selectPrefecture: { id: '', name: '' },
     }
   },
+  /**
+   * 表示する地図の設定をする.
+   */
   mounted(): void {
     const { am4core, am4maps, am4geodataJapanLow } = (this as any).$am4core()
 
@@ -47,7 +50,7 @@ export default Vue.extend({
 
     // active状態の設定
     const activeState = polygonTemplate.states.create('active')
-    activeState.properties.fill = am4core.color('#68d391')
+    activeState.properties.fill = am4core.color('#0D9900')
 
     // 都道府県をクリックしたときのメソッド（active状態）
     polygonSeries.mapPolygons.template.events.on('hit', (ev: any) => {
@@ -63,7 +66,6 @@ export default Vue.extend({
       const data = ev.target.dataItem.dataContext
       // 親子コンポーネントに選択した都道府県を渡す
       this.selectPrefecture = { id: data.id, name: data.name }
-      console.log(this.selectPrefecture)
       this.$emit('givePrefecture', this.selectPrefecture)
       // active状態の切り替え
       polygonSeries.mapPolygons.each(function (polygon: any) {
@@ -73,7 +75,7 @@ export default Vue.extend({
     })
   },
   /**
-   * mapを表示する.
+   * 地図を表示する.
    */
   beforeDestroy() {
     if (this.map) {
