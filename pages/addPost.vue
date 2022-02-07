@@ -93,19 +93,19 @@
       <div
         class="flex justify-center px-6 pt-5 pb-4 border-2 border-gray-300 col-span-3"
       >
-        <div class="w-5">
+        <div class="grid content-center w-32">
           <button
-            v-if="cropImageCodes.length > 1 && index > 0"
+            v-show="cropImageCodes.length > 1 && index > 0"
             type="button"
             @click="prev"
           >
-            prev
+            <i class="fas fa-angle-left"></i>
           </button>
         </div>
 
         <div v-for="(image, i) of cropImageCodes" :key="i">
           <img
-            v-if="index === i"
+            v-show="index === i"
             :src="image"
             alt="Cropped Image"
             width="100%"
@@ -113,7 +113,7 @@
             class="mt-12"
           />
         </div>
-        <div class="w-5">
+        <div class="grid content-center w-32">
           <button
             v-if="
               cropImageCodes.length > 1 && index < cropImageCodes.length - 1
@@ -121,7 +121,7 @@
             type="button"
             @click="next"
           >
-            next
+            <i class="fas fa-angle-right"></i>
           </button>
         </div>
       </div>
@@ -148,11 +148,11 @@
               for="file-upload"
               class="cursor-pointer rounded-md font-medium"
             >
-              <span class="text-lg">
+              <div class="text-lg">
                 <button type="button" @click="showPrefectureModal">
                   Add Prefecture
                 </button>
-              </span>
+              </div>
             </label>
           </div>
           <client-only>
@@ -193,10 +193,10 @@
     <!-- caption -->
     <div class="mx-2">
       <textarea
+        v-model="caption"
         rows="4"
         class="block w-full sm:text-sm border border-gray-300 p-2"
         placeholder="Write a caption..."
-        v-model="caption"
       />
     </div>
     <!-- button -->
@@ -249,6 +249,11 @@ export default Vue.extend({
       // キャプション
       caption: '',
     }
+  },
+  async created() {
+    const userInfo = await this.$store.getters['sample/getUserInformation']
+    const userId = userInfo.userId
+    console.log(userInfo)
   },
   methods: {
     /**
@@ -340,6 +345,7 @@ export default Vue.extend({
       }
 
       // post the image directly to the s3 bucket
+      this.imageUrlArray = []
       let imageUrl = ''
       for (const url of urlArray) {
         await fetch(url, {
@@ -353,19 +359,29 @@ export default Vue.extend({
         imageUrl = url.split('?')[0]
         await this.imageUrlArray.push(imageUrl)
       }
-      // sqlにpost する
-      const userId = await this.$store.getters['/']
-      const res: any = await this.$axios.post(
-        'https://api-instagram-app.herokuapp.com/post',
-        {
-          userId: 1,
-          imageUrl: this.imageUrlArray,
-          caption: this.caption,
-          prefecture: this.selectedPrefecture,
-          postDate: new Date(),
-        }
-      )
-      console.log(res)
+      // ユーザーIDを取得
+      const userInfo = await this.$store.getters['sample/getUserInformation']
+      const userId = userInfo.userId
+
+      // APIに投稿情報をPOST
+      // const res: any = await this.$axios.post(
+      //   'https://api-instagram-app.herokuapp.com/post',
+      //   {
+      //     userId,
+      //     imageUrl: this.imageUrlArray,
+      //     caption: this.caption,
+      //     prefecture: this.selectedPrefecture,
+      //     postDate: new Date(),
+      //   }
+      // )
+      // console.log(res)
+      console.log({
+        userId,
+        imageUrl: this.imageUrlArray,
+        caption: this.caption,
+        prefecture: this.selectedPrefecture,
+        postDate: new Date(),
+      })
     },
     /**
      * 画像追加のモーダルウィンドウを表示する.
