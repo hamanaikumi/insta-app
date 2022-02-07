@@ -13,7 +13,7 @@ export default Vue.extend({
       // mapオブジェクト
       map: {} as any,
       // 選択した都道府県
-      selectPrefecture: '',
+      selectPrefecture: { id: '', name: '' },
     }
   },
   mounted(): void {
@@ -33,25 +33,25 @@ export default Vue.extend({
       polygonSeries.tooltip.fill = am4core.color('#000000')
     }
 
-    // Configure series
+    // 全体の初期設定
     const polygonTemplate = polygonSeries.mapPolygons.template
     polygonTemplate.tooltipText = '{name}'
     // 都道府県の初期背景色
     polygonTemplate.fill = am4core.color('white')
     // 都道府県の輪郭線色
-    polygonTemplate.stroke = am4core.color('black')
+    polygonTemplate.stroke = am4core.color('gray')
 
-    // Configure "hover" state
+    // hover状態の設定
     const hoverState = polygonTemplate.states.create('hover')
     hoverState.properties.fill = am4core.color('white')
 
-    // Configure "active" state
+    // active状態の設定
     const activeState = polygonTemplate.states.create('active')
     activeState.properties.fill = am4core.color('#68d391')
 
-    // Set events to apply "active" state to clicked polygons
+    // 都道府県をクリックしたときのメソッド（active状態）
     polygonSeries.mapPolygons.template.events.on('hit', (ev: any) => {
-      // if we have some country selected,zoom
+      // 都道府県をクリックしたらズーム
       // eslint-disable-next-line prefer-const
       let currentActive: any
       if (currentActive) {
@@ -61,11 +61,11 @@ export default Vue.extend({
       currentActive = ev.target
 
       const data = ev.target.dataItem.dataContext
-      // 親に選択した都道府県を渡す
-      this.selectPrefecture = data.name
+      // 親子コンポーネントに選択した都道府県を渡す
+      this.selectPrefecture = { id: data.id, name: data.name }
       console.log(this.selectPrefecture)
       this.$emit('givePrefecture', this.selectPrefecture)
-
+      // active状態の切り替え
       polygonSeries.mapPolygons.each(function (polygon: any) {
         polygon.isActive = false
       })

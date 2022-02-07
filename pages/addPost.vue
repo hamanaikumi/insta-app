@@ -183,9 +183,11 @@
       </div>
       <!-- 選択したprefecture -->
       <div
-        class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 col-span-3"
+        class="grid content-center px-6 pt-5 pb-6 border-2 border-gray-300 col-span-3"
       >
-        {{ showPrefecture }}
+        <div class="text-center text-gray-600 text-lg">
+          {{ showPrefecture }}
+        </div>
       </div>
     </div>
     <!-- caption -->
@@ -194,6 +196,7 @@
         rows="4"
         class="block w-full sm:text-sm border border-gray-300 p-2"
         placeholder="Write a caption..."
+        v-model="caption"
       />
     </div>
     <!-- button -->
@@ -239,15 +242,17 @@ export default Vue.extend({
       imageUrlArray: Array<any>(),
       // 表示している画像のインデックス
       index: 0,
-
-      selectedPrefecture: '',
+      // 選択した都道府県オブジェクト（子コンポーネントからの値を格納）
+      selectedPrefecture: { id: '', name: '' },
+      // 都道府県名
       showPrefecture: '',
+      // キャプション
+      caption: '',
     }
   },
   methods: {
     /**
      * 画像を選択し、添付する.
-     *
      * @param - 添付ファイル
      */
     fileSelected(e: any): void {
@@ -322,7 +327,7 @@ export default Vue.extend({
       this.index -= 1
     },
     /**
-     * 画像を送信する.
+     * 画像、都道府県、キャプションを送信する.
      */
     async submit(): Promise<void> {
       const urlArray = []
@@ -331,9 +336,7 @@ export default Vue.extend({
         const { url } = await fetch('http://localhost:8080/s3Url').then((res) =>
           res.json()
         )
-
         urlArray.push(url)
-        // console.log(urlArray)
       }
 
       // post the image directly to the s3 bucket
@@ -349,13 +352,20 @@ export default Vue.extend({
 
         imageUrl = url.split('?')[0]
         await this.imageUrlArray.push(imageUrl)
-        // console.log(this.imageUrlArray)
       }
       // sqlにpost する
-      // const res: any = await this.$axios.post('http://localhost:8080/', {
-      //   url: this.imageUrlArray, // 配列のポストの仕方？
-      // })
-      // console.log(res)
+      const userId = await this.$store.getters['/']
+      const res: any = await this.$axios.post(
+        'https://api-instagram-app.herokuapp.com/post',
+        {
+          userId: 1,
+          imageUrl: this.imageUrlArray,
+          caption: this.caption,
+          prefecture: this.selectedPrefecture,
+          postDate: new Date(),
+        }
+      )
+      console.log(res)
     },
     /**
      * 画像追加のモーダルウィンドウを表示する.
@@ -388,17 +398,20 @@ export default Vue.extend({
       // 表示切り替え
       this.isBeforeSelect = true
     },
-
-    catchPrefecture(prefecture: string) {
-      console.log(prefecture)
-
+    /**
+     * 子コンポーネントから選択された都道府県を受け取る.
+     * @params - 都道府県
+     */
+    catchPrefecture(prefecture: any) {
+      // console.log(prefecture)
       this.selectedPrefecture = prefecture
     },
     /**
-     * 都道府県を追加する.
+     * 都道府県を画面表示する.
      */
     addPrefecture() {
-      this.showPrefecture = this.selectedPrefecture
+      // console.log(this.selectedPrefecture.name)
+      this.showPrefecture = this.selectedPrefecture.name
       this.hidePrefectureModal()
     },
   },
