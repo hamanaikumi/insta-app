@@ -38,33 +38,19 @@
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
-// no-this-in-fetch-data
-
 export default Vue.extend({
   props: {
-    // 親コンポーネント（モーダル or HomePage）から受けたpostID
     givePostId: Number,
   },
-  data() {
-    return {
-      currentPosDetail: Object,
-    }
-  },
 
-  created() {
-    this.getPOstDetail()
+  async asyncData() {
+    // 親から渡されたpostIDの投稿内容を取得
+    const response = await axios.get(
+      `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
+    )
+    return { postDetail: response.data }
   },
-  methods: {
-    async getPOstDetail() {
-      const response = await axios.get(
-        `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
-      )
-      this.currentPosDetail = response.data
-      console.dir(
-        'this.currentPostDetail' + JSON.stringify(this.currentPosDetail)
-      )
-    },
-  },
+  created() {},
 })
 </script>
 

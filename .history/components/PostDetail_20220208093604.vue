@@ -50,19 +50,23 @@ export default Vue.extend({
       currentPosDetail: Object,
     }
   },
-
-  created() {
-    this.getPOstDetail()
-  },
+  // async asyncData() {
+  //   // 親から渡されたpostIDの投稿内容を取得
+  //   const response = await axios.get(
+  //     `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
+  //   )
+  //   console.dir('asyncData():' + response)
+  //   return { postDetail: response.data }
+  // },
+  // created() {
+  //   console.log('孫コンポーネント' + this.givePostId)
+  // },
   methods: {
     async getPOstDetail() {
       const response = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       this.currentPosDetail = response.data
-      console.dir(
-        'this.currentPostDetail' + JSON.stringify(this.currentPosDetail)
-      )
     },
   },
 })

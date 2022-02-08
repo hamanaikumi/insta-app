@@ -28,6 +28,10 @@ export default Vue.extend({
     }
   },
 
+  // methods: {
+  //   getStore() {},
+  // },
+
   created() {
     // loginユーザー情報格納
     this.loginUser = this.$store.getters['sample/getLoginUser']

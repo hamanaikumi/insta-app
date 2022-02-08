@@ -50,7 +50,14 @@ export default Vue.extend({
       currentPosDetail: Object,
     }
   },
-
+  // async asyncData() {
+  //   // 親から渡されたpostIDの投稿内容を取得
+  //   const response = await axios.get(
+  //     `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
+  //   )
+  //   console.dir('asyncData():' + response)
+  //   return { postDetail: response.data }
+  // },
   created() {
     this.getPOstDetail()
   },
