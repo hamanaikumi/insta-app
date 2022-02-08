@@ -18,7 +18,7 @@ export const mutations = {}
 
 // getters
 export const getters = {
-  getLoginUserName(state: any) {
-    return state.user.userName
+  getLoginUserInfo(state: any) {
+    return state.user
   },
 }

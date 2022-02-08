@@ -1,11 +1,7 @@
 <template>
   <section>
-    <div id="overlay">
-      <!-- @click="closeModal()" -->
-      <div><button type="button" @click="closeModal()">とじる</button></div>
-      <div id="content">
-        <PostDetail class="post-modal" :givePostId="getPostId"></PostDetail>
-      </div>
+    <div id="content">
+      <PostDetail class="post-modal" :givePostId="getPostId"></PostDetail>
     </div>
   </section>
 </template>
@@ -43,7 +39,6 @@ export default Vue.extend({
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   transition-duration: 0.6s;

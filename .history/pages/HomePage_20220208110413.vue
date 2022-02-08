@@ -32,6 +32,8 @@ export default Vue.extend({
     // loginユーザー情報格納
     this.loginUser = this.$store.getters['user/getLoginUserInfo']
 
+    // 自分のフォローしているユーザーの投稿一覧
+
     // 自分の投稿一覧を自分のuserIdで絞り込んでいる
     // this.$store.commit('sample/getPostByFollowingUserId')
     // this.followingPostList =

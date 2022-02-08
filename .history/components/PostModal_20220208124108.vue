@@ -43,7 +43,6 @@ export default Vue.extend({
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   transition-duration: 0.6s;

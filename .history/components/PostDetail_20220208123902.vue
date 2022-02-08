@@ -74,7 +74,7 @@ export default Vue.extend({
     // いいね
     clickLiked() {
       console.dir(
-        'いいねメソッド loginUserName :' +
+        'いいねメソッド roginユーザーname:' +
           JSON.stringify(this.$store.getters['user/getLoginUserName'])
       )
     },

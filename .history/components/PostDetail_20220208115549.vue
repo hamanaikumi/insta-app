@@ -20,10 +20,8 @@
     </div>
     <div class="activity-container">
       <div class="flex flex-row">
-        <button type="button" :click="clickLiked()">
-          <i class="far fa-heart"></i>
-        </button>
-        <button class="ml-2"><i class="far fa-comment"></i></button>
+        <button :click="postLiked()"><i class="far fa-heart"></i></button>
+        <div class="ml-2"><i class="far fa-comment"></i></div>
       </div>
       <div class="liked-container">
         <span> Liked by 20 !</span>
@@ -72,25 +70,25 @@ export default Vue.extend({
       )
     },
     // いいね
-    clickLiked() {
-      console.dir(
-        'いいねメソッド loginUserName :' +
-          JSON.stringify(this.$store.getters['user/getLoginUserName'])
-      )
-    },
+    // postLiked() {
+    //   console.dir(
+    //     'roginユーザーname:' +
+    //       JSON.stringify(this.$store.getters['user/getLoginUserName'])
+    //   )
+    // },
     /**
      * いいねする.
      */
-    // async clickLiked() {
-    //   const response = await axios.post(
-    //     'https://api-instagram-app.herokuapp.com/favorite',
-    //     {
-    //       userName: this.$store.getters['user/getLoginUserInfo.userName'],
-    //       postId: this.givePostId,
-    //     }
-    //   )
-    //   console.dir('いいねresponse:' + JSON.stringify(response))
-    // },
+    async postLiked() {
+      const response = await axios.post(
+        'https://api-instagram-app.herokuapp.com/favorite',
+        {
+          userName: this.$store.getters['user/getLoginUserInfo.userName'],
+          postId: this.givePostId,
+        }
+      )
+      console.dir('いいねresponse:' + JSON.stringify(response))
+    },
   },
 })
 </script>

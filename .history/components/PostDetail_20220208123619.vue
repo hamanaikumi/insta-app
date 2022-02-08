@@ -20,9 +20,7 @@
     </div>
     <div class="activity-container">
       <div class="flex flex-row">
-        <button type="button" :click="clickLiked()">
-          <i class="far fa-heart"></i>
-        </button>
+        <button :click="clickLiked()"><i class="far fa-heart"></i></button>
         <button class="ml-2"><i class="far fa-comment"></i></button>
       </div>
       <div class="liked-container">
@@ -74,7 +72,7 @@ export default Vue.extend({
     // いいね
     clickLiked() {
       console.dir(
-        'いいねメソッド loginUserName :' +
+        'roginユーザーname:' +
           JSON.stringify(this.$store.getters['user/getLoginUserName'])
       )
     },
