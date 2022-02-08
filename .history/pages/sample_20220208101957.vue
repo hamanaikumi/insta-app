@@ -18,6 +18,7 @@ export default Vue.extend({
     return {
       // Modalの表示の有無
       showContent: false,
+
       // 親(ここ)から子(モーダルComponent)にpostIDを渡すための変数
       postId: 0,
     }
@@ -28,7 +29,6 @@ export default Vue.extend({
      */
     openModal(postId: number) {
       this.postId = postId
-      // this.postId = クリックした投稿のpostIDをthis.postIdに代入
       this.showContent = true
     },
     /**

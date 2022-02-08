@@ -8,7 +8,7 @@
         />
       </div>
       <div class="top-item-container">
-        <div class="user-name">_XXXXX</div>
+        <div class="user-name">{{ currentPosDetail.userinfo.userName }}</div>
         <div class="prefecture-name">Tokyo</div>
       </div>
     </div>
@@ -29,7 +29,7 @@
     </div>
     <div class="caption-container">
       <div class="user-name">@_XXXXX</div>
-      <div class="caption-container">{{ currentPosDetail.caption }}</div>
+      <div class="caption-container">texttexttexttexttext</div>
       <div>January 1,2022</div>
     </div>
   </div>

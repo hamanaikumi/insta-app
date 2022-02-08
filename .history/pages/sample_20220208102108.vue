@@ -28,7 +28,6 @@ export default Vue.extend({
      */
     openModal(postId: number) {
       this.postId = postId
-      // this.postId = クリックした投稿のpostIDをthis.postIdに代入
       this.showContent = true
     },
     /**

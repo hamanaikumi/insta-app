@@ -2,10 +2,7 @@
   <div class="post-container">
     <div class="top-container flex flex-row">
       <div class="icon-container">
-        <img
-          src="https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2"
-          alt=""
-        />
+        <img src="" alt="投稿写真" />
       </div>
       <div class="top-item-container">
         <div class="user-name">_XXXXX</div>
@@ -29,7 +26,7 @@
     </div>
     <div class="caption-container">
       <div class="user-name">@_XXXXX</div>
-      <div class="caption-container">{{ currentPosDetail.caption }}</div>
+      <div class="caption-container">texttexttexttexttext</div>
       <div>January 1,2022</div>
     </div>
   </div>
@@ -47,7 +44,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      // 現在取得ている投稿
+      // 現在取得ている投稿詳細オブジェクト
       currentPosDetail: Object,
     }
   },

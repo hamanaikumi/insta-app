@@ -32,6 +32,7 @@
       <div class="caption-container">{{ currentPosDetail.caption }}</div>
       <div>January 1,2022</div>
     </div>
+    {{ currentPosDetail.userinfo[4] }}
   </div>
 </template>
 

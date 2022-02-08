@@ -29,7 +29,7 @@
     </div>
     <div class="caption-container">
       <div class="user-name">@_XXXXX</div>
-      <div class="caption-container">{{ currentPosDetail.caption }}</div>
+      <div class="caption-container">texttexttexttexttext</div>
       <div>January 1,2022</div>
     </div>
   </div>
@@ -47,7 +47,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      // 現在取得ている投稿
       currentPosDetail: Object,
     }
   },
