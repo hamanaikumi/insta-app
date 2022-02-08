@@ -323,9 +323,61 @@ export default Vue.extend({
       this.index -= 1
     },
     /**
+     * 画像追加のモーダルウィンドウを表示する.
+     */
+    showImageModal() {
+      ;(this as any).$modal.show('image-modal')
+    },
+
+    /**
+     * 画像追加のモーダルウィンドウを閉じる.
+     */
+    hideImageModal() {
+      ;(this as any).$modal.hide('image-modal')
+      // 表示切り替え
+      this.isBeforeSelect = true
+    },
+
+    /**
+     * 都道府県追加のモーダルウィンドウを表示する.
+     */
+    showPrefectureModal() {
+      ;(this as any).$modal.show('prefecture-modal')
+    },
+
+    /**
+     * 都道府県追加のモーダルウィンドウを閉じる.
+     */
+    hidePrefectureModal() {
+      ;(this as any).$modal.hide('prefecture-modal')
+      // 表示切り替え
+      this.isBeforeSelect = true
+    },
+
+    /**
+     * 子コンポーネントから選択された都道府県を受け取る.
+     * @param prefecture - 都道府県
+     */
+    catchPrefecture(prefecture: any) {
+      this.selectedPrefecture = prefecture
+    },
+
+    /**
+     * 都道府県を画面表示する.
+     */
+    addPrefecture() {
+      this.showPrefecture = this.selectedPrefecture.name
+      this.hidePrefectureModal()
+    },
+    /**
      * ユーザーID、画像、都道府県、キャプションを送信する.
      */
     async submit(): Promise<void> {
+      // 画像が添付されていない場合エラー文を表示
+      if (this.cropImageCodes.length < 1) {
+        alert('画像ファイルを選択してください')
+        return
+      }
       const urlArray = []
       // S3からURLを取得
       for (let i = 0; i < this.cropImageCodes.length; i++) {
@@ -373,53 +425,7 @@ export default Vue.extend({
         postDate: new Date(),
       })
     },
-    /**
-     * 画像追加のモーダルウィンドウを表示する.
-     */
-    showImageModal() {
-      ;(this as any).$modal.show('image-modal')
-    },
 
-    /**
-     * 画像追加のモーダルウィンドウを閉じる.
-     */
-    hideImageModal() {
-      ;(this as any).$modal.hide('image-modal')
-      // 表示切り替え
-      this.isBeforeSelect = true
-    },
-
-    /**
-     * 都道府県追加のモーダルウィンドウを表示する.
-     */
-    showPrefectureModal() {
-      ;(this as any).$modal.show('prefecture-modal')
-    },
-
-    /**
-     * 都道府県追加のモーダルウィンドウを閉じる.
-     */
-    hidePrefectureModal() {
-      ;(this as any).$modal.hide('prefecture-modal')
-      // 表示切り替え
-      this.isBeforeSelect = true
-    },
-
-    /**
-     * 子コンポーネントから選択された都道府県を受け取る.
-     * @param prefecture - 都道府県
-     */
-    catchPrefecture(prefecture: any) {
-      this.selectedPrefecture = prefecture
-    },
-
-    /**
-     * 都道府県を画面表示する.
-     */
-    addPrefecture() {
-      this.showPrefecture = this.selectedPrefecture.name
-      this.hidePrefectureModal()
-    },
     /**
      * ホーム画面に遷移する.
      */
