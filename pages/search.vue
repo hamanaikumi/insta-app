@@ -1,16 +1,16 @@
 <template>
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap w-screen">
     <form class="my-8">
       <div class="w-screen flex justify-center my-2 h-8">
         <input
           v-model="searchWord"
-          class="bg-gray-300 rounded-md"
-          type="search"
+          class="focus:outline-none p-2 border-b-2"
+          type="text"
           placeholder=" Search..."
         />
-        <!--FontAwesomeから虫眼鏡の画像-->
-        <button class="bg-green-500 rounded-md">検索</button>
-        <!-- <button class="bg-green-500 rounded-md" @click="onSearch">検索</button> -->
+        <button type="button" class="border-b-2 w-8" @click="onSearch">
+          <i class="fas fa-search"></i>
+        </button>
       </div>
       <div class="w-screen flex justify-center my-2">
         <!-- <div class="flex justify-center inline-block align-middle"> -->
@@ -46,117 +46,66 @@
           <label for="prefecture"> Prefecture </label>
         </div>
       </div>
-      {{ data }}
     </form>
     <!-- 写真表示用 -->
-    <div
-      v-if="display === 'keyword' || display === 'prefecture'"
-      class="w-screen grid grid-cols-3"
-    >
-      <div class="m-px flex justify-center">
-        <img :src="imageUrl" />
-      </div>
-
-      <div class="m-px flex justify-center">
-        <img src="https://picsum.photos/300/" />
-      </div>
-
-      <div class="m-px flex justify-center">
-        <img src="http://placehold.it/200/" />
-      </div>
-      <div class="m-px flex justify-center">
-        <img src="http://placehold.it/100" />
-      </div>
-      <div class="m-px flex justify-center">
-        <img src="http://placehold.it/300" />
-      </div>
-      <div class="m-px flex justify-center">
-        <img src="http://placehold.it/300" />
-      </div>
-      <div class="m-px flex justify-center">
-        <img src="http://placehold.it/300" />
-      </div>
-      <div class="m-px flex justify-center">
-        <img src="http://placehold.it/300" />
+    <div v-if="showErrorMessage" class="w-screen flex justify-center">
+      {{ errorMessage }}
+    </div>
+    <!-- <div>{{ errorMessage }}</div> -->
+    <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3">
+      <div v-for="(item, i) of displayCaptionList" :key="i">
+        <div class="m-px flex justify-center">
+          <img :src="displayCaptionList[i].imageUrl[0]" />
+        </div>
       </div>
     </div>
+    <!-- ここまで -->
     <!-- アカウント表示用 -->
     <div v-if="display === 'account'">
-      <div class="flex w-screen my-1">
-        <div class="w-1/4 flex justify-center flex-none self-center">
-          <img :src="imageUrl" class="rounded-full w-16" />
+      <div v-for="(item, i) of displayAccountList" :key="i">
+        <div class="flex w-screen my-1">
+          <div class="w-1/4 flex justify-center flex-none self-center">
+            <img :src="displayAccountList[i].icon" class="rounded-full w-16" />
+          </div>
+          <div class="flex-grow self-center">
+            {{ displayAccountList[i].userName }}
+          </div>
+          <div class="flex-none self-center">
+            <button
+              v-if="follow"
+              class="bg-green-500 w-24 h-8 mx-2 rounded-md"
+              @click="onClick"
+            >
+              {{ button }}
+            </button>
+            <button
+              v-if="following"
+              class="bg-gray-100 w-24 h-8 mx-2 rounded-md"
+              @click="onClick"
+            >
+              {{ button }}
+            </button>
+          </div>
         </div>
-        <div class="flex-grow self-center">アカウント名</div>
-        <div class="flex-none self-center">
-          <button
-            v-if="follow"
-            class="bg-green-500 w-24 h-8 mx-2 rounded-md"
-            @click="onClick"
-          >
-            {{ button }}
-          </button>
-          <button
-            v-if="following"
-            class="bg-gray-100 w-24 h-8 mx-2 rounded-md"
-            @click="onClick"
-          >
-            {{ button }}
-          </button>
-        </div>
+        <hr />
       </div>
-      <hr />
-      <div class="flex w-screen my-1">
-        <div class="w-1/4 flex justify-center flex-none self-center">
-          <img src="http://placehold.it/200/" class="rounded-full w-16" />
-        </div>
-        <div class="flex-grow self-center">なが〜〜〜いアカウント名</div>
-        <div class="flex-none self-center">
-          <button
-            v-if="follow"
-            class="bg-green-500 w-24 h-8 mx-2 rounded-md"
-            @click="onClick"
-          >
-            {{ button }}
-          </button>
-          <button
-            v-if="following"
-            class="bg-gray-100 w-24 h-8 mx-2 rounded-md"
-            @click="onClick"
-          >
-            {{ button }}
-          </button>
-        </div>
-      </div>
-      <hr />
-      <div class="flex w-screen my-1">
-        <div class="w-1/4 flex justify-center flex-none self-center">
-          <img src="http://placehold.it/200/" class="rounded-full w-16" />
-        </div>
-        <div class="flex-grow self-center">アカウント名</div>
-        <div class="flex-none self-center">
-          <button
-            v-if="follow"
-            class="bg-green-500 w-24 h-8 mx-2 rounded-md"
-            @click="onClick"
-          >
-            {{ button }}
-          </button>
-          <button
-            v-if="following"
-            class="bg-gray-100 w-24 h-8 mx-2 rounded-md"
-            @click="onClick"
-          >
-            {{ button }}
-          </button>
-        </div>
-      </div>
-      <hr />
     </div>
+    <!-- ここまで -->
+    <!-- 都道府県表示用 -->
+    <div v-if="display === 'prefecture'" class="w-screen grid grid-cols-3">
+      <div v-for="(item, i) of displayPrefectureList" :key="i">
+        <div class="m-px flex justify-center">
+          <img :src="displayPrefectureList[i].imageUrl[0]" />
+        </div>
+      </div>
+    </div>
+    <!-- ここまで -->
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+// import axios from 'axios'
 
 export default Vue.extend({
   name: 'SearchPage',
@@ -166,47 +115,53 @@ export default Vue.extend({
   //  },
   data() {
     return {
+      // 表示切り替え用
       display: 'keyword',
+      // FollowFollowingボタン
       button: 'Follow',
+      // Followしていない
       follow: true,
+      // Followしていない
       following: false,
-      imageUrl:
-        'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2',
-      data: [],
-      displayList: [] as unknown,
+      // エラーメッセージ表示用
+      showErrorMessage: false,
+      errorMessage: '',
+      // 初期データ
+      captionList: [],
+      accountList: [],
+      prefectureList: [],
+      // 検索表示用
+      displayCaptionList: [],
+      displayAccountList: [],
+      displayPrefectureList: [],
+      // 検索ワード
       searchWord: '',
-      data1: ['たい焼き', 'たこ焼き', '苺'],
+      // keyword検索用
+      searchCaptionUrl:
+        'https://api-instagram-app.herokuapp.com/search/caption',
+      // アカウント検索用
+      searchAccountUrl:
+        'https://api-instagram-app.herokuapp.com/search/account',
+      // 都道府県検索用
+      searchPrefectureUrl:
+        'https://api-instagram-app.herokuapp.com/search/prefecture',
+      // 全件表示用
+      allPostsUrl: 'https://api-instagram-app.herokuapp.com/allposts',
+      // フォロー用
+      followUrl: 'https://api-instagram-app.herokuapp.com/follow',
+      // フォロー解除用
+      unfollow: 'https://api-instagram-app.herokuapp.com/unfollow',
     }
   },
-  //  },
-  computed: {
-    //         onSearch(){
-    // //                 const data = ['たい焼き', 'たこ焼き', '苺'];
-    // //    const displayList = data.filter((item)=>{
-    // //         return item.includes("焼き")
-    //   }
-  },
+  computed: {},
   mounted() {
-    this.data = this.$store.state.sample.post
-    // this.data = JSON.stringify(this.$store.state.sample.post)
-    // this.data = this.$store.state.sample.post
-    // console.log('data' + this.data.length)
-    // if (this.display === 'keyword') {
-    //   this.displayList = this.data.filter((item) => {
-    //     return item.length > 2
-    //   })
-    //   for (const it of this.data) {
-    //     //   console.log('item:' + item)
-    //     //   console.log(this.displayList)
-    //     this.displayList = it.filter(item =>
-    //      item.caption.includes(this.searchWord)
-    //     )
-    //     // this.displayList = item
-    //     //   this.displayList = this.item.filter((item) =>
-    //     //     item.name.toUpperCase().includes(this.searchWord.toUpperCase())
-    //     //   )
-    //   }
-    // }
+    /**
+     * 全投稿情報を取得
+     */
+    this.$axios.$get(this.allPostsUrl).then((res) => {
+      this.displayCaptionList = res
+      this.displayPrefectureList = res
+    })
   },
   methods: {
     onClick() {
@@ -220,31 +175,85 @@ export default Vue.extend({
         this.following = false
       }
     },
-    // onSearch() {
-    //   this.displayList = this.data.filter((item) => {
-    //     return item.includes(this.searchWord)
-    //     // return item.indexOf(this.searchWord)
-    //   })
-    // },
-    // onSearch() {
-    //   //   if (this.display === 'keyword') {
-    //   //     this.data = this.$store.state.sample.post
-    //   //     console.log('data' + this.data.length)
-    //   //     for (const item of this.data) {
-    //   //       //   console.log('item:' + item)
-    //   //       //   console.log(this.displayList)
-    //   //       this.displayList = JSON.stringify(item)
-    //   //       console.log('DL' + this.displayList)
-    //   //       // this.displayList = item
-    //   //       //   this.displayList = this.item.filter((item) =>
-    //   //       //     item.name.toUpperCase().includes(this.searchWord.toUpperCase())
-    //   //       //   )
-    //   //     }
-    //   //   }
-    // },
+    async onSearch() {
+      this.displayCaptionList.length = 0
+      this.displayAccountList.length = 0
+      this.prefectureList.length = 0
+
+      if (this.display === 'keyword') {
+        /**
+         * キーワード検索機能
+         */
+        await this.$axios
+          .$post(this.searchCaptionUrl, { caption: this.searchWord })
+          .then((res) => {
+            if (res.status === 'error') {
+              this.displayCaptionList.length = 0
+              this.showErrorMessage = true
+              this.errorMessage = res.message
+            } else {
+              this.showErrorMessage = false
+
+              this.displayCaptionList = res
+              console.dir('key:' + JSON.stringify(this.displayPrefectureList))
+            }
+          })
+      } else if (this.display === 'account') {
+        /**
+         * アカウント検索機能
+         */
+        await this.$axios
+          .$post(this.searchAccountUrl, { userName: this.searchWord })
+          .then((res) => {
+            if (res.status === 'error') {
+              this.displayAccountList.length = 0
+              this.showErrorMessage = true
+              this.errorMessage = res.message
+              //   console.dir('上:' + JSON.stringify(this.displayAccountList))
+            } else {
+              this.showErrorMessage = false
+
+              this.displayAccountList = res
+              //   console.dir('した:' + JSON.stringify(this.displayAccountList))
+            }
+            // if (res.length >= 1) {
+            //   this.displayAccountList = res
+            // } else {
+            //   this.errorMessage = res.message
+            // }
+            // console.dir('accsuccess:' + JSON.stringify(this.displayAccountList))
+          })
+        //   .catch((error) => {
+        //     // this.errorMessage = error.message
+        //     console.dir('err:' + error.res)
+        //   })
+      } else if (this.display === 'prefecture') {
+        /**
+         * 都道府県検索機能
+         */
+        await this.$axios
+          .$post(this.searchPrefectureUrl, { prefecture: this.searchWord })
+          .then((res) => {
+            if (res.status === 'error') {
+              this.displayPrefectureList.length = 0
+              this.showErrorMessage = true
+              this.errorMessage = res.message
+            } else {
+              this.showErrorMessage = false
+              this.displayPrefectureList = res
+              console.dir('pre:' + JSON.stringify(this.displayPrefectureList))
+            }
+          })
+      }
+    },
   },
   //  created () {
   //    console.log('CLICK!!!')// eslint-disable-line
   //  },
 })
 </script>
+<style scoped>
+html {
+  margin: 0;
+}
+</style>
