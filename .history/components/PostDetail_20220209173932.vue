@@ -72,6 +72,7 @@ export default Vue.extend({
       postDateByEnglish: '',
     }
   },
+  computed: {},
 
   created() {
     // poatIDに基づいた投稿詳細内容を取得するメソッド

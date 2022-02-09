@@ -147,12 +147,11 @@ export default Vue.extend({
         }
       )
       console.dir('いいねresponse:' + JSON.stringify(response))
-
-      // いいねの表示件数を更新するための処理
+      // いいねの表示件数を更新するため
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
-      // いいねの表示件数更新
+      // responseの投稿内容
       this.currentPostDetail.likes = responseLikes.data.favorites.length
     },
   },

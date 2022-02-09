@@ -77,7 +77,7 @@ export default Vue.extend({
     // poatIDに基づいた投稿詳細内容を取得するメソッド
     this.getPostDetail()
   },
-
+  computed: {},
   methods: {
     /**
      *  親から渡されたpostIDに基づいて、投稿詳細内容をAPIから取得する.

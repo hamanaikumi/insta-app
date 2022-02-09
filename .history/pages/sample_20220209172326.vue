@@ -1,11 +1,12 @@
 <template>
   <section>
-    <div class="post-img" @click="openModal(2)">post</div>
+    <div class="post-img" @click="openModal(1)">post</div>
     <transition name="fade">
       <PostModal
         v-if="showContent"
         @close="closeModal()"
         :getPostId="postId"
+        class="modal-content"
       ></PostModal>
     </transition>
   </section>
@@ -53,7 +54,9 @@ export default Vue.extend({
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-
+.modal-content {
+  transition: opacity 0.5s;
+}
 .fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }

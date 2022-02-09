@@ -21,6 +21,9 @@ export default Vue.extend({
     // 親から渡されたpostID
     getPostId: Number,
   },
+  //   async asyncDate() {
+  //       await
+  //   },
 
   methods: {
     closeModal() {
@@ -43,6 +46,7 @@ export default Vue.extend({
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.5s, transform 0s 0.5s;
 }
 #content {
   z-index: 10;

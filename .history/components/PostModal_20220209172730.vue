@@ -21,6 +21,9 @@ export default Vue.extend({
     // 親から渡されたpostID
     getPostId: Number,
   },
+  //   async asyncDate() {
+  //       await
+  //   },
 
   methods: {
     closeModal() {

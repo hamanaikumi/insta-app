@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="post-img" @click="openModal(2)">post</div>
+    <div class="post-img" @click="openModal()">post</div>
     <transition name="fade">
       <PostModal
         v-if="showContent"
@@ -26,8 +26,8 @@ export default Vue.extend({
     /**
      * モーダルウィンドウで投稿詳細画面を表示する.
      */
-    openModal(postId: number) {
-      this.postId = postId
+    openModal() {
+      // this.postId = postId
       // this.postId = クリックした投稿のpostIDをthis.postIdに代入
       this.showContent = true
     },

@@ -72,6 +72,13 @@ export default Vue.extend({
       postDateByEnglish: '',
     }
   },
+  computed: {
+    async getPostDetailResponse() {
+      return await axios.get(
+        `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
+      )
+    },
+  },
 
   created() {
     // poatIDに基づいた投稿詳細内容を取得するメソッド

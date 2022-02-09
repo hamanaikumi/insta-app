@@ -1,8 +1,8 @@
 // state
 export const state = () => ({
   user: {
-    userId: 2,
-    userName: 'test_user2',
+    userId: 3,
+    userName: 'test_user3',
     password: 'test2222',
     follow: [3, 5, 6],
     follower: [3, 5],
