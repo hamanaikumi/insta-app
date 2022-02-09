@@ -21,16 +21,13 @@ export default Vue.extend({
   data() {
     return {
       // 現在ログインしているユーザー情報
-      loginUser: [],
-      // 自分のフォローしている人の投稿一覧
-      followingPostList: [],
-      // フォローしている人のユーザーID
+      // loginUser: [],
     }
   },
 
   created() {
     // loginユーザー情報格納
-    this.loginUser = this.$store.getters['user/getLoginUserInfo']
+    this.loginUser = this.$store.getters['user/getLoginUserName']
 
     // 自分の投稿一覧を自分のuserIdで絞り込んでいる
     // this.$store.commit('sample/getPostByFollowingUserId')
