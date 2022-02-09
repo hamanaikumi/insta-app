@@ -47,7 +47,8 @@ import axios from 'axios'
 
 export default Vue.extend({
   props: {
-    // 親コンポーネント（PostModal.vueやHome.vue）から受けたpostID
+    // 親コンポーネント（HOME画面）かr
+    // 親コンポーネント（モーダル or HomePage）から受けたpostID
     givePostId: Number,
   },
 

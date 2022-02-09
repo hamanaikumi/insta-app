@@ -11,11 +11,9 @@
         </div>
       </div>
     </div>
-    <!-- 投稿画像 -->
     <div class="img-container">
       <img :src="currentPostDetail.imageUrl" alt="" />
     </div>
-
     <div class="activity-container">
       <div class="flex flex-row">
         <!-- いいねボタン -->
@@ -47,8 +45,8 @@ import axios from 'axios'
 
 export default Vue.extend({
   props: {
-    // 親コンポーネント（PostModal.vueやHome.vue）から受けたpostID
-    givePostId: Number,
+    // 親コンポーネント（モーダル or HomePage）から受けたpostID
+    givePostIdFromOther: Number,
   },
 
   data() {
@@ -84,7 +82,7 @@ export default Vue.extend({
      */
     async getPostDetail() {
       const response = await axios.get(
-        `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
+        `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostIdFromOther}`
       )
       // responseの投稿内容
       const responsePostDetail = response.data
@@ -143,7 +141,7 @@ export default Vue.extend({
         'https://api-instagram-app.herokuapp.com/favorite',
         {
           userName: this.$store.getters['user/getLoginUserName'],
-          postId: this.givePostId,
+          postId: this.givePostIdFromOther,
         }
       )
       console.dir('いいねresponse:' + JSON.stringify(response))

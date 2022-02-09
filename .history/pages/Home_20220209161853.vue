@@ -5,8 +5,8 @@
       v-for="postId of postsId"
       v-bind:key="postId"
     >
-      postID: {{ postId }}
-      <PostDetail :givePostId="postId"></PostDetail>
+      {{ postId }}
+      <!-- <PostDetail :givePostId="postId"></PostDetail> -->
     </div>
   </article>
 </template>
@@ -15,7 +15,7 @@
 // ↓書かないとstoreが呼び出せない
 /* eslint no-unused-expressions: "off" */
 import Vue from 'vue'
-// import axios from 'axios'
+import axios from 'axios'
 // import PostDetail from '../components/PostDetail.vue'
 export default Vue.extend({
   // components: { PostDetail },
@@ -36,7 +36,7 @@ export default Vue.extend({
      * 自分のフォローしているユーザーの投稿を取得する.
      */
     async getMyFollowUsersPost() {
-      const response = await this.$axios.get(
+      const response = await axios.get(
         `https://api-instagram-app.herokuapp.com/home/${this.loginUserId}`
       )
       // 投稿詳細データオブジェクトを代入

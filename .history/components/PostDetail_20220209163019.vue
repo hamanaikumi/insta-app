@@ -11,11 +11,9 @@
         </div>
       </div>
     </div>
-    <!-- 投稿画像 -->
     <div class="img-container">
       <img :src="currentPostDetail.imageUrl" alt="" />
     </div>
-
     <div class="activity-container">
       <div class="flex flex-row">
         <!-- いいねボタン -->
@@ -47,7 +45,8 @@ import axios from 'axios'
 
 export default Vue.extend({
   props: {
-    // 親コンポーネント（PostModal.vueやHome.vue）から受けたpostID
+    // 親コンポーネント（HOME画面）かr
+    // 親コンポーネント（モーダル or HomePage）から受けたpostID
     givePostId: Number,
   },
 
