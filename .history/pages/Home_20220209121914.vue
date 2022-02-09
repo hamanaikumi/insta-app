@@ -13,24 +13,16 @@ import Vue from 'vue'
 import PostDetail from '../components/PostDetail.vue'
 export default Vue.extend({
   components: { PostDetail },
-
+async asyncData(){}
   data() {
-    return {
-      loginUserId: Number,
-    }
+    return {}
   },
 
-  created() {
-    this.loginUserId = this.$store.getters['user/getLoginUserId']
-    // this.getMyFollowUserPost()
-  },
+  created() {},
   methods: {
-    // async getMyFollowUserPost() {
-    //   const response = await this.$axios.$get(
-    //     `https://api-instagram-app.herokuapp.com/home/:idhttps://api-instagram-app.herokuapp.com/home/${this.loginUserId}`
-    //   )
-    //   console.dir('HOME API' + JSON.stringify(response))
-    // },
+    async getMyFollowUserPost() {
+      // const response = this.$axios.$get(`https://api-instagram-app.herokuapp.com/home/:idhttps://api-instagram-app.herokuapp.com/home/${}`)
+    },
   },
 })
 </script>

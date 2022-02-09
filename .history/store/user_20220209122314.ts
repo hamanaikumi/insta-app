@@ -1,8 +1,8 @@
 // state
 export const state = () => ({
   user: {
-    userId: 1,
-    userName: 'test_user1',
+    userId: 23,
+    userName: 'test_user23',
     password: 'test2222',
     follow: [3, 5, 6],
     follower: [3, 5],
@@ -27,9 +27,9 @@ export const getters = {
     return state.user.userName
   },
   /**
-   * ログインしているユーザーIDを取得する.
+   * ログインしているユーザーの名前を取得する.
    * @param state -ステートオブジェクト
-   * @returns ログインユーザーID
+   * @returns ログインユーザーの名前
    */
   getLoginUserId(state: any) {
     return state.user.userid

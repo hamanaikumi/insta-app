@@ -2,7 +2,10 @@
   <div class="post-container">
     <div class="top-container flex flex-row">
       <div class="icon-container">
-        <img :src="currentPostUserInfo.icon" alt="" />
+        <img
+          src="https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2"
+          alt=""
+        />
       </div>
       <div class="top-item-container">
         <div class="user-name">{{ currentPostUserInfo.userName }}</div>
@@ -46,7 +49,7 @@ import axios from 'axios'
 export default Vue.extend({
   props: {
     // 親コンポーネント（モーダル or HomePage）から受けたpostID
-    givePostIdFromOther: Number,
+    givePostId: Number,
   },
 
   data() {
@@ -59,10 +62,8 @@ export default Vue.extend({
         imageUrl: [],
         likes: [],
       },
-
       // 現在取得している投稿のユーザー情報
       currentPostUserInfo: Object,
-
       // 現在の投稿のいいね数
       currentLikes: [],
 
@@ -82,7 +83,7 @@ export default Vue.extend({
      */
     async getPostDetail() {
       const response = await axios.get(
-        `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostIdFromOther}`
+        `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // responseの投稿内容
       const responsePostDetail = response.data
@@ -125,9 +126,6 @@ export default Vue.extend({
       }
       // 現在のpost内容のユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-      console.dir(
-        'this.currentPostUserInfo' + JSON.stringify(this.currentPostUserInfo)
-      )
     },
 
     /**
@@ -141,7 +139,7 @@ export default Vue.extend({
         'https://api-instagram-app.herokuapp.com/favorite',
         {
           userName: this.$store.getters['user/getLoginUserName'],
-          postId: this.givePostIdFromOther,
+          postId: this.givePostId,
         }
       )
       console.dir('いいねresponse:' + JSON.stringify(response))

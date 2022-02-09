@@ -1,6 +1,10 @@
 <template>
   <article>
-    <div class="article-container">
+    <div
+      class="article-container"
+      v-for="post of followingPostList"
+      v-bind:key="post.postId"
+    >
       <PostDetail></PostDetail>
     </div>
   </article>
@@ -15,22 +19,12 @@ export default Vue.extend({
   components: { PostDetail },
 
   data() {
-    return {
-      loginUserId: Number,
-    }
+    return {}
   },
 
-  created() {
-    this.loginUserId = this.$store.getters['user/getLoginUserId']
-    // this.getMyFollowUserPost()
-  },
+  created() {},
   methods: {
-    // async getMyFollowUserPost() {
-    //   const response = await this.$axios.$get(
-    //     `https://api-instagram-app.herokuapp.com/home/:idhttps://api-instagram-app.herokuapp.com/home/${this.loginUserId}`
-    //   )
-    //   console.dir('HOME API' + JSON.stringify(response))
-    // },
+    getMyFollowUserPost() {},
   },
 })
 </script>

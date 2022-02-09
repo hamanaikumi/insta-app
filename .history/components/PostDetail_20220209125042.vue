@@ -141,7 +141,7 @@ export default Vue.extend({
         'https://api-instagram-app.herokuapp.com/favorite',
         {
           userName: this.$store.getters['user/getLoginUserName'],
-          postId: this.givePostIdFromOther,
+          postId: this.givePostId,
         }
       )
       console.dir('いいねresponse:' + JSON.stringify(response))

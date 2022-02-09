@@ -22,15 +22,13 @@ export default Vue.extend({
 
   created() {
     this.loginUserId = this.$store.getters['user/getLoginUserId']
-    // this.getMyFollowUserPost()
   },
   methods: {
-    // async getMyFollowUserPost() {
-    //   const response = await this.$axios.$get(
-    //     `https://api-instagram-app.herokuapp.com/home/:idhttps://api-instagram-app.herokuapp.com/home/${this.loginUserId}`
-    //   )
-    //   console.dir('HOME API' + JSON.stringify(response))
-    // },
+    async getMyFollowUserPost() {
+      const response = await this.$axios.$get(
+        `https://api-instagram-app.herokuapp.com/home/:idhttps://api-instagram-app.herokuapp.com/home/${this.loginUserId}`
+      )
+    },
   },
 })
 </script>

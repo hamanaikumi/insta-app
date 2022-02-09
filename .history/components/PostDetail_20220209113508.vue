@@ -46,7 +46,7 @@ import axios from 'axios'
 export default Vue.extend({
   props: {
     // 親コンポーネント（モーダル or HomePage）から受けたpostID
-    givePostIdFromOther: Number,
+    givePostId: Number,
   },
 
   data() {
@@ -82,7 +82,7 @@ export default Vue.extend({
      */
     async getPostDetail() {
       const response = await axios.get(
-        `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostIdFromOther}`
+        `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // responseの投稿内容
       const responsePostDetail = response.data
@@ -141,7 +141,7 @@ export default Vue.extend({
         'https://api-instagram-app.herokuapp.com/favorite',
         {
           userName: this.$store.getters['user/getLoginUserName'],
-          postId: this.givePostIdFromOther,
+          postId: this.givePostId,
         }
       )
       console.dir('いいねresponse:' + JSON.stringify(response))
