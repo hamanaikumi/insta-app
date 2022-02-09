@@ -1,9 +1,10 @@
 <template>
   <div class="content-center px-4 py-8">
     <div class="flex justify-center mt-16">
-      <!-- logo -->
+      <!-- 仮logo -->
       <img src="https://svgsilh.com/svg/1594387.svg" alt="" width="200" />
     </div>
+    <!-- input -->
     <div class="my-4 text-xl">
       <div class="bg-gray-50 py-4 px-4 rounded-lg">
         <div class="border-b border-input-value-color">
@@ -35,7 +36,7 @@
         <span>{{ errorPassword }}</span>
       </div>
     </div>
-    <div class="mt-8">
+    <div class="mt-4">
       <!-- button -->
       <button
         class="text-white bg-accent-color focus:ring-4 font-medium rounded-lg text-lg w-full px-5 py-2.5 text-center"
@@ -43,6 +44,9 @@
       >
         Create New Account
       </button>
+    </div>
+    <div class="text-sm pl-4 pt-2 text-warning-color">
+      <span>{{ errorSignup }}</span>
     </div>
   </div>
 </template>
@@ -61,26 +65,56 @@ export default Vue.extend({
       errorUsername: '',
       // パスワードエラー文
       errorPassword: '',
+      // 最終エラーチェック
+      hasError: false,
+      // 会員登録失敗時のエラー文
+      errorSignup: '',
     }
   },
   methods: {
     /**
      * ユーザー登録する.
      */
-    signup() {
+    async signup() {
+      // 初期化
+      this.hasError = false
       this.errorUsername = ''
       this.errorPassword = ''
+      this.errorSignup = ''
+      // エラーチェック
       if (this.userName === '') {
         this.errorUsername = 'ユーザー名を入力してください'
+        this.hasError = true
       }
       if (this.password === '') {
-        this.errorUsername = 'パスワードを入力してください'
+        this.errorPassword = 'パスワードを入力してください'
+        this.hasError = true
       }
       if (
         !(/[a-z]+/.test(this.password) && /[0-9]+/.test(this.password)) ||
         this.password.length < 6
       ) {
         this.errorPassword = '半角英数字6字以上で入力してください'
+        this.hasError = true
+      }
+      // APIにPOST
+      if (!this.hasError) {
+        const res = await this.$axios.post(
+          'https://api-instagram-app.herokuapp.com/signup',
+          {
+            userName: this.userName,
+            password: this.password,
+          }
+        )
+        if (res.data.status === 'success') {
+          // ユーザー情報をVuexに保管
+          this.$store.commit('user/setLoginUserInfo', res.data.data)
+          this.$store.commit('user/login')
+          // ホーム画面に遷移
+          await this.$router.push('/Home')
+        } else if (res.data.status === 'error') {
+          this.errorSignup = 'そのユーザー名は既に登録済みです'
+        }
       }
     },
   },
