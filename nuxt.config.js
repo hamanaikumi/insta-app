@@ -27,7 +27,11 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/vue-cropper', mode: 'client' },
+    { src: '~/plugins/vue-js-modal.js', mode: 'client' },
+    { src: '~/plugins/amCharts.js', mode: 'client' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -53,5 +57,7 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    vendor: ['vue-cropperjs'],
+  },
 }
