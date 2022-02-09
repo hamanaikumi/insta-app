@@ -6,13 +6,13 @@
     </div>
     <!-- input -->
     <div class="my-4 text-xl">
-      <div class="bg-gray-50 py-4 px-4 rounded-lg">
+      <div class="bg-gray-100 py-4 px-4 rounded-lg">
         <div class="border-b border-input-value-color">
           <label class="text-input-value-color">Create user name</label>
           <br />
           <input
             v-model="userName"
-            class="appearance-none bg-gray-50 border-none focus:outline-none py-2 px-3"
+            class="appearance-none bg-gray-100 border-none focus:outline-none py-2 px-3"
             type="text"
             autocomplete="off"
           />
@@ -21,12 +21,12 @@
       <div class="h-12 text-sm pl-4 pt-2 text-warning-color">
         <span> {{ errorUsername }}</span>
       </div>
-      <div class="bg-gray-50 py-4 px-4 rounded-lg">
+      <div class="bg-gray-100 py-4 px-4 rounded-lg">
         <div class="border-b border-input-value-color">
           <label class="text-input-value-color">Create a password</label><br />
           <input
             v-model="password"
-            class="appearance-none bg-gray-50 border-none focus:outline-none py-2 px-3"
+            class="appearance-none bg-gray-100 border-none focus:outline-none py-2 px-3"
             autocomplete="off"
             type="password"
           />
@@ -67,7 +67,7 @@ export default Vue.extend({
       errorPassword: '',
       // 最終エラーチェック
       hasError: false,
-      // 会員登録失敗時のエラー文
+      // ユーザー登録失敗時のエラー文
       errorSignup: '',
     }
   },
@@ -86,15 +86,11 @@ export default Vue.extend({
         this.errorUsername = 'ユーザー名を入力してください'
         this.hasError = true
       }
-      if (this.password === '') {
-        this.errorPassword = 'パスワードを入力してください'
-        this.hasError = true
-      }
       if (
         !(/[a-z]+/.test(this.password) && /[0-9]+/.test(this.password)) ||
         this.password.length < 6
       ) {
-        this.errorPassword = '半角英数字6字以上で入力してください'
+        this.errorPassword = 'パスワードは半角英数字6字以上で入力してください'
         this.hasError = true
       }
       // APIにPOST
@@ -106,12 +102,14 @@ export default Vue.extend({
             password: this.password,
           }
         )
+        // 登録成功時
         if (res.data.status === 'success') {
           // ユーザー情報をVuexに保管
           this.$store.commit('user/setLoginUserInfo', res.data.data)
           this.$store.commit('user/login')
           // ホーム画面に遷移
           await this.$router.push('/Home')
+          // 登録失敗時
         } else if (res.data.status === 'error') {
           this.errorSignup = 'そのユーザー名は既に登録済みです'
         }

@@ -1,8 +1,7 @@
 // state
 export const state = () => ({
-  user: {},
-  isLogin: false,
-  loginUserInfo: {
+  // ログインしているユーザーの情報
+  user: {
     bio: '',
     follow: [],
     follower: [],
@@ -11,6 +10,8 @@ export const state = () => ({
     userId: 0,
     userName: '',
   },
+  // ログイン状態
+  isLogin: false,
 })
 
 // actions
@@ -23,8 +24,8 @@ export const mutations = {
    * @param state ステート
    * @param userInfo ログインしたユーザーの情報
    */
-  setLoginUserInfo(state: any, userInfo: any) {
-    state.loginUserInfo = userInfo
+  setLoginUserInfo(state: any, user: any) {
+    state.user = user
   },
   /**
    * 会員登録/ログインしたらログイン状態をtrueにする.
@@ -37,6 +38,11 @@ export const mutations = {
 
 // getters
 export const getters = {
+  /**
+   * ログインしたユーザーの情報を返す.
+   * @param state ステート
+   * @returns ログインしているユーザーの情報
+   */
   getLoginUserInfo(state: any) {
     return state.loginUserInfo
   },
