@@ -381,9 +381,9 @@ export default Vue.extend({
       const urlArray = []
       // S3からURLを取得
       for (let i = 0; i < this.cropImageCodes.length; i++) {
-        const { url } = await fetch('http://localhost:8080/s3Url').then((res) =>
-          res.json()
-        )
+        const { url } = await fetch(
+          'https://api-instagram-app.herokuapp.com/s3Url'
+        ).then((res) => res.json())
         urlArray.push(url)
       }
       // S3のバケットに写真をPOST
@@ -400,10 +400,8 @@ export default Vue.extend({
         imageUrl = url.split('?')[0]
         await this.imageUrlArray.push(imageUrl)
       }
-      // ログインしているユーザーIDを取得. 仮で１にしているが、Vuex作成すること
-      // const userInfo = await this.$store.getters['user/getLoginUserInformation']
-      // const userId = userInfo.userId
-      const userId = 1
+      // ログインしているユーザーIDを取得.
+      const userId = await this.$store.getters['user/getLoginUserId']
       // APIに投稿情報をPOST
       const res: any = await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/post',
