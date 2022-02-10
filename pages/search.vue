@@ -13,7 +13,6 @@
         </button>
       </div>
       <div class="w-screen flex justify-center my-2">
-        <!-- <div class="flex justify-center inline-block align-middle"> -->
         <div class="mx-2">
           <input
             id="keyword"
@@ -47,56 +46,39 @@
         </div>
       </div>
     </form>
+
     <!-- 写真表示用 -->
     <div v-if="showErrorMessage" class="w-screen flex justify-center">
       {{ errorMessage }}
     </div>
-    <!-- <div>{{ errorMessage }}</div> -->
     <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3">
+      <!-- <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3"> -->
       <div v-for="(item, i) of displayCaptionList" :key="i">
-        <div class="m-px flex justify-center">
-          <img :src="displayCaptionList[i].imageUrl[0]" />
-        </div>
+        <!-- ルーターリンクは投稿詳細に飛ぶ -->
+        <router-link :to="'/postDetail/' + item.postId">
+          <div class="m-px flex justify-center">
+            <img :src="displayCaptionList[i].imageUrl[0]" />
+          </div>
+        </router-link>
       </div>
     </div>
     <!-- ここまで -->
     <!-- アカウント表示用 -->
-    <div v-if="display === 'account'">
+    <div v-else-if="display === 'account'">
       <div v-for="(item, i) of displayAccountList" :key="i">
-        <div class="flex w-screen my-1">
-          <div class="w-1/4 flex justify-center flex-none self-center">
-            <img :src="displayAccountList[i].icon" class="rounded-full w-16" />
-          </div>
-          <div class="flex-grow self-center">
-            {{ displayAccountList[i].userName }}
-          </div>
-          <div class="flex-none self-center">
-            <button
-              v-if="follow"
-              class="bg-green-500 w-24 h-8 mx-2 rounded-md"
-              @click="onClick"
-            >
-              {{ button }}
-            </button>
-            <button
-              v-if="following"
-              class="bg-gray-100 w-24 h-8 mx-2 rounded-md"
-              @click="onClick"
-            >
-              {{ button }}
-            </button>
-          </div>
-        </div>
-        <hr />
+        <AccountList key="testA" :user="displayAccountList[i]" />
       </div>
     </div>
     <!-- ここまで -->
     <!-- 都道府県表示用 -->
-    <div v-if="display === 'prefecture'" class="w-screen grid grid-cols-3">
+    <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3">
       <div v-for="(item, i) of displayPrefectureList" :key="i">
-        <div class="m-px flex justify-center">
-          <img :src="displayPrefectureList[i].imageUrl[0]" />
-        </div>
+        <!-- ルーターリンクは投稿詳細に飛ぶ -->
+        <router-link :to="'/postDetail/' + item.postId">
+          <div class="m-px flex justify-center">
+            <img :src="displayPrefectureList[i].imageUrl[0]" />
+          </div>
+        </router-link>
       </div>
     </div>
     <!-- ここまで -->
@@ -105,18 +87,19 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import AccountList from '~/components/AccountList.vue'
 // import axios from 'axios'
 
 export default Vue.extend({
   name: 'SearchPage',
-  //  components: {
-  //  },
-  //    props: {
-  //  },
+  components: {
+    AccountList,
+  },
+
   data() {
     return {
       // 表示切り替え用
-      display: 'keyword',
+      display: 'account',
       // FollowFollowingボタン
       button: 'Follow',
       // Followしていない
@@ -147,13 +130,21 @@ export default Vue.extend({
         'https://api-instagram-app.herokuapp.com/search/prefecture',
       // 全件表示用
       allPostsUrl: 'https://api-instagram-app.herokuapp.com/allposts',
-      // フォロー用
-      followUrl: 'https://api-instagram-app.herokuapp.com/follow',
-      // フォロー解除用
-      unfollow: 'https://api-instagram-app.herokuapp.com/unfollow',
+      // 仮のユーザーID
+      userId: 2,
     }
   },
   computed: {},
+  created() {
+    /**
+     * 全投稿情報を取得
+     */
+    this.$axios.$get(this.allPostsUrl).then((res) => {
+      this.displayCaptionList = res
+      this.displayPrefectureList = res
+    })
+    console.log('親:created')
+  },
   mounted() {
     /**
      * 全投稿情報を取得
@@ -162,24 +153,13 @@ export default Vue.extend({
       this.displayCaptionList = res
       this.displayPrefectureList = res
     })
+    console.log('親:mounted')
   },
   methods: {
-    onClick() {
-      if (this.follow) {
-        this.button = 'Following'
-        this.follow = false
-        this.following = true
-      } else {
-        this.button = 'Follow'
-        this.follow = true
-        this.following = false
-      }
-    },
+    /**
+     * 検索機能
+     */
     async onSearch() {
-      this.displayCaptionList.length = 0
-      this.displayAccountList.length = 0
-      this.prefectureList.length = 0
-
       if (this.display === 'keyword') {
         /**
          * キーワード検索機能
@@ -193,9 +173,7 @@ export default Vue.extend({
               this.errorMessage = res.message
             } else {
               this.showErrorMessage = false
-
               this.displayCaptionList = res
-              console.dir('key:' + JSON.stringify(this.displayPrefectureList))
             }
           })
       } else if (this.display === 'account') {
@@ -205,28 +183,17 @@ export default Vue.extend({
         await this.$axios
           .$post(this.searchAccountUrl, { userName: this.searchWord })
           .then((res) => {
+            // 検索結果がなかった時
             if (res.status === 'error') {
               this.displayAccountList.length = 0
               this.showErrorMessage = true
               this.errorMessage = res.message
-              //   console.dir('上:' + JSON.stringify(this.displayAccountList))
+              // 検索結果があったとき
             } else {
               this.showErrorMessage = false
-
               this.displayAccountList = res
-              //   console.dir('した:' + JSON.stringify(this.displayAccountList))
             }
-            // if (res.length >= 1) {
-            //   this.displayAccountList = res
-            // } else {
-            //   this.errorMessage = res.message
-            // }
-            // console.dir('accsuccess:' + JSON.stringify(this.displayAccountList))
           })
-        //   .catch((error) => {
-        //     // this.errorMessage = error.message
-        //     console.dir('err:' + error.res)
-        //   })
       } else if (this.display === 'prefecture') {
         /**
          * 都道府県検索機能
@@ -241,15 +208,11 @@ export default Vue.extend({
             } else {
               this.showErrorMessage = false
               this.displayPrefectureList = res
-              console.dir('pre:' + JSON.stringify(this.displayPrefectureList))
             }
           })
       }
     },
   },
-  //  created () {
-  //    console.log('CLICK!!!')// eslint-disable-line
-  //  },
 })
 </script>
 <style scoped>
