@@ -1,0 +1,34 @@
+<template>
+  <article>
+    <div class="articles-container">
+      <PostDetail></PostDetail>
+    </div>
+  </article>
+</template>
+
+<script lang="ts">
+// ↓書かないとstoreが呼び出せない
+/* eslint no-unused-expressions: "off" */
+import Vue from 'vue'
+import PostDetail from '../components/PostDetail.vue'
+export default Vue.extend({
+  components: { PostDetail },
+
+  data() {
+    return {}
+  },
+
+  created() {},
+  methods: {
+    getMyFollowUserPost() {},
+  },
+})
+</script>
+<style scoped>
+article {
+  padding: 0.63rem;
+}
+.article-container {
+  border-bottom: 0.3px solid #b3b3b3;
+}
+</style>
