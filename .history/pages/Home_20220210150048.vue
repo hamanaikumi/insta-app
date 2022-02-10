@@ -10,6 +10,8 @@
 </template>
 
 <script lang="ts">
+// ↓書かないとstoreが呼び出せない?
+
 import Vue from 'vue'
 
 export default Vue.extend({

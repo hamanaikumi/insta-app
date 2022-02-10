@@ -1,11 +1,11 @@
 <template>
   <section>
-    <div class="post-img" @click="openModal(postId)">post</div>
+    <div class="post-img" @click="openModal(2)">post</div>
     <transition name="fade">
       <PostModal
         v-if="showContent"
-        :get-post-id="postId"
         @close="closeModal()"
+        :get-post-id="postId"
       ></PostModal>
     </transition>
   </section>
@@ -16,9 +16,8 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      // Modal画面の表示の有無
+      // Modalの表示の有無
       showContent: false,
-
       // 親(ここ)から子(モーダルComponent)にpostIDを渡すための変数
       postId: 0,
     }

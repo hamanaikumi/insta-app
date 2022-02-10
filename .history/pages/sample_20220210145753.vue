@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="post-img" @click="openModal(postId)">post</div>
+    <div class="post-img" @click="openModal(2)">post</div>
     <transition name="fade">
       <PostModal
         v-if="showContent"
