@@ -1,11 +1,11 @@
 <template>
-  <body>
-    <main>
-      <Header />
+  <body class="">
+    <main >
+      <header-componet class="fixed w-full"/>
+      <div class="p-4"></div>
       <Nuxt />
-      
+      <footer-componet class="fixed bottom-0 w-full"/>
     </main>
-    <!-- Footer -->
   </body>
 </template>
 <style scoped>
