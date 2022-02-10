@@ -30,7 +30,6 @@ export default Vue.extend({
   created() {
     // ログインしているユーザーのIDをstoreより取得
     this.loginUserId = this.$store.getters['user/getLoginUserId']
-
     // 自分のフォローしているユーザーの投稿を取得する.
     this.getMyFollowUsersPost()
   },

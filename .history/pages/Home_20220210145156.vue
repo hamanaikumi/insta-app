@@ -30,7 +30,6 @@ export default Vue.extend({
   created() {
     // ログインしているユーザーのIDをstoreより取得
     this.loginUserId = this.$store.getters['user/getLoginUserId']
-
     // 自分のフォローしているユーザーの投稿を取得する.
     this.getMyFollowUsersPost()
   },
@@ -49,9 +48,11 @@ export default Vue.extend({
       // postIDだけを取り出す
       const postIdArray = []
       for (const post of posts) {
+        // console.dir('HOME API post:' + JSON.stringify(post.postId))
         postIdArray.push(post.postId)
       }
       this.postsId = postIdArray
+      // console.log('this.postID配列？' + this.postsId)
     },
   },
 })
