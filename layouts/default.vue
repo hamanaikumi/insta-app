@@ -1,8 +1,9 @@
 <template>
   <body>
-    <!-- Header -->
     <main>
+      <Header />
       <Nuxt />
+      
     </main>
     <!-- Footer -->
   </body>
