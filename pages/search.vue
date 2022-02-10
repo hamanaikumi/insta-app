@@ -109,10 +109,6 @@ export default Vue.extend({
       // エラーメッセージ表示用
       showErrorMessage: false,
       errorMessage: '',
-      // 初期データ
-      captionList: [],
-      accountList: [],
-      prefectureList: [],
       // 検索表示用
       displayCaptionList: [],
       displayAccountList: [],
