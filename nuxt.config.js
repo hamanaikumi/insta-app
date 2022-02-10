@@ -13,7 +13,6 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-
       // fontAwesome icon CDN
       {
         rel: 'stylesheet',
@@ -31,6 +30,7 @@ export default {
     { src: '~/plugins/vue-cropper', mode: 'client' },
     { src: '~/plugins/vue-js-modal.js', mode: 'client' },
     { src: '~/plugins/amCharts.js', mode: 'client' },
+    { src: '~/plugins/persistedstate.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

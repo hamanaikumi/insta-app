@@ -1,0 +1,56 @@
+<template>
+  <section>
+    <div id="content">
+      <PostDetail class="post-modal" :givePostId="getPostId"></PostDetail>
+    </div>
+  </section>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import PostDetail from '../components/PostDetail.vue'
+export default Vue.extend({
+  components: {
+    PostDetail,
+  },
+  props: {
+    // 親から渡されたpostID
+    getPostId: Number,
+  },
+  //   async asyncDate() {
+  //       await
+  //   },
+
+  methods: {
+    closeModal() {
+      this.$emit('close')
+    },
+  },
+})
+</script>
+
+<style scoped>
+#overlay {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-duration: 0.6s;
+}
+#content {
+  z-index: 2;
+  width: 100%;
+  max-width: 428px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0);
+}
+.post-modal {
+  background-color: white;
+}
+</style>

@@ -211,6 +211,7 @@
       >
         Share
       </button>
+      <button type="button" @click="test">TEST</button>
     </div>
   </div>
 </template>
@@ -369,6 +370,17 @@ export default Vue.extend({
       this.showPrefecture = this.selectedPrefecture.name
       this.hidePrefectureModal()
     },
+    async test() {
+      const urlArray = []
+      // S3からURLを取得
+      for (let i = 0; i < this.cropImageCodes.length; i++) {
+        const { url } = await fetch('http://localhost:8000/s3url').then((res) =>
+          res.json()
+        )
+        urlArray.push(url)
+      }
+      console.log(urlArray)
+    },
     /**
      * ユーザーID、画像、都道府県、キャプションを送信する.
      */
@@ -381,9 +393,9 @@ export default Vue.extend({
       const urlArray = []
       // S3からURLを取得
       for (let i = 0; i < this.cropImageCodes.length; i++) {
-        const { url } = await fetch('http://localhost:8080/s3Url').then((res) =>
-          res.json()
-        )
+        const { url } = await fetch(
+          'https://api-instagram-app.herokuapp.com/s3url'
+        ).then((res) => res.json())
         urlArray.push(url)
       }
       // S3のバケットに写真をPOST
