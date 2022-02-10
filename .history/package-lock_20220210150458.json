@@ -36,7 +36,7 @@
         "prettier": "^2.5.1",
         "sass": "^1.49.7",
         "sass-loader": "^10.2.0",
-        "vue-cropperjs": "^4.0.0"
+       "vue-cropperjs": "^4.0.0"
       }
     },
     "node_modules/@amcharts/amcharts4": {
@@ -23145,8 +23145,7 @@
           "version": "5.1.0",
           "resolved": "https://registry.npmjs.org/icss-utils/-/icss-utils-5.1.0.tgz",
           "integrity": "sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==",
-          "dev": true,
-          "requires": {}
+          "dev": true
         },
         "import-fresh": {
           "version": "3.3.0",
@@ -23215,8 +23214,7 @@
           "version": "3.0.0",
           "resolved": "https://registry.npmjs.org/postcss-modules-extract-imports/-/postcss-modules-extract-imports-3.0.0.tgz",
           "integrity": "sha512-bdHleFnP3kZ4NYDhuGlVK+CMrQ/pqUm8bx/oGL93K6gVwiclvX5x0n76fYMKuIGKzlABOy13zsvqjb0f92TEXw==",
-          "dev": true,
-          "requires": {}
+          "dev": true
         },
         "postcss-modules-local-by-default": {
           "version": "4.0.0",
@@ -23824,8 +23822,7 @@
           "version": "8.0.1",
           "resolved": "https://registry.npmjs.org/postcss-nesting/-/postcss-nesting-8.0.1.tgz",
           "integrity": "sha512-cHPNhW5VvRQjszFDxmy16mis9qFQqQLBNw6KVmueLqqE3M182ZAk9+QoxGqbGVryzLVhannw2B5Yhosqq522fA==",
-          "dev": true,
-          "requires": {}
+          "dev": true
         },
         "postcss-values-parser": {
           "version": "4.0.0",
@@ -24810,8 +24807,7 @@
       "version": "5.3.2",
       "resolved": "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-5.3.2.tgz",
       "integrity": "sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==",
-      "dev": true,
-      "requires": {}
+      "dev": true
     },
     "acorn-node": {
       "version": "1.8.2",
@@ -24872,14 +24868,12 @@
     "ajv-errors": {
       "version": "1.0.1",
       "resolved": "https://registry.npmjs.org/ajv-errors/-/ajv-errors-1.0.1.tgz",
-      "integrity": "sha512-DCRfO/4nQ+89p/RK43i8Ezd41EqdGIU4ld7nGF8OQ14oc/we5rEntLCUa7+jrn3nn83BosfwZA0wb4pon2o8iQ==",
-      "requires": {}
+      "integrity": "sha512-DCRfO/4nQ+89p/RK43i8Ezd41EqdGIU4ld7nGF8OQ14oc/we5rEntLCUa7+jrn3nn83BosfwZA0wb4pon2o8iQ=="
     },
     "ajv-keywords": {
       "version": "3.5.2",
       "resolved": "https://registry.npmjs.org/ajv-keywords/-/ajv-keywords-3.5.2.tgz",
-      "integrity": "sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==",
-      "requires": {}
+      "integrity": "sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ=="
     },
     "alphanum-sort": {
       "version": "1.0.2",
@@ -27717,15 +27711,13 @@
       "version": "8.3.0",
       "resolved": "https://registry.npmjs.org/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz",
       "integrity": "sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==",
-      "dev": true,
-      "requires": {}
+      "dev": true
     },
     "eslint-config-standard": {
       "version": "16.0.3",
       "resolved": "https://registry.npmjs.org/eslint-config-standard/-/eslint-config-standard-16.0.3.tgz",
       "integrity": "sha512-x4fmJL5hGqNJKGHSjnLdgA6U6h1YW/G2dW9fA+cyVur4SK6lyue8+UgNKWlZtUDTXvgKDD/Oa3GQjmB5kjtVvg==",
-      "dev": true,
-      "requires": {}
+      "dev": true
     },
     "eslint-import-resolver-node": {
       "version": "0.3.6",
@@ -27962,8 +27954,7 @@
       "version": "5.2.0",
       "resolved": "https://registry.npmjs.org/eslint-plugin-promise/-/eslint-plugin-promise-5.2.0.tgz",
       "integrity": "sha512-SftLb1pUG01QYq2A/hGAWfDRXqYD82zE7j7TopDOyNdU+7SvvoXREls/+PRTY17vUXzXnZA/zfnyKgRH6x4JJw==",
-      "dev": true,
-      "requires": {}
+      "dev": true
     },
     "eslint-plugin-unicorn": {
       "version": "39.0.0",
@@ -35700,8 +35691,7 @@
     "time-fix-plugin": {
       "version": "2.0.7",
       "resolved": "https://registry.npmjs.org/time-fix-plugin/-/time-fix-plugin-2.0.7.tgz",
-      "integrity": "sha512-uVFet1LQToeUX0rTcSiYVYVoGuBpc8gP/2jnlUzuHMHe+gux6XLsNzxLUweabMwiUj5ejhoIMsUI55nVSEa/Vw==",
-      "requires": {}
+      "integrity": "sha512-uVFet1LQToeUX0rTcSiYVYVoGuBpc8gP/2jnlUzuHMHe+gux6XLsNzxLUweabMwiUj5ejhoIMsUI55nVSEa/Vw=="
     },
     "timers-browserify": {
       "version": "2.0.12",
@@ -36517,8 +36507,7 @@
     "vuex": {
       "version": "3.6.2",
       "resolved": "https://registry.npmjs.org/vuex/-/vuex-3.6.2.tgz",
-      "integrity": "sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw==",
-      "requires": {}
+      "integrity": "sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw=="
     },
     "vuex-persistedstate": {
       "version": "4.1.0",
@@ -37353,8 +37342,7 @@
     "ws": {
       "version": "7.5.6",
       "resolved": "https://registry.npmjs.org/ws/-/ws-7.5.6.tgz",
-      "integrity": "sha512-6GLgCqo2cy2A2rjCNFlxQS6ZljG/coZfZXclldI8FB/1G3CCI36Zd8xy2HrFVACi8tfk5XrgLQEk+P0Tnz9UcA==",
-      "requires": {}
+      "integrity": "sha512-6GLgCqo2cy2A2rjCNFlxQS6ZljG/coZfZXclldI8FB/1G3CCI36Zd8xy2HrFVACi8tfk5XrgLQEk+P0Tnz9UcA=="
     },
     "xlsx": {
       "version": "0.17.5",

@@ -11,6 +11,7 @@ export const state = () => ({
     userName: '',
   },
   // ログイン状態
+
   isLogin: false,
 })
 
@@ -39,7 +40,7 @@ export const mutations = {
 // getters
 export const getters = {
   /**
-
+<<<<<<< HEAD
    * ログインしているユーザーの名前を取得する.
    * @param state -ステートオブジェクト
    * @returns ログインユーザーの名前
@@ -54,13 +55,13 @@ export const getters = {
    */
   getLoginUserId(state: any) {
     return state.user.userId
-  },
-  /**
+=======
    * ログインしたユーザーの情報を返す.
    * @param state ステート
    * @returns ログインしているユーザーの情報
    */
   getLoginUserInfo(state: any) {
     return state.loginUserInfo
+>>>>>>> 942cec5bb6f1f260ff2ae1c60f8dcdeb49888241
   },
 }

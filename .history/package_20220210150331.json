@@ -39,8 +39,11 @@
     "eslint-plugin-vue": "^8.2.0",
     "postcss": "^8.4.4",
     "prettier": "^2.5.1",
+<<<<<<< HEAD
     "sass": "^1.49.7",
-    "sass-loader": "^10.2.0",
+    "sass-loader": "^10.2.0"
+=======
     "vue-cropperjs": "^4.0.0"
+>>>>>>> 942cec5bb6f1f260ff2ae1c60f8dcdeb49888241
   }
 }
