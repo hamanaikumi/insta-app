@@ -19,13 +19,20 @@
     <div class="activity-container">
       <div class="flex flex-row">
         <!-- いいねボタン -->
-        <!-- いいねする -->
-        <button v-show="!likesFlag" type="button" @click="clickLiked()">
+        <button
+          v-show="likesFlag === false"
+          type="button"
+          @click="clickLiked()"
+        >
           <i class="far fa-heart"></i>
         </button>
-        <!-- いいね解除 -->
-        <button v-show="likesFlag" type="button" @click="clickUnLiked()">
-          <i class="fas fa-heart" style="color: crimson"></i>
+        <button
+          v-show="likesFlag === true"
+          type="button"
+          class="warning-color"
+          @click="clickUnLiked()"
+        >
+          <i class="far fa-heart"></i>
         </button>
         <!-- コメントボタン -->
         <button class="ml-2"><i class="far fa-comment"></i></button>
@@ -33,7 +40,7 @@
       <div class="liked-container">
         <span>
           Liked by
-          {{ currentPostDetail.likes.length }}!</span
+          {{ currentPostDetail.likes }}!</span
         >
       </div>
     </div>
@@ -78,20 +85,12 @@ export default Vue.extend({
 
       // いいね する(true) / 解除する(false)
       likesFlag: false,
-
-      // ログインしているユーザー名
-      loginUserName: '',
     }
   },
-
-  computed: {},
 
   created() {
     // poatIDに基づいた投稿詳細内容を取得するメソッド
     this.getPostDetail()
-
-    // 現在ログインしているユーザー名取得
-    this.loginUserName = this.$store.getters['user/getLoginUserName']
   },
 
   methods: {
@@ -139,32 +138,13 @@ export default Vue.extend({
         prefectureName: Object.values(responsePostDetail.prefecture),
         postData: this.postDateByEnglish,
         imageUrl: responsePostDetail.imageUrl,
-        likes: responsePostDetail.favorites,
+        likes: responsePostDetail.favorites.length,
       }
-      // 現在のpostのユーザー情報
+      // 現在のpost内容のユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-      // console.dir(
-      //   'this.currentPostUserInfo' + JSON.stringify(this.currentPostUserInfo)
-      // )
-
-      // ログインユーザーがいいねしているかを判断
-
-      const RESULT = this.currentPostDetail.likes.every((userName) => {
-        return userName === this.loginUserName
-      })
-      if (RESULT === true) {
-        this.likesFlag = true
-      } else if (RESULT === false) {
-        this.likesFlag = false
-      }
-
-      // var items = [9, 5, 8, 4, 5, 7]
-
-      // var result = items.every(function (value) {
-      //   //配列内に3よりも大きい数字があるかを検索する
-      //   return value > 3
-      // })
-      // console.log(result)
+      console.dir(
+        'this.currentPostUserInfo' + JSON.stringify(this.currentPostUserInfo)
+      )
     },
 
     /**
@@ -174,51 +154,51 @@ export default Vue.extend({
     async clickLiked() {
       console.log('いいねメソッド発動!')
 
-      // いいね追加APIにpost
-      await axios.post('https://api-instagram-app.herokuapp.com/favorite', {
-        userName: this.$store.getters['user/getLoginUserName'],
-        postId: this.givePostId,
-      })
-
-      // いいねフラグをいいね済み(true)に変更
-      this.likesFlag = true
-      console.log(this.likesFlag)
+      const response = await axios.post(
+        'https://api-instagram-app.herokuapp.com/favorite',
+        {
+          userName: this.$store.getters['user/getLoginUserName'],
+          postId: this.givePostId,
+        }
+      )
+      console.dir('いいねresponse:' + JSON.stringify(response))
 
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
+      this.likesFlag = true
       // いいねの表示件数更新
-      this.currentPostDetail.likes = responseLikes.data.favorites
+      this.currentPostDetail.likes = responseLikes.data.favorites.length
     },
-
     /**
      * いいね解除する
      */
     async clickUnLiked() {
-      console.log('いいね解除メソッド発動!')
+      console.log('いいねメソッド発動!')
 
-      // いいね解除APIにpost
-      await axios.post('https://api-instagram-app.herokuapp.com/unfavorite', {
-        userName: this.$store.getters['user/getLoginUserName'],
-        postId: this.givePostId,
-      })
+      const response = await axios.post(
+        'https://api-instagram-app.herokuapp.com/favorite',
+        {
+          userName: this.$store.getters['user/getLoginUserName'],
+          postId: this.givePostId,
+        }
+      )
+      console.dir('いいねresponse:' + JSON.stringify(response))
 
-      // いいねフラグをいいね解除(false)に変更
-      this.likesFlag = false
-      console.log(this.likesFlag)
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
+      this.likesFlag = true
       // いいねの表示件数更新
-      this.currentPostDetail.likes = responseLikes.data.favorites
+      this.currentPostDetail.likes = responseLikes.data.favorites.length
     },
   },
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .post-container {
   width: 100%;
   padding: 0.63rem;
@@ -272,4 +252,7 @@ export default Vue.extend({
   width: 100%;
   font-weight: 300;
 }
+
+/* .activity-container {
+} */
 </style>

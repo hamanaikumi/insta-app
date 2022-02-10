@@ -19,12 +19,10 @@
     <div class="activity-container">
       <div class="flex flex-row">
         <!-- いいねボタン -->
-        <!-- いいねする -->
-        <button v-show="!likesFlag" type="button" @click="clickLiked()">
+        <button type="button" @click="clickLiked()">
           <i class="far fa-heart"></i>
         </button>
-        <!-- いいね解除 -->
-        <button v-show="likesFlag" type="button" @click="clickUnLiked()">
+        <button type="button" @click="clickUnLiked()">
           <i class="fas fa-heart" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
@@ -80,18 +78,13 @@ export default Vue.extend({
       likesFlag: false,
 
       // ログインしているユーザー名
-      loginUserName: '',
+      loginUserName: String,
     }
   },
-
-  computed: {},
 
   created() {
     // poatIDに基づいた投稿詳細内容を取得するメソッド
     this.getPostDetail()
-
-    // 現在ログインしているユーザー名取得
-    this.loginUserName = this.$store.getters['user/getLoginUserName']
   },
 
   methods: {
@@ -143,28 +136,21 @@ export default Vue.extend({
       }
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-      // console.dir(
-      //   'this.currentPostUserInfo' + JSON.stringify(this.currentPostUserInfo)
-      // )
+      console.dir(
+        'this.currentPostUserInfo' + JSON.stringify(this.currentPostUserInfo)
+      )
 
-      // ログインユーザーがいいねしているかを判断
+      // 自分がいいねしているかのチェック
 
-      const RESULT = this.currentPostDetail.likes.every((userName) => {
-        return userName === this.loginUserName
-      })
-      if (RESULT === true) {
+      const LOGIN_USER_NAME = this.$store.getters['user/getLoginUserName']
+      const RESLUT = this.currentPostDetail.likes.filter(
+        (userName) => userName === LOGIN_USER_NAME
+      )
+      if (RESLUT === LOGIN_USER_NAME) {
         this.likesFlag = true
-      } else if (RESULT === false) {
+      } else {
         this.likesFlag = false
       }
-
-      // var items = [9, 5, 8, 4, 5, 7]
-
-      // var result = items.every(function (value) {
-      //   //配列内に3よりも大きい数字があるかを検索する
-      //   return value > 3
-      // })
-      // console.log(result)
     },
 
     /**
@@ -182,14 +168,13 @@ export default Vue.extend({
 
       // いいねフラグをいいね済み(true)に変更
       this.likesFlag = true
-      console.log(this.likesFlag)
 
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // いいねの表示件数更新
-      this.currentPostDetail.likes = responseLikes.data.favorites
+      this.currentPostDetail.likes = responseLikes.data.favorites.length
     },
 
     /**
@@ -206,13 +191,13 @@ export default Vue.extend({
 
       // いいねフラグをいいね解除(false)に変更
       this.likesFlag = false
-      console.log(this.likesFlag)
+
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // いいねの表示件数更新
-      this.currentPostDetail.likes = responseLikes.data.favorites
+      this.currentPostDetail.likes = responseLikes.data.favorites.length
     },
   },
 })

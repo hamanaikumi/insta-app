@@ -19,12 +19,10 @@
     <div class="activity-container">
       <div class="flex flex-row">
         <!-- いいねボタン -->
-        <!-- いいねする -->
-        <button v-show="!likesFlag" type="button" @click="clickLiked()">
+        <button type="button" @click="clickLiked()">
           <i class="far fa-heart"></i>
         </button>
-        <!-- いいね解除 -->
-        <button v-show="likesFlag" type="button" @click="clickUnLiked()">
+        <button type="button" @click="clickUnLiked()">
           <i class="fas fa-heart" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
@@ -78,20 +76,12 @@ export default Vue.extend({
 
       // いいね する(true) / 解除する(false)
       likesFlag: false,
-
-      // ログインしているユーザー名
-      loginUserName: '',
     }
   },
-
-  computed: {},
 
   created() {
     // poatIDに基づいた投稿詳細内容を取得するメソッド
     this.getPostDetail()
-
-    // 現在ログインしているユーザー名取得
-    this.loginUserName = this.$store.getters['user/getLoginUserName']
   },
 
   methods: {
@@ -141,30 +131,12 @@ export default Vue.extend({
         imageUrl: responsePostDetail.imageUrl,
         likes: responsePostDetail.favorites,
       }
-      // 現在のpostのユーザー情報
+      console.dir('いいね情報' + JSON.stringify(this.currentPostDetail.likes))
+      // 現在のpost内容のユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-      // console.dir(
-      //   'this.currentPostUserInfo' + JSON.stringify(this.currentPostUserInfo)
-      // )
-
-      // ログインユーザーがいいねしているかを判断
-
-      const RESULT = this.currentPostDetail.likes.every((userName) => {
-        return userName === this.loginUserName
-      })
-      if (RESULT === true) {
-        this.likesFlag = true
-      } else if (RESULT === false) {
-        this.likesFlag = false
-      }
-
-      // var items = [9, 5, 8, 4, 5, 7]
-
-      // var result = items.every(function (value) {
-      //   //配列内に3よりも大きい数字があるかを検索する
-      //   return value > 3
-      // })
-      // console.log(result)
+      console.dir(
+        'this.currentPostUserInfo' + JSON.stringify(this.currentPostUserInfo)
+      )
     },
 
     /**
@@ -182,14 +154,13 @@ export default Vue.extend({
 
       // いいねフラグをいいね済み(true)に変更
       this.likesFlag = true
-      console.log(this.likesFlag)
 
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // いいねの表示件数更新
-      this.currentPostDetail.likes = responseLikes.data.favorites
+      this.currentPostDetail.likes = responseLikes.data.favorites.length
     },
 
     /**
@@ -206,13 +177,13 @@ export default Vue.extend({
 
       // いいねフラグをいいね解除(false)に変更
       this.likesFlag = false
-      console.log(this.likesFlag)
+
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // いいねの表示件数更新
-      this.currentPostDetail.likes = responseLikes.data.favorites
+      this.currentPostDetail.likes = responseLikes.data.favorites.length
     },
   },
 })

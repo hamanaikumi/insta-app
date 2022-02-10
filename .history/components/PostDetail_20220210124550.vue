@@ -19,12 +19,10 @@
     <div class="activity-container">
       <div class="flex flex-row">
         <!-- いいねボタン -->
-        <!-- いいねする -->
-        <button v-show="!likesFlag" type="button" @click="clickLiked()">
+        <button type="button" @click="clickLiked()">
           <i class="far fa-heart"></i>
         </button>
-        <!-- いいね解除 -->
-        <button v-show="likesFlag" type="button" @click="clickUnLiked()">
+        <button type="button" @click="clickUnLiked()">
           <i class="fas fa-heart" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
@@ -149,14 +147,7 @@ export default Vue.extend({
 
       // ログインユーザーがいいねしているかを判断
 
-      const RESULT = this.currentPostDetail.likes.every((userName) => {
-        return userName === this.loginUserName
-      })
-      if (RESULT === true) {
-        this.likesFlag = true
-      } else if (RESULT === false) {
-        this.likesFlag = false
-      }
+      const RESULT = this.currentPostDetail.likes.every
 
       // var items = [9, 5, 8, 4, 5, 7]
 
@@ -164,6 +155,7 @@ export default Vue.extend({
       //   //配列内に3よりも大きい数字があるかを検索する
       //   return value > 3
       // })
+
       // console.log(result)
     },
 
