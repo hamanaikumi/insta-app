@@ -55,6 +55,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
+  layout: 'topPage',
   data() {
     return {
       // ユーザー名
