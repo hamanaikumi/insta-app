@@ -1,9 +1,7 @@
 <template>
-  <main class="main p-4 bg-white">
+  <div class="p-4 bg-white">
     <div class="w-full flex">
-      <p v-if="$route.path !== '/Login' && $route.path !== '/Signup'">
-        instagram
-      </p>
+      <p>instagram</p>
       <div class="w-full text-right">
         <!-- 投稿アイコン -->
         <nuxt-link
@@ -41,7 +39,7 @@
         </nuxt-link>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script lang="ts">
