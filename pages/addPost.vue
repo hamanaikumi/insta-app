@@ -1,6 +1,5 @@
 <template>
   <div class="container mx-auto mt-10">
-    <!-- <div class="mx-auto m-32"></div> -->
     <!-- image -->
     <div class="flex justify-center grid grid-cols-6 gap-1 mb-4 mx-2">
       <div
@@ -211,7 +210,6 @@
       >
         Share
       </button>
-      <button type="button" @click="test">TEST</button>
     </div>
   </div>
 </template>
@@ -370,17 +368,7 @@ export default Vue.extend({
       this.showPrefecture = this.selectedPrefecture.name
       this.hidePrefectureModal()
     },
-    async test() {
-      const urlArray = []
-      // S3からURLを取得
-      for (let i = 0; i < this.cropImageCodes.length; i++) {
-        const { url } = await fetch('http://localhost:8000/s3url').then((res) =>
-          res.json()
-        )
-        urlArray.push(url)
-      }
-      console.log(urlArray)
-    },
+
     /**
      * ユーザーID、画像、都道府県、キャプションを送信する.
      */
@@ -394,7 +382,7 @@ export default Vue.extend({
       // S3からURLを取得
       for (let i = 0; i < this.cropImageCodes.length; i++) {
         const { url } = await fetch(
-          'https://api-instagram-app.herokuapp.com/s3url'
+          'https://api-instagram-app.herokuapp.com/s3Url'
         ).then((res) => res.json())
         urlArray.push(url)
       }
@@ -412,34 +400,22 @@ export default Vue.extend({
         imageUrl = url.split('?')[0]
         await this.imageUrlArray.push(imageUrl)
       }
-      // ログインしているユーザーIDを取得. 仮で１にしているが、Vuex作成すること
-      // const userInfo = await this.$store.getters['user/getLoginUserInformation']
-      // const userId = userInfo.userId
-      const userId = 1
+      // ログインしているユーザーIDを取得.
+      const userId = await this.$store.getters['user/getLoginUserId']
       // APIに投稿情報をPOST
-      const res: any = await this.$axios.post(
-        'https://api-instagram-app.herokuapp.com/post',
-        {
-          userId,
-          imageUrl: this.imageUrlArray,
-          caption: this.caption,
-          prefecture: this.selectedPrefecture,
-          postDate: new Date(),
-        }
-      )
-      console.log(res)
-      // 確認用
-      console.log({
+      await this.$axios.post('https://api-instagram-app.herokuapp.com/post', {
         userId,
         imageUrl: this.imageUrlArray,
         caption: this.caption,
         prefecture: this.selectedPrefecture,
         postDate: new Date(),
       })
+      // ホーム画面に遷移
+      this.$router.push('/Home')
     },
 
     /**
-     * ホーム画面に遷移する.
+     * 投稿をキャンセルしてホーム画面に遷移する.
      */
     cancel() {
       this.$router.push('/Home')
