@@ -141,16 +141,7 @@ export default Vue.extend({
     })
     console.log('親:created')
   },
-  mounted() {
-    /**
-     * 全投稿情報を取得
-     */
-    this.$axios.$get(this.allPostsUrl).then((res) => {
-      this.displayCaptionList = res
-      this.displayPrefectureList = res
-    })
-    console.log('親:mounted')
-  },
+
   methods: {
     /**
      * 検索機能
