@@ -9,9 +9,10 @@
             class="far fa-plus-square fa-lg fa-fw mr-4"
           ></i>
         </nuxt-link>
-
         <i class="far fa-heart fa-lg fa-fw mr-4"></i>
-        <i class="fas fa-cog fa-lg fa-fw"></i>
+        <nuxt-link to="/Setting">
+          <i class="fas fa-cog fa-lg fa-fw"></i>
+        </nuxt-link>
       </div>
     </div>
   </main>

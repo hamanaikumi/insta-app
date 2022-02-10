@@ -1,10 +1,9 @@
 <template>
   <body class="">
-    <main >
-      <header-componet class="fixed w-full"/>
-      <div class="p-4"></div>
-      <Nuxt />
-      <footer-componet class="fixed bottom-0 w-full"/>
+    <main>
+      <header-componet class="fixed top-0 w-full z-10" />
+      <Nuxt class="pt-[56px] z-0" />
+      <footer-componet class="fixed bottom-0 w-full z-10" />
     </main>
   </body>
 </template>
