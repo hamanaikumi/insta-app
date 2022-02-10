@@ -1,5 +1,6 @@
 <template>
   <article>
+    <!---->
     <div v-show="postsId.length === 0" class="none-posts">
       <div class="msg">投稿がありません<br />友達をフォローしよう!</div>
     </div>

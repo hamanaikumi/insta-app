@@ -1,9 +1,8 @@
 <template>
   <article>
-    <div v-show="postsId.length === 0" class="none-posts">
-      <div class="msg">投稿がありません<br />友達をフォローしよう!</div>
-    </div>
+    <div>投稿がありません</div>
     <div v-for="postId of postsId" :key="postId" class="article-container">
+      postID: {{ postId }}
       <PostDetail :give-post-id="postId"></PostDetail>
     </div>
   </article>
@@ -17,13 +16,8 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
-      // ログインユーザーID
       loginUserId: String,
-
-      // フォローしている人の投稿ID Array
       postsId: {},
-
-      //
     }
   },
 
@@ -55,26 +49,11 @@ export default Vue.extend({
   },
 })
 </script>
-<style scoped lang="scss">
+<style scoped>
 article {
   padding: 0.63rem;
 }
 .article-container {
   border-bottom: 0.3px solid #b3b3b3;
-}
-
-.none-posts {
-  width: 100%;
-  height: 99vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  .msg {
-    font-size: 1.8rem;
-    color: #626262;
-    font-weight: 600;
-    text-align: center;
-    align-items: center;
-  }
 }
 </style>

@@ -1,8 +1,7 @@
 <template>
   <article>
-    <div v-show="postsId.length === 0" class="none-posts">
-      <div class="msg">投稿がありません<br />友達をフォローしよう!</div>
-    </div>
+    <!-- v-show="postsId.length === 0" -->
+    <div class="none-posts">投稿がありません 友達をフォローしよう!</div>
     <div v-for="postId of postsId" :key="postId" class="article-container">
       <PostDetail :give-post-id="postId"></PostDetail>
     </div>
@@ -66,15 +65,5 @@ article {
 .none-posts {
   width: 100%;
   height: 99vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  .msg {
-    font-size: 1.8rem;
-    color: #626262;
-    font-weight: 600;
-    text-align: center;
-    align-items: center;
-  }
 }
 </style>
