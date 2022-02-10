@@ -190,7 +190,7 @@ export default Vue.extend({
 
       // いいねフラグをいいね解除(false)に変更
       this.likesFlag = false
-
+      console.log(this.likesFlag)
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`

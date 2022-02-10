@@ -182,6 +182,8 @@ export default Vue.extend({
      * いいね解除する
      */
     async clickUnLiked() {
+      console.log('いいね解除メソッド発動!')
+
       // いいね解除APIにpost
       await axios.post('https://api-instagram-app.herokuapp.com/unfavorite', {
         userName: this.$store.getters['user/getLoginUserName'],
@@ -190,7 +192,7 @@ export default Vue.extend({
 
       // いいねフラグをいいね解除(false)に変更
       this.likesFlag = false
-
+      console.log(this.likesFlag)
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`

@@ -58,6 +58,8 @@ export default Vue.extend({
 
   data() {
     return {
+givePostId:0
+
       // 現在取得している投稿
       currentPostDetail: {
         caption: '',

@@ -66,7 +66,7 @@ export default Vue.extend({
         imageUrl: [],
         likes: [],
       },
-
+      givePostId: 0,
       // 現在取得している投稿のユーザー情報
       currentPostUserInfo: Object,
 
