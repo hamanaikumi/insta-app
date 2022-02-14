@@ -161,10 +161,10 @@ export default Vue.extend({
       }
     },
     /**
-     * 変更をキャンセルしホーム画面に遷移する.
+     * 変更をキャンセルしマイページ画面に遷移する.
      */
     cancel() {
-      this.$router.push('/Home')
+      this.$router.push('/Mypage')
     },
     /**
      * ログアウトする.
