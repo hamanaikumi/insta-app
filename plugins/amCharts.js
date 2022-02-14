@@ -11,17 +11,3 @@ Vue.prototype.$am4core = () => {
     am4geodataJapanLow,
   }
 }
-
-// // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// export default ({ app }, inject) => {
-//   // Vue、コンテキスト、ストアに$hello(msg）を挿入します。
-//   inject('test', () => {
-//     return {
-//       am4core,
-//       am4maps,
-//       am4geodataJapanLow,
-//     }
-//   })
-// }
-
-// Vue.use(am4core, am4maps, am4geodataJapanLow)
