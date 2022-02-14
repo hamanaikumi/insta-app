@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-7 pb-7 text-center flex w-full bg-white">
+  <div class="pt-7 pb-7 text-center flex bg-white">
     <!-- 検索アイコン -->
     <nuxt-link to="/Search" class="w-[33.33%]">
       <i class="fas fa-search fa-lg"></i>

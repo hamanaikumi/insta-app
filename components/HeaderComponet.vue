@@ -1,7 +1,28 @@
 <template>
   <div class="p-4 bg-white">
     <div class="w-full flex">
-      <p>instagram</p>
+      <div>
+        <nuxt-link
+          v-if="$route.path === '/Home' || $route.path === '/Search'"
+          to="/Home"
+        >
+          <!-- 後で変更 -->
+          <p>instagram</p>
+        </nuxt-link>
+        <nuxt-link
+          v-if="
+            $route.path === '/addPost' ||
+            $route.path === '/Mypage' ||
+            $route.path === '/Userpage' ||
+            $route.path === '/Setting' ||
+            $route.path === '/FollowFollower'
+          "
+          to="/Mypage"
+          class="font-bold"
+        >
+          {{ userName }}
+        </nuxt-link>
+      </div>
       <div class="w-full text-right">
         <!-- 投稿アイコン -->
         <nuxt-link
@@ -46,7 +67,16 @@
 import Vue from 'vue'
 
 /* eslint no-unused-expressions: "off" */
-export default Vue.extend({})
+export default Vue.extend({
+  data() {
+    return {}
+  },
+  computed: {
+    userName(): string {
+      return this.$store.getters['user/getLoginUserName']
+    },
+  },
+})
 </script>
 
 <style></style>
