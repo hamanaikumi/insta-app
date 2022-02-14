@@ -1,31 +1,30 @@
 <template>
   <div class="top-wrapper mt-12 box-border p-5">
+    <!-- プロフィール -->
     <div class="user-information">
       <div class="icon-follow flex flex-row items-center justify-between">
         <div class="icon">
-          <img
-            v-bind:src="userInformation.icon"
-            class="w-20 h-20 rounded-full"
-          />
+          <img :src="userInformation.icon" class="w-20 h-20 rounded-full" />
         </div>
         <div class="follow-information w-2/4 flex flex-row justify-between">
           <div class="posts-number text-center p-1">
-            <span class="font-medium">{{ myPost.length }}</span>
+            <span class="font-medium">{{ numberOfPost }}</span>
             <br />
             <span class="text-xs">投稿数</span>
           </div>
-          <div class="folower-number text-center p-1">
-            <span class="font-medium">{{
-              userInformation.follower.length
-            }}</span>
+          <nuxt-link
+            to="/FollowFollower"
+            class="folower-number text-center p-1"
+          >
+            <span class="font-medium">{{ numberOfFollower }}</span>
             <br />
             <span class="text-xs">フォロワー</span>
-          </div>
-          <div class="folow-number text-center p-1">
-            <span class="font-medium">{{ userInformation.follow.length }}</span>
+          </nuxt-link>
+          <nuxt-link to="/FollowFollower" class="folow-number text-center p-1">
+            <span class="font-medium">{{ numberOfFollow }}</span>
             <br />
             <span class="text-xs">フォロー</span>
-          </div>
+          </nuxt-link>
         </div>
       </div>
       <div class="bio-contents py-2.5">
@@ -34,34 +33,157 @@
         <span class="text-sm">{{ userInformation.bio }}</span>
       </div>
     </div>
-    <div class="contents-icon flex h-10 items-center">
-      <div class="w-1/2 text-center">
-        <i class="fas fa-border-all"></i>
+    <!-- コンテンツ -->
+    <div class="tab-wrap">
+      <input
+        id="TAB-01"
+        type="radio"
+        name="TAB"
+        class="tab-switch"
+        checked="checked"
+      /><label class="tab-label" for="TAB-01"
+        ><i class="fas fa-border-all"></i
+      ></label>
+      <div class="tab-content">
+        <Post :post-informations="myPosts"></Post>
       </div>
-      <div class="w-1/2 text-center">
-        <i class="fas fa-map-marker-alt"></i>
+      <input id="TAB-02" type="radio" name="TAB" class="tab-switch" /><label
+        class="tab-label"
+        for="TAB-02"
+        ><i class="fas fa-map-marker-alt"></i
+      ></label>
+      <div class="tab-content">
+        <Prefecture :posted-prefectures="postedPrefectures"></Prefecture>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Post from '~/components/Post.vue'
+import Prefecture from '~/components/Prefecture.vue'
+
 export default {
+  components: {
+    Post,
+    Prefecture,
+  },
   data() {
     return {
       userInformation: {},
-      myPost: [],
+      myPosts: [],
+      numberOfFollow: 0,
+      numberOfFollower: 0,
+      numberOfPost: 0,
+      postedPrefectures: [],
     }
   },
   created() {
-    const users = this.$store.getters['sample/getUserInformation']
-    this.userInformation = users[1]
-    const posts = this.$store.getters['sample/getPostInformation']
-    this.myPost = posts.filter(
-      (post) => post.userId === this.userInformation.userId
-    )
+    this.asyncPost()
+  },
+  methods: {
+    async asyncPost() {
+      const userId = this.$store.state.user.user.id
+      const response = await this.$axios.$get(
+        `https://api-instagram-app.herokuapp.com/mypage/${userId}`
+      )
+      this.userInformation = response.user
+      this.myPosts = response.post
+      this.numberOfFollow = response.user.follow.length
+      this.numberOfFollower = response.user.follower.length
+      this.numberOfPost = response.post.length
+      this.getPostedPrefecture()
+    },
+    getPostedPrefecture() {
+      const prefectures = []
+      for (const myPost of this.myPosts) {
+        prefectures.push(myPost.prefecture)
+      }
+      this.postedPrefectures = Array.from(new Set(prefectures))
+    },
   },
 }
 </script>
 
-<style></style>
+<style scoped>
+.tab-wrap {
+  background: White;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  padding: 0 0 20px;
+}
+
+.tab-label {
+  color: rgb(190, 187, 187);
+  cursor: pointer;
+  flex: 1;
+  font-weight: bold;
+  order: -1;
+  padding: 12px 24px;
+  position: relative;
+  text-align: center;
+  transition: cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  user-select: none;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* .tab-label:hover {
+  background: rgba(0, 191, 255, 0.1);
+} */
+
+.tab-switch:checked + .tab-label {
+  color: black;
+}
+
+.tab-label::after {
+  background: black;
+  bottom: 0;
+  content: '';
+  display: block;
+  height: 3px;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(100%);
+  transition: cubic-bezier(0.4, 0, 0.2, 1) 0.2s 80ms;
+  width: 100%;
+  z-index: 1;
+}
+
+.tab-switch:checked ~ .tab-label::after {
+  transform: translateX(-100%);
+}
+
+.tab-switch:checked + .tab-label::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.tab-content {
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-30%);
+  transition: transform 0.3s 80ms, opacity 0.3s 80ms;
+  width: 100%;
+}
+
+.tab-switch:checked ~ .tab-content {
+  transform: translateX(30%);
+}
+
+.tab-switch:checked + .tab-label + .tab-content {
+  height: auto;
+  opacity: 1;
+  order: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.tab-switch {
+  display: none;
+}
+</style>
