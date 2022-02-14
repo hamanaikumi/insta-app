@@ -1,16 +1,16 @@
 <template>
   <body class="">
-    <header-componet
-      v-if="$route.path !== '/' && $route.path !== '/Signup'"
-      class="fixed top-0 w-full z-10 max-w-[428px]"
-    />
     <main>
+      <header-componet
+        v-if="$route.path !== '/' && $route.path !== '/Signup'"
+        class="fixed top-0 w-full z-10 max-w-[428px]"
+      />
       <Nuxt class="pt-[56px] z-0" />
+      <footer-componet
+        v-if="$route.path !== '/' && $route.path !== '/Signup'"
+        class="fixed bottom-0 w-full z-10 max-w-[428px]"
+      />
     </main>
-    <footer-componet
-      v-if="$route.path !== '/' && $route.path !== '/Signup'"
-      class="fixed bottom-0 w-full z-10 max-w-[428px]"
-    />
   </body>
 </template>
 <style scoped>
@@ -19,5 +19,4 @@ body {
   width: 100%;
   margin: 0 auto;
 }
-
 </style>
