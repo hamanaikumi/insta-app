@@ -28,10 +28,8 @@
           <i class="fas fa-heart" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
-        <button class="ml-2" @click="openModal()">
-          <i class="far fa-comment"></i>
-        </button>
-        <CommentsModal v-if="showContent" @close="closeModal()"></CommentsModal>
+        <button class="ml-2"><i class="far fa-comment"></i></button>
+        <CommentsModal></CommentsModal>
       </div>
       <div class="liked-container">
         <span>
@@ -203,20 +201,6 @@ export default Vue.extend({
       )
       // いいねの表示件数更新
       this.currentPostDetail.likes = responseLikes.data.favorites
-    },
-
-    /**
-     * モーダルウィンドウで投稿詳細画面を表示する.
-     */
-    openModal() {
-      // this.postId = クリックした投稿のpostIDをthis.postIdに代入
-      this.showContent = true
-    },
-    /**
-     * モーダルウィンドウの投稿詳細画面を閉じる.
-     */
-    closeModal() {
-      this.showContent = false
     },
   },
 })

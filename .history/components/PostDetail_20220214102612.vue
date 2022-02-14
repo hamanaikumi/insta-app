@@ -28,9 +28,7 @@
           <i class="fas fa-heart" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
-        <button class="ml-2" @click="openModal()">
-          <i class="far fa-comment"></i>
-        </button>
+        <button class="ml-2"><i class="far fa-comment"></i></button>
         <CommentsModal v-if="showContent" @close="closeModal()"></CommentsModal>
       </div>
       <div class="liked-container">
@@ -208,7 +206,7 @@ export default Vue.extend({
     /**
      * モーダルウィンドウで投稿詳細画面を表示する.
      */
-    openModal() {
+    openModal(postId: number) {
       // this.postId = クリックした投稿のpostIDをthis.postIdに代入
       this.showContent = true
     },

@@ -1,0 +1,27 @@
+<template>
+  <section>
+    <div id="overlay" @click="closeModal()">
+      <div id="content">コメント一覧</div>
+    </div>
+  </section>
+</template>
+
+<script land="ts">
+export default Vue.extend({})
+</script>
+
+<style scoped lang="scss">
+#overlay {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+</style>
