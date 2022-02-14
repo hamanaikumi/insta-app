@@ -92,7 +92,7 @@ export default {
      * ログイン中のユーザーidを基にAPIからユーザー情報、投稿一覧を取得してdataに格納.
      */
     async asyncPost() {
-      const userId = this.$store.state.user.user.id
+      const userId = this.$store.getters['user/getLoginUserId']
       const response = await this.$axios.$get(
         `https://api-instagram-app.herokuapp.com/mypage/${userId}`
       )

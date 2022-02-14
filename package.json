@@ -20,9 +20,11 @@
     "core-js": "^3.19.3",
     "nuxt": "^2.15.8",
     "vue": "^2.6.14",
+    "vue-js-modal": "^2.0.1",
     "vue-server-renderer": "^2.6.14",
     "vue-svg-map": "^1.2.0",
     "vue-template-compiler": "^2.6.14",
+    "vuex-persistedstate": "^4.1.0",
     "webpack": "^4.46.0"
   },
   "devDependencies": {
@@ -32,11 +34,15 @@
     "@nuxtjs/eslint-config-typescript": "^8.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/tailwindcss": "^4.2.1",
+    "@types/vue-cropperjs": "^4.1.2",
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-nuxt": "^3.1.0",
     "eslint-plugin-vue": "^8.2.0",
     "postcss": "^8.4.4",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "sass": "^1.49.7",
+    "sass-loader": "^10.2.0",
+    "vue-cropperjs": "^4.0.0"
   }
 }
