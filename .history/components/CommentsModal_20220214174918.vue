@@ -2,13 +2,11 @@
   <section>
     <div id="overlay">
       <button type="button" @click="closeModal()">閉じる</button>
-      <div id="content">
-        <div v-for="comment of comments" :key="comment.id">
-          {{ comment.comment }}
-        </div>
+      <div id="content" v-for="comment of getComments" :key="comment.id">
+        <div>{{ comment.comment }}</div>
         <input
           v-model="inputComment"
-          class="appearance-none bg-gray-100 border-none focus:outline-none px-5"
+          class="appearance-none bg-gray-100 border-none focus:outline-none px-3"
           type="text"
         />
 
@@ -23,21 +21,17 @@ import Vue from 'vue'
 import axios from 'axios'
 export default Vue.extend({
   props: {
-    // getComments: {},
+    getComments: {},
     getPostId: Number,
   },
   data() {
     return {
-      // 入力されたコメント
       inputComment: '',
-
-      // 現在の投稿のコメント一覧
-      comments: [],
     }
   },
   created() {
-    // console.dir('コメント取得かくにん' + JSON.stringify(this.getComments))
-    this.getComment()
+    console.dir('コメント取得かくにん' + JSON.stringify(this.getComments))
+    console.dir('postID' + JSON.stringify(this.getPostId))
   },
 
   methods: {
@@ -47,28 +41,15 @@ export default Vue.extend({
     closeModal() {
       this.$emit('commentClose')
     },
-
     /**
      * コメントを追加する.
      */
     async addComment(): Promise<void> {
-      console.log('コメント追加メソット発動')
       await axios.post('https://api-instagram-app.herokuapp.com/comment', {
         postId: this.getPostId,
         userId: this.$store.getters['user/getLoginUserId'],
         comment: this.inputComment,
       })
-      // コメント入力欄初期化
-      this.inputComment = ''
-      // コメント一覧更新
-      this.getComment()
-    },
-
-    async getComment() {
-      const response = await axios.get(
-        `https://api-instagram-app.herokuapp.com/postdetail/${this.getPostId}`
-      )
-      this.comments = response.data.comments
     },
   },
 })

@@ -1,27 +1,18 @@
 <template>
   <section>
     <div id="overlay">
-      <!-- @click="closeModal()" -->
-      <div><button type="button" @click="closeModal()">とじる</button></div>
-      <div id="content">
-        <PostDetail class="post-modal" :give-post-id="getPostId"></PostDetail>
-      </div>
+      <button type="button" @click="closeModal()">閉じる</button>
+      <div id="content">コメント一覧</div>
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import PostDetail from '../components/PostDetail.vue'
 export default Vue.extend({
-  components: {
-    PostDetail,
-  },
   props: {
-    // 親から渡されたpostID
-    getPostId: Number,
+    givePostId: Number,
   },
-
   methods: {
     closeModal() {
       this.$emit('close')
@@ -48,11 +39,9 @@ export default Vue.extend({
 #content {
   z-index: 10;
   width: 100%;
+  min-height: 80vh;
   max-width: 428px;
   margin: 0 auto;
-  background-color: rgba(0, 0, 0, 0);
-  .post-modal {
-    background-color: white;
-  }
+  background-color: white;
 }
 </style>

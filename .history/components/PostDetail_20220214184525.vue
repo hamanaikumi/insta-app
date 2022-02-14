@@ -106,7 +106,6 @@ export default Vue.extend({
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
 
-    // ログインユーザーがこの投稿をいいねしているかチェック
     this.likesCheck()
   },
 

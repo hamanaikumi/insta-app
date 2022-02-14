@@ -21,7 +21,9 @@ export default Vue.extend({
     // 親から渡されたpostID
     getPostId: Number,
   },
-
+  created() {
+    console.dir('postID:' + JSON.stringify(getPostId))
+  },
   methods: {
     closeModal() {
       this.$emit('close')

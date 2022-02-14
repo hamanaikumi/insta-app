@@ -20,11 +20,15 @@
       <div class="flex flex-row">
         <!-- いいねボタン -->
         <!-- いいねする -->
-        <button v-show="!likesFlag" type="button" @click="clickLiked()">
+        <button v-show="likesFlag === true" type="button" @click="clickLiked()">
           <i class="far fa-heart"></i>
         </button>
         <!-- いいね解除 -->
-        <button v-show="likesFlag" type="button" @click="clickUnLiked()">
+        <button
+          v-show="likesFlag === false"
+          type="button"
+          @click="clickUnLiked()"
+        >
           <i class="fas fa-heart" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->

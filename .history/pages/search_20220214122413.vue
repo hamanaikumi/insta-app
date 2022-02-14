@@ -70,24 +70,23 @@
       </div>
     </div>
     <!-- ここまで -->
-
     <!-- 都道府県表示用 -->
     <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3">
       <div v-for="(item, i) of displayPrefectureList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
-        <router-link :to="'/postDetail/' + item.postId">
-          <div class="m-px flex justify-center" @click="openModal(item.postId)">
-            <img :src="displayPrefectureList[i].imageUrl[0]" />
-          </div>
-        </router-link>
+        <!-- <router-link :to="'/postDetail/' + item.postId"> -->
+        <div class="m-px flex justify-center" @click="openModal(item.postId)">
+          <img :src="displayPrefectureList[i].imageUrl[0]" />
+        </div>
         <!-- 投稿詳細モーダル -->
-        <!-- <transition name="fade">
+        <transition name="fade">
           <PostModal
             v-if="showContent"
             :get-post-id="postId"
             @close="closeModal()"
           ></PostModal>
-        </transition> -->
+        </transition>
+        <!-- </router-link> -->
       </div>
     </div>
     <!-- ここまで -->
@@ -97,7 +96,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import AccountList from '~/components/AccountList.vue'
-// import PostModal from '~/components/PostModal.vue'
 // import axios from 'axios'
 
 export default Vue.extend({
@@ -138,9 +136,9 @@ export default Vue.extend({
       allPostsUrl: 'https://api-instagram-app.herokuapp.com/allposts',
       // 仮のユーザーID
       userId: 2,
-
       // 投稿詳細Modal画面の表示の有無
       showContent: false,
+
       // 親(ここ)から子(モーダルComponent)にpostIDを渡すための変数
       postId: 0,
     }
@@ -214,37 +212,11 @@ export default Vue.extend({
           })
       }
     },
-
-    /**
-     * モーダルウィンドウで投稿詳細画面を表示する.
-     */
-    // openModal(id: number) {
-    //   console.log('投稿詳細モーダル発動')
-    //   this.postId = id
-    //   this.showContent = true
-    // },
-    /**
-     * モーダルウィンドウの投稿詳細画面を閉じる.
-     */
-    // closeModal() {
-    //   console.log('投稿詳細モーダル閉じる')
-    //   this.showContent = false
-    // },
   },
 })
 </script>
 <style scoped>
 html {
   margin: 0;
-}
-
-/*モーダルの出現スピード htmlの<transition > にて*/
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
 }
 </style>

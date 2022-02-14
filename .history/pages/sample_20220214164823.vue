@@ -16,7 +16,6 @@ import Vue from 'vue'
 import PostModal from '../components/PostModal.vue'
 export default Vue.extend({
   components: { PostModal },
-  
   data() {
     return {
       // Modal画面の表示の有無

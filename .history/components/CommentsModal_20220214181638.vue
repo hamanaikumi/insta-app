@@ -3,12 +3,12 @@
     <div id="overlay">
       <button type="button" @click="closeModal()">閉じる</button>
       <div id="content">
-        <div v-for="comment of comments" :key="comment.id">
+        <div v-for="comment of getComments" :key="comment.id">
           {{ comment.comment }}
         </div>
         <input
           v-model="inputComment"
-          class="appearance-none bg-gray-100 border-none focus:outline-none px-5"
+          class="appearance-none bg-gray-100 border-none focus:outline-none px-3"
           type="text"
         />
 
@@ -35,9 +35,14 @@ export default Vue.extend({
       comments: [],
     }
   },
-  created() {
+  async created() {
     // console.dir('コメント取得かくにん' + JSON.stringify(this.getComments))
-    this.getComment()
+    console.log('postID' + this.getPostId)
+
+    const response = await axios.get(
+      `https://api-instagram-app.herokuapp.com/postdetail/${this.getPostId}`
+    )
+    this.comments = response.data.commnet
   },
 
   methods: {
@@ -47,7 +52,6 @@ export default Vue.extend({
     closeModal() {
       this.$emit('commentClose')
     },
-
     /**
      * コメントを追加する.
      */
@@ -58,17 +62,6 @@ export default Vue.extend({
         userId: this.$store.getters['user/getLoginUserId'],
         comment: this.inputComment,
       })
-      // コメント入力欄初期化
-      this.inputComment = ''
-      // コメント一覧更新
-      this.getComment()
-    },
-
-    async getComment() {
-      const response = await axios.get(
-        `https://api-instagram-app.herokuapp.com/postdetail/${this.getPostId}`
-      )
-      this.comments = response.data.comments
     },
   },
 })

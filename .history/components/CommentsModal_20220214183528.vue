@@ -8,7 +8,7 @@
         </div>
         <input
           v-model="inputComment"
-          class="appearance-none bg-gray-100 border-none focus:outline-none px-5"
+          class="appearance-none bg-gray-100 border-none focus:outline-none px-3"
           type="text"
         />
 

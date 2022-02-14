@@ -1,10 +1,12 @@
 <template>
   <section>
     <div id="overlay">
-      <!-- @click="closeModal()" -->
-      <div><button type="button" @click="closeModal()">とじる</button></div>
-      <div id="content">
-        <PostDetail class="post-modal" :give-post-id="getPostId"></PostDetail>
+      <button type="button" @click="closeModal()">閉じる</button>
+      <div id="content" v-for="comment of getComments" v-bind:key="comment">
+        <div>{{ comment.comment }}</div>
+
+        <input v-model="inputComment" type="text" />
+        <button type="button">comment</button>
       </div>
     </div>
   </section>
@@ -12,19 +14,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import PostDetail from '../components/PostDetail.vue'
 export default Vue.extend({
-  components: {
-    PostDetail,
-  },
   props: {
-    // 親から渡されたpostID
-    getPostId: Number,
+    getComments: [],
   },
 
   methods: {
+    /**
+     * コメントモーダルウィンドを閉じる
+     */
     closeModal() {
-      this.$emit('close')
+      this.$emit('commentClose')
     },
   },
 })
@@ -44,15 +44,12 @@ export default Vue.extend({
   align-items: center;
   justify-content: center;
 }
-
 #content {
   z-index: 10;
   width: 100%;
+  min-height: 80vh;
   max-width: 428px;
   margin: 0 auto;
-  background-color: rgba(0, 0, 0, 0);
-  .post-modal {
-    background-color: white;
-  }
+  background-color: white;
 }
 </style>

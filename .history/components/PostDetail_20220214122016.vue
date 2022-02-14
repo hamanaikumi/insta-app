@@ -28,14 +28,16 @@
           <i class="fas fa-heart" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
-        <button class="ml-2" @click="openCommentModal()">
+        <button
+          class="ml-2"
+          @click="openCommentModal()"
+          :get-post-id="currentPostDetail.postId"
+        >
           <i class="far fa-comment"></i>
         </button>
-        <!--       :get-comments="currentPostDetail.comments" -->
         <CommentsModal
-          v-if="showCommentFlag"
-          :get-post-id="currentPostDetail.postId"
-          @commentClose="closeCommentModal()"
+          v-if="showContent"
+          @close="closeCommentModal()"
         ></CommentsModal>
       </div>
       <div class="liked-container">
@@ -50,17 +52,15 @@
       <div class="caption-container">{{ currentPostDetail.caption }}</div>
       <div>{{ currentPostDetail.postData }}</div>
     </div>
-    <!-- commnet: {{ currentPostDetail.comments }} -->
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import axios from 'axios'
+
 // no-this-in-fetch-data
-import CommentsModal from '../components/CommentsModal.vue'
+
 export default Vue.extend({
-  components: { CommentsModal },
   props: {
     // 親コンポーネント（PostModal.vueやHome.vue）から受けたpostID
     givePostId: Number,
@@ -76,7 +76,6 @@ export default Vue.extend({
         postData: '',
         imageUrl: [],
         likes: [],
-        comments: [],
       },
 
       // 現在取得している投稿のユーザー情報
@@ -95,9 +94,11 @@ export default Vue.extend({
       loginUserName: '',
 
       // コメントModalの表示の有無
-      showCommentFlag: false,
+      showContent: false,
     }
   },
+
+  computed: {},
 
   created() {
     // poatIDに基づいた投稿詳細内容を取得するメソッド
@@ -105,9 +106,6 @@ export default Vue.extend({
 
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
-
-    // ログインユーザーがこの投稿をいいねしているかチェック
-    this.likesCheck()
   },
 
   methods: {
@@ -115,11 +113,12 @@ export default Vue.extend({
      *  親から渡されたpostIDに基づいて、投稿詳細内容をAPIから取得する.
      */
     async getPostDetail() {
-      const response = await axios.get(
+      const response = await this.$axios.$get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // responseの投稿内容
       const responsePostDetail = response.data
+      console.dir('response' + JSON.stringify(responsePostDetail))
 
       // 投稿日時format化
       const MONTH_EN_LIST = [
@@ -136,6 +135,7 @@ export default Vue.extend({
         'November',
         'December',
       ]
+
       // 投稿日時をnew DATE()
       const DATE = new Date(responsePostDetail.postData)
       // dateから月を取り出してmonthに代入
@@ -149,9 +149,6 @@ export default Vue.extend({
       // 年月日表示 [ 月(英語表記) 日にち , 年  ]
       this.postDateByEnglish = MONTH_EN + ' ' + DAY + ', ' + YEAR
 
-      console.dir(
-        'コメントテーブル' + JSON.stringify(responsePostDetail.comments)
-      )
       // 投稿詳細オブジェクト生成
       this.currentPostDetail = {
         postId: responsePostDetail.postId,
@@ -160,13 +157,10 @@ export default Vue.extend({
         postData: this.postDateByEnglish,
         imageUrl: responsePostDetail.imageUrl,
         likes: responsePostDetail.favorites,
-        comments: responsePostDetail.comments,
       }
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-    },
 
-    likesCheck() {
       // ログインユーザーが各投稿をいいねしているかを判断
       // Array.every()が true/false で返してくれる
       const RESULT = this.currentPostDetail.likes.every((userName) => {
@@ -185,16 +179,19 @@ export default Vue.extend({
      */
     async clickLiked() {
       // いいね追加APIにpost
-      await axios.post('https://api-instagram-app.herokuapp.com/favorite', {
-        userName: this.$store.getters['user/getLoginUserName'],
-        postId: this.givePostId,
-      })
+      await this.$axios.$post(
+        'https://api-instagram-app.herokuapp.com/favorite',
+        {
+          userName: this.$store.getters['user/getLoginUserName'],
+          postId: this.givePostId,
+        }
+      )
 
       // いいねフラグをいいね済み(true)に変更
       this.likesFlag = true
 
       // いいねの表示件数を更新するための処理
-      const responseLikes = await axios.get(
+      const responseLikes = await this.$axios.$get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // いいねの表示件数更新
@@ -206,16 +203,19 @@ export default Vue.extend({
      */
     async clickUnLiked() {
       // いいね解除APIにpost
-      await axios.post('https://api-instagram-app.herokuapp.com/unfavorite', {
-        userName: this.$store.getters['user/getLoginUserName'],
-        postId: this.givePostId,
-      })
+      await this.$axios.$post(
+        'https://api-instagram-app.herokuapp.com/unfavorite',
+        {
+          userName: this.$store.getters['user/getLoginUserName'],
+          postId: this.givePostId,
+        }
+      )
 
       // いいねフラグをいいね解除(false)に変更
       this.likesFlag = false
 
       // いいねの表示件数を更新するための処理
-      const responseLikes = await axios.get(
+      const responseLikes = await this.$axios.$get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // いいねの表示件数更新
@@ -223,16 +223,17 @@ export default Vue.extend({
     },
 
     /**
-     * モーダルでコメント一覧を表示する.
+     * モーダルウィンドウで投稿詳細画面を表示する.
      */
     openCommentModal() {
-      this.showCommentFlag = true
+      // this.postId = クリックした投稿のpostIDをthis.postIdに代入
+      this.showContent = true
     },
     /**
-     * モーダルのコメント一覧を閉じる.
+     * モーダルウィンドウの投稿詳細画面を閉じる.
      */
     closeCommentModal() {
-      this.showCommentFlag = false
+      this.showContent = false
     },
   },
 })

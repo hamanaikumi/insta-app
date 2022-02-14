@@ -28,13 +28,16 @@
           <i class="fas fa-heart" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
-        <button class="ml-2" @click="openCommentModal()">
+        <button
+          class="ml-2"
+          @click="openCommentModal()"
+          :get-post-id="currentPostDetail.postId"
+        >
           <i class="far fa-comment"></i>
         </button>
-        <!--       :get-comments="currentPostDetail.comments" -->
         <CommentsModal
-          v-if="showCommentFlag"
-          :get-post-id="currentPostDetail.postId"
+          v-if="showContent"
+          :get-comments="currentPostDetail.comments"
           @commentClose="closeCommentModal()"
         ></CommentsModal>
       </div>
@@ -95,7 +98,7 @@ export default Vue.extend({
       loginUserName: '',
 
       // コメントModalの表示の有無
-      showCommentFlag: false,
+      showContent: false,
     }
   },
 
@@ -105,9 +108,6 @@ export default Vue.extend({
 
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
-
-    // ログインユーザーがこの投稿をいいねしているかチェック
-    this.likesCheck()
   },
 
   methods: {
@@ -164,9 +164,7 @@ export default Vue.extend({
       }
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-    },
 
-    likesCheck() {
       // ログインユーザーが各投稿をいいねしているかを判断
       // Array.every()が true/false で返してくれる
       const RESULT = this.currentPostDetail.likes.every((userName) => {
@@ -223,16 +221,17 @@ export default Vue.extend({
     },
 
     /**
-     * モーダルでコメント一覧を表示する.
+     * モーダルウィンドウで投稿詳細画面を表示する.
      */
-    openCommentModal() {
-      this.showCommentFlag = true
+    openModal() {
+      // this.postId = クリックした投稿のpostIDをthis.postIdに代入
+      this.showContent = true
     },
     /**
-     * モーダルのコメント一覧を閉じる.
+     * モーダルウィンドウの投稿詳細画面を閉じる.
      */
-    closeCommentModal() {
-      this.showCommentFlag = false
+    closeModal() {
+      this.showContent = false
     },
   },
 })

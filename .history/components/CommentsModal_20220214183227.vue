@@ -8,7 +8,7 @@
         </div>
         <input
           v-model="inputComment"
-          class="appearance-none bg-gray-100 border-none focus:outline-none px-5"
+          class="appearance-none bg-gray-100 border-none focus:outline-none px-3"
           type="text"
         />
 
@@ -58,9 +58,6 @@ export default Vue.extend({
         userId: this.$store.getters['user/getLoginUserId'],
         comment: this.inputComment,
       })
-      // コメント入力欄初期化
-      this.inputComment = ''
-      // コメント一覧更新
       this.getComment()
     },
 

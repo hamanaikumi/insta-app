@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="post-img" @click="openModal(4)">post</div>
+    <div class="post-img" @click="openModal(item.postId)">post</div>
     <transition name="fade">
       <PostModal
         v-if="showContent"
@@ -13,10 +13,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import PostModal from '../components/PostModal.vue'
 export default Vue.extend({
-  components: { PostModal },
-  
   data() {
     return {
       // Modal画面の表示の有無

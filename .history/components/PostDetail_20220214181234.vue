@@ -105,9 +105,6 @@ export default Vue.extend({
 
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
-
-    // ログインユーザーがこの投稿をいいねしているかチェック
-    this.likesCheck()
   },
 
   methods: {
@@ -164,9 +161,7 @@ export default Vue.extend({
       }
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-    },
 
-    likesCheck() {
       // ログインユーザーが各投稿をいいねしているかを判断
       // Array.every()が true/false で返してくれる
       const RESULT = this.currentPostDetail.likes.every((userName) => {

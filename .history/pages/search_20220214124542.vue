@@ -55,11 +55,21 @@
       <!-- <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3"> -->
       <div v-for="(item, i) of displayCaptionList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
-        <router-link :to="'/postDetail/' + item.postId">
-          <div class="m-px flex justify-center">
-            <img :src="displayCaptionList[i].imageUrl[0]" />
-          </div>
-        </router-link>
+
+        <div class="m-px flex justify-center">
+          <img
+            :src="displayCaptionList[i].imageUrl[0]"
+            v-on:click="openModal(item.postId)"
+          />
+        </div>
+        <!-- 投稿詳細モーダル -->
+        <transition name="fade">
+          <PostModal
+            v-if="showContent"
+            :get-post-id="postId"
+            @close="closeModal()"
+          ></PostModal>
+        </transition>
       </div>
     </div>
     <!-- ここまで -->
@@ -75,19 +85,18 @@
     <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3">
       <div v-for="(item, i) of displayPrefectureList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
-        <router-link :to="'/postDetail/' + item.postId">
-          <div class="m-px flex justify-center" @click="openModal(item.postId)">
-            <img :src="displayPrefectureList[i].imageUrl[0]" />
-          </div>
-        </router-link>
+
+        <div class="m-px flex justify-center" @click="openModal(item.postId)">
+          <img :src="displayPrefectureList[i].imageUrl[0]" />
+        </div>
         <!-- 投稿詳細モーダル -->
-        <!-- <transition name="fade">
+        <transition name="fade">
           <PostModal
             v-if="showContent"
             :get-post-id="postId"
             @close="closeModal()"
           ></PostModal>
-        </transition> -->
+        </transition>
       </div>
     </div>
     <!-- ここまで -->
@@ -97,7 +106,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import AccountList from '~/components/AccountList.vue'
-// import PostModal from '~/components/PostModal.vue'
 // import axios from 'axios'
 
 export default Vue.extend({
@@ -218,18 +226,19 @@ export default Vue.extend({
     /**
      * モーダルウィンドウで投稿詳細画面を表示する.
      */
-    // openModal(id: number) {
-    //   console.log('投稿詳細モーダル発動')
-    //   this.postId = id
-    //   this.showContent = true
-    // },
+    openModal(id: number) {
+      console.log('投稿詳細モーダル発動')
+      this.postId = id
+      console.log(this.postId)
+      this.showContent = true
+    },
     /**
      * モーダルウィンドウの投稿詳細画面を閉じる.
      */
-    // closeModal() {
-    //   console.log('投稿詳細モーダル閉じる')
-    //   this.showContent = false
-    // },
+    closeModal() {
+      console.log('投稿詳細モーダル閉じる')
+      this.showContent = false
+    },
   },
 })
 </script>

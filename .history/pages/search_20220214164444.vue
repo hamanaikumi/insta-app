@@ -97,7 +97,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import AccountList from '~/components/AccountList.vue'
-// import PostModal from '~/components/PostModal.vue'
+import PostModal from '~/components/PostModal.vue'
 // import axios from 'axios'
 
 export default Vue.extend({
