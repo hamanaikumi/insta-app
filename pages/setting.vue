@@ -55,7 +55,7 @@
       <button
         class="inline-flex justify-center py-2 px-4 text-xl text-warning-color"
       >
-        Logout
+        Log out
       </button>
     </div>
   </div>
@@ -67,11 +67,17 @@ import Vue from 'vue'
 export default Vue.extend({
   data() {
     return {
+      // アイコンのURL
       icon: '',
+      // ユーザー名
       userName: '',
+      // 自己紹介文
       bio: '',
     }
   },
+  /**
+   * ログインしているユーザーのアイコン、ユーザー名、自己紹介を取得する.
+   */
   created() {
     const res = this.$store.getters['sample/getLoginUser']
     this.icon = res.icon
