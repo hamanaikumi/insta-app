@@ -20,12 +20,10 @@ export default {
   },
   watch: {
     postedPrefectures() {
-      console.log('watchが呼ばれた')
       this.setMap()
     },
   },
   mounted() {
-    console.log('mountedが呼ばれた')
     this.$nextTick(function () {
       this.setMap()
     })
@@ -38,7 +36,6 @@ export default {
 
   methods: {
     setMap() {
-      console.log('setMapが呼ばれた')
       const { am4core, am4maps, am4geodataJapanLow } = this.$am4core()
 
       this.toColorPrefectures = []
@@ -70,13 +67,12 @@ export default {
       // 地図背景色のデフォルト設定
       polygonTemplate.fill = am4core.color('#d3d3d3')
 
-      // Create hover state and set alternative fill color
+      // // Create hover state and set alternative fill color
       // const hs = polygonTemplate.states.create('hover')
       // hs.properties.fill = am4core.color('#367B25')
 
       // Add some data
       polygonSeries.data = this.toColorPrefectures
-      console.log(polygonSeries.data)
 
       // Bind "fill" property to "fill" key in data
       polygonTemplate.propertyFields.fill = 'fill'
