@@ -70,11 +70,17 @@ export default {
   },
   data() {
     return {
+      // ログイン中のユーザー情報
       userInformation: {},
+      // ログインユーザーの投稿一覧
       myPosts: [],
+      // フォロー数
       numberOfFollow: 0,
+      // フォロワー数
       numberOfFollower: 0,
+      // 投稿数
       numberOfPost: 0,
+      // 投稿に紐づいた都道府県情報
       postedPrefectures: [],
     }
   },
@@ -82,6 +88,9 @@ export default {
     this.asyncPost()
   },
   methods: {
+    /**
+     * ログイン中のユーザーidを基にAPIからユーザー情報、投稿一覧を取得してdataに格納.
+     */
     async asyncPost() {
       const userId = this.$store.state.user.user.id
       const response = await this.$axios.$get(
@@ -94,6 +103,9 @@ export default {
       this.numberOfPost = response.post.length
       this.getPostedPrefecture()
     },
+    /**
+     * 子コンポーネントに渡す用の、投稿された都道府県配列を作成.
+     */
     getPostedPrefecture() {
       const prefectures = []
       for (const myPost of this.myPosts) {

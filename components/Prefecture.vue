@@ -7,15 +7,17 @@
 <script>
 export default {
   props: {
-    postedPrefectures: Array,
+    postedPrefectures: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
       // mapオブジェクト
       map: {},
-      // 選択した都道府県
+      // 色付け用の都道府県配列
       toColorPrefectures: [],
-      prefecturesData: this.postedPrefectures,
     }
   },
   watch: {
@@ -35,9 +37,14 @@ export default {
   },
 
   methods: {
+    /**
+     * 投稿された都道府県のマップを表示.
+     */
     setMap() {
+      // プラグインから必要な情報を取得
       const { am4core, am4maps, am4geodataJapanLow } = this.$am4core()
 
+      // 親から渡された都道府県を基に色付け用の配列を作成
       this.toColorPrefectures = []
       for (const postedPrefecture of this.postedPrefectures) {
         this.toColorPrefectures.push({
