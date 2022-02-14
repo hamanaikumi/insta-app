@@ -2,13 +2,18 @@
   <div class="container mx-auto py-8">
     <!-- profile -->
     <div class="grid justify-items-center py-4">
-      <img class="h-36 w-36 rounded-full" :src="icon" />
-      <button
-        class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
-        @click="changeIcon"
-      >
-        Change Profile Photo
-      </button>
+      <img class="h-36 w-36 rounded-full object-cover" :src="icon" />
+      <label for="file-upload" class="cursor-pointer rounded-md py-2 px-4">
+        <span class="text-lg text-accent-color">
+          Change Profile Photo
+          <input
+            id="file-upload"
+            name="file-upload"
+            type="file"
+            class="sr-only"
+            @change="fileSelected"
+        /></span>
+      </label>
     </div>
     <!-- input -->
     <div class="grid grid-cols-4 gap-5 border-t px-4 py-8">
@@ -38,14 +43,12 @@
       <button
         type="button"
         class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
-        @click="cancel"
       >
         Cancel
       </button>
       <button
         class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
         type="button"
-        @click="updateUserInfo"
       >
         Done
       </button>
@@ -84,7 +87,19 @@ export default Vue.extend({
     this.userName = res.userName
     this.bio = res.bio
   },
-  methods: {},
+  methods: {
+    /**
+     * 新しいアイコン画像に入れ替える.
+     */
+    fileSelected(e: any): void {
+      const file = e.target.files[0]
+      if (!file.type.includes('image/')) {
+        alert('画像ファイルを選択してください')
+        return
+      }
+      this.icon = window.URL.createObjectURL(file)
+    },
+  },
 })
 </script>
 <style></style>
