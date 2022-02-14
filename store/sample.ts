@@ -7,6 +7,8 @@ export const state = () => ({
     password: 'test2222',
     follow: [3, 5],
     follower: [3, 1],
+    icon: 'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/e58b0d7f32dd86522cce2a8dbc26fd04',
+    bio: '自己紹介',
   },
 
   // 自分のフォローしている人の投稿が格納される

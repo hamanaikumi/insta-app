@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="chartdiv"></div>
-    <div id="info"></div>
   </div>
 </template>
 <script lang="ts">
