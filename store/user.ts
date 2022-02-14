@@ -1,6 +1,8 @@
 // state
 export const state = () => ({
-  user: {},
+  user: {
+    id: 1,
+  },
   isLogin: false,
 })
 
