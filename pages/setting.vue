@@ -16,25 +16,28 @@
       </label>
     </div>
     <!-- input -->
-    <div class="grid grid-cols-4 gap-5 border-t px-4 py-8">
+    <div class="grid grid-cols-4 gap-2 border-t px-4 py-8">
       <div class="col-span-1 py-2">User Name</div>
       <div
-        class="col-span-3 border-b border-input-value-color text-input-value-color py-2"
+        class="col-span-3 border-b border-input-value-color text-input-value-color py-2 pl-2"
       >
         <input
+          v-model="userName"
           type="text"
           class="appearance-none border-none w-full focus:outline-none"
-          :placeholder="userName"
         />
+      </div>
+      <div class="col-start-2 col-span-3 text-sm pl-2 h-6 text-warning-color">
+        {{ errorUserName }}
       </div>
       <div class="col-span-1 py-2">Bio</div>
       <div
-        class="col-span-3 border-b border-input-value-color text-input-value-color py-2"
+        class="col-span-3 border-b border-input-value-color text-input-value-color py-2 pl-2"
       >
         <input
+          v-model="bio"
           type="text"
           class="appearance-none border-none w-full focus:outline-none"
-          :placeholder="bio"
         />
       </div>
     </div>
@@ -49,6 +52,7 @@
       <button
         class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
         type="button"
+        @click="updateUserInfo"
       >
         Done
       </button>
@@ -76,20 +80,35 @@ export default Vue.extend({
       userName: '',
       // 自己紹介文
       bio: '',
+      // ユーザー名エラー文
+      errorUserName: '',
+      // S3に送信する画像ファイル
+      iconFile: {},
     }
   },
   /**
    * ログインしているユーザーのアイコン、ユーザー名、自己紹介を取得する.
    */
   created() {
-    const res = this.$store.getters['sample/getLoginUser']
-    this.icon = res.icon
-    this.userName = res.userName
-    this.bio = res.bio
+    this.showUserInfo()
   },
   methods: {
     /**
+     * 現在のユーザー情報を表示する.
+     */
+    async showUserInfo() {
+      const res = await this.$store.getters['user/getLoginUserInfo']
+      if (res.icon === '') {
+        this.icon = 'https://jmva.or.jp/wp-content/uploads/2018/07/noimage.png'
+      } else {
+        this.icon = res.icon
+      }
+      this.userName = res.userName
+      this.bio = res.bio
+    },
+    /**
      * 新しいアイコン画像に入れ替える.
+     * @param e - 添付ファイル
      */
     fileSelected(e: any): void {
       const file = e.target.files[0]
@@ -98,6 +117,46 @@ export default Vue.extend({
         return
       }
       this.icon = window.URL.createObjectURL(file)
+      this.iconFile = file
+    },
+    /**
+     * アイコン、名前、自己紹介文を変更する.
+     */
+    async updateUserInfo() {
+      // S3からURLを取得
+      const { url } = await fetch(
+        'https://api-instagram-app.herokuapp.com/s3Url'
+      ).then((res) => res.json())
+      // S3のバケットに写真をPOST
+      await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: this.iconFile as any,
+      })
+      const imageUrl: string = url.split('?')[0]
+      // ログインしているユーザーIDを取得.
+      const userId = await this.$store.getters['user/getLoginUserId']
+      // APIに更新後のユーザー情報をPOST
+      const res = await this.$axios.post(
+        'https://api-instagram-app.herokuapp.com/setting',
+        {
+          userId,
+          icon: imageUrl,
+          userName: this.userName,
+          bio: this.bio,
+        }
+      )
+      // 変更成功時
+      if (res.data.status === 'success') {
+        // ユーザー情報をVuexに保管
+        await this.$store.commit('user/setLoginUserInfo', res.data.data)
+        await this.showUserInfo()
+        // 変更失敗時
+      } else if (res.data.status === 'error') {
+        this.errorUserName = 'そのユーザー名は既に使われています'
+      }
     },
   },
 })

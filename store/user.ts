@@ -22,7 +22,7 @@ export const mutations = {
   /**
    * 会員登録/ログインしたユーザーの情報をstateに保存する.
    * @param state ステート
-   * @param userInfo ログインしたユーザーの情報
+   * @param user ログインしたユーザーの情報
    */
   setLoginUserInfo(state: any, user: any) {
     state.user = user
@@ -61,6 +61,6 @@ export const getters = {
    * @returns ログインしているユーザーの情報
    */
   getLoginUserInfo(state: any) {
-    return state.loginUserInfo
+    return state.user
   },
 }
