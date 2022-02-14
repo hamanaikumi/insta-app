@@ -1,5 +1,5 @@
 <template>
-  <div class="top-wrapper mt-12 box-border p-5">
+  <div class="container mt-5 box-border p-5">
     <!-- プロフィール -->
     <div class="user-information">
       <div class="icon-follow flex flex-row items-center justify-between">
