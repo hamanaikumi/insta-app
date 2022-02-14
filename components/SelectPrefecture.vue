@@ -84,4 +84,9 @@ export default Vue.extend({
   },
 })
 </script>
-<style></style>
+<style scoped>
+#chartdiv {
+  width: 100%;
+  height: 300px;
+}
+</style>

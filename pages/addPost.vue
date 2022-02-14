@@ -151,11 +151,16 @@
           </div>
           <!-- modal -->
           <client-only>
-            <modal name="prefecture-modal" :click-to-close="false" width="80%">
+            <modal
+              name="prefecture-modal"
+              :click-to-close="false"
+              width="80%"
+              height="400px"
+            >
               <div class="modal-body my-8 flex flex-col">
                 <SelectPrefecture @givePrefecture="catchPrefecture" />
 
-                <div class="mt-8">
+                <div>
                   <button
                     class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
                     type="button"
