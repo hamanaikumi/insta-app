@@ -34,12 +34,20 @@ export const mutations = {
   login(state: any) {
     state.isLogin = true
   },
+  /**
+   * ログイン状態をfalseにする.
+   * @param state ステート
+   */
+  logout(state: any) {
+    state.isLogin = false
+    // ユーザー情報を初期化
+    state.user = {}
+  },
 }
 
 // getters
 export const getters = {
   /**
-
    * ログインしているユーザーの名前を取得する.
    * @param state -ステートオブジェクト
    * @returns ログインユーザーの名前

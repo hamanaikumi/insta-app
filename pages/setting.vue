@@ -1,10 +1,10 @@
 <template>
   <div class="container mx-auto py-8">
     <!-- profile -->
-    <div class="grid justify-items-center py-4">
-      <img class="h-36 w-36 rounded-full object-cover" :src="icon" />
+    <div class="grid justify-items-center py-8">
+      <img class="h-28 w-28 rounded-full object-cover" :src="icon" />
       <label for="file-upload" class="cursor-pointer rounded-md py-2 px-4">
-        <span class="text-lg text-accent-color">
+        <span class="text-xl text-accent-color">
           Change Profile Photo
           <input
             id="file-upload"
@@ -46,6 +46,7 @@
       <button
         type="button"
         class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
+        @click="cancel"
       >
         Cancel
       </button>
@@ -58,9 +59,10 @@
       </button>
     </div>
     <!-- logout -->
-    <div class="grid justify-items-center border-t py-4">
+    <div class="grid justify-items-center border-t py-8">
       <button
         class="inline-flex justify-center py-2 px-4 text-xl text-warning-color"
+        @click="logout"
       >
         Log out
       </button>
@@ -157,6 +159,21 @@ export default Vue.extend({
       } else if (res.data.status === 'error') {
         this.errorUserName = 'そのユーザー名は既に使われています'
       }
+    },
+    /**
+     * 変更をキャンセルしホーム画面に遷移する.
+     */
+    cancel() {
+      this.$router.push('/Home')
+    },
+    /**
+     * ログアウトする.
+     */
+    logout() {
+      // ログイン状態をfalseにして、Vuexのユーザー情報を初期化。
+      this.$store.commit('user/logout')
+      // ログイン画面に遷移する
+      this.$router.push('/')
     },
   },
 })
