@@ -1,7 +1,6 @@
 <template>
   <div>
     <div id="chartdiv"></div>
-    <div id="info"></div>
   </div>
 </template>
 <script lang="ts">
@@ -84,4 +83,9 @@ export default Vue.extend({
   },
 })
 </script>
-<style></style>
+<style scoped>
+#chartdiv {
+  width: 100%;
+  height: 300px;
+}
+</style>
