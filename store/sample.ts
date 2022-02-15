@@ -7,6 +7,8 @@ export const state = () => ({
     password: 'test2222',
     follow: [3, 5],
     follower: [3, 1],
+    icon: 'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/e58b0d7f32dd86522cce2a8dbc26fd04',
+    bio: '自己紹介',
   },
 
   // 自分のフォローしている人の投稿が格納される
@@ -19,6 +21,8 @@ export const state = () => ({
       password: 'test1111',
       follow: [],
       follower: [],
+      icon: 'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2',
+      bio: 'たい焼きたい焼きたい焼きたい焼き',
     },
     {
       userId: 2,
@@ -26,6 +30,8 @@ export const state = () => ({
       password: 'test2222',
       follow: [3, 5, 6],
       follower: [3, 5],
+      icon: 'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2',
+      bio: 'どら焼きどら焼きどら焼きどら焼き',
     },
     {
       userId: 3,
@@ -33,6 +39,8 @@ export const state = () => ({
       password: 'test3333',
       follow: [2, 4],
       follower: [2, 4],
+      icon: 'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2',
+      bio: '今川焼き今川焼き今川焼き今川焼き',
     },
     {
       userId: 4,
@@ -40,6 +48,8 @@ export const state = () => ({
       password: 'test4444',
       follow: [1],
       follower: [3, 5],
+      icon: 'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2',
+      bio: '大判焼き大判焼き大判焼き大判焼き',
     },
     {
       userId: 5,
@@ -47,6 +57,8 @@ export const state = () => ({
       password: 'test5555',
       follow: [1, 2, 3, 4],
       follower: [1, 2, 3],
+      icon: 'https://hamana-bucket.s3.ap-northeast-1.amazonaws.com/c399eed005340ae33291400f1a88a7e2',
+      bio: '人形焼き人形焼き人形焼き人形焼き',
     },
   ],
 

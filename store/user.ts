@@ -7,8 +7,8 @@ export const state = () => ({
     follower: [],
     icon: '',
     password: '',
-    userId: 0,
-    userName: '',
+    userId: 3,
+    userName: 'test_user1',
   },
   // ログイン状態
   isLogin: false,
@@ -22,7 +22,7 @@ export const mutations = {
   /**
    * 会員登録/ログインしたユーザーの情報をstateに保存する.
    * @param state ステート
-   * @param userInfo ログインしたユーザーの情報
+   * @param user ログインしたユーザーの情報
    */
   setLoginUserInfo(state: any, user: any) {
     state.user = user
@@ -34,12 +34,20 @@ export const mutations = {
   login(state: any) {
     state.isLogin = true
   },
+  /**
+   * ログイン状態をfalseにする.
+   * @param state ステート
+   */
+  logout(state: any) {
+    state.isLogin = false
+    // ユーザー情報を初期化
+    state.user = {}
+  },
 }
 
 // getters
 export const getters = {
   /**
-
    * ログインしているユーザーの名前を取得する.
    * @param state -ステートオブジェクト
    * @returns ログインユーザーの名前
@@ -61,6 +69,6 @@ export const getters = {
    * @returns ログインしているユーザーの情報
    */
   getLoginUserInfo(state: any) {
-    return state.loginUserInfo
+    return state.user
   },
 }
