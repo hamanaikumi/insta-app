@@ -16,10 +16,10 @@
       </label>
     </div>
     <!-- input -->
-    <div class="grid grid-cols-4 gap-2 border-t px-4 py-8">
+    <div class="grid grid-cols-4 gap-2 border-t border-light-gray px-4 py-8">
       <div class="col-span-1 py-2">User Name</div>
       <div
-        class="col-span-3 border-b border-input-value-color text-input-value-color py-2 pl-2"
+        class="col-span-3 border-b border-light-gray text-input-value-color py-2 pl-2"
       >
         <input
           v-model="userName"
@@ -32,7 +32,7 @@
       </div>
       <div class="col-span-1 py-2">Bio</div>
       <div
-        class="col-span-3 border-b border-input-value-color text-input-value-color py-2 pl-2"
+        class="col-span-3 border-b border-light-gray text-input-value-color py-2 pl-2"
       >
         <input
           v-model="bio"
@@ -59,7 +59,7 @@
       </button>
     </div>
     <!-- logout -->
-    <div class="grid justify-items-center border-t py-8">
+    <div class="grid justify-items-center border-t border-light-gray py-8">
       <button
         class="inline-flex justify-center py-2 px-4 text-xl text-warning-color"
         @click="logout"
