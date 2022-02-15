@@ -36,20 +36,20 @@
     <!-- コンテンツ -->
     <div class="tab-wrap">
       <input
-        id="TAB-01"
+        id="TAB-POST"
         type="radio"
         name="TAB"
         class="tab-switch"
         checked="checked"
-      /><label class="tab-label" for="TAB-01"
+      /><label class="tab-label" for="TAB-POST"
         ><i class="fas fa-border-all"></i
       ></label>
       <div class="tab-content">
         <Post :post-informations="myPosts"></Post>
       </div>
-      <input id="TAB-02" type="radio" name="TAB" class="tab-switch" /><label
+      <input id="TAB-MAP" type="radio" name="TAB" class="tab-switch" /><label
         class="tab-label"
-        for="TAB-02"
+        for="TAB-MAP"
         ><i class="fas fa-map-marker-alt"></i
       ></label>
       <div class="tab-content">
