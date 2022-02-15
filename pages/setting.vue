@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto py-8">
-    <!-- profile -->
+  <div class="container mx-auto mt-8">
+    <!-- icon -->
     <div class="grid justify-items-center py-8">
       <img class="h-28 w-28 rounded-full object-cover" :src="icon" />
       <label for="file-upload" class="cursor-pointer rounded-md py-2 px-4">
@@ -167,12 +167,11 @@ export default Vue.extend({
       this.$router.push('/Mypage')
     },
     /**
-     * ログアウトする.
+     * ログアウトしてログイン画面に遷移する.
      */
     logout() {
       // ログイン状態をfalseにして、Vuexのユーザー情報を初期化。
       this.$store.commit('user/logout')
-      // ログイン画面に遷移する
       this.$router.push('/')
     },
   },
