@@ -6,16 +6,14 @@
         <div v-for="comment of comments" :key="comment.id">
           <div class="c-comment">{{ comment.comment }}</div>
         </div>
-        <div class="text-xs">{{ errorMsg }}</div>
+        <div class=".text-sm">{{ errorMsg }}</div>
         <input
           v-model="inputComment"
           class="appearance-none bg-gray-100 border-none focus:outline-none px-5"
           type="text"
         />
 
-        <button type="button" @click="addComment()">
-          <i class="fa-solid fa-comment-arrow-up"></i>
-        </button>
+        <button type="button" @click="addComment()">comment</button>
       </div>
     </div>
   </section>

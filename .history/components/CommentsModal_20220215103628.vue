@@ -13,9 +13,7 @@
           type="text"
         />
 
-        <button type="button" @click="addComment()">
-          <i class="fa-solid fa-comment-arrow-up"></i>
-        </button>
+        <button type="button" @click="addComment()">comment</button>
       </div>
     </div>
   </section>

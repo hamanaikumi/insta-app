@@ -4,18 +4,15 @@
       <button type="button" @click="closeModal()">閉じる</button>
       <div id="content">
         <div v-for="comment of comments" :key="comment.id">
-          <div class="c-comment">{{ comment.comment }}</div>
+          {{ comment.comment }}
         </div>
-        <div class="text-xs">{{ errorMsg }}</div>
         <input
           v-model="inputComment"
           class="appearance-none bg-gray-100 border-none focus:outline-none px-5"
           type="text"
         />
 
-        <button type="button" @click="addComment()">
-          <i class="fa-solid fa-comment-arrow-up"></i>
-        </button>
+        <button type="button" @click="addComment()">comment</button>
       </div>
     </div>
   </section>
@@ -33,16 +30,14 @@ export default Vue.extend({
     return {
       // 入力されたコメント
       inputComment: '',
-      // コメント入力エラーメッセージ
-      errorMsg: '',
 
       // 現在の投稿のコメント一覧
       comments: [],
     }
   },
   created() {
+    console.dir('コメント取得かくにん' + JSON.stringify(this.comments))
     this.getComment()
-    // console.dir('コメント取得かくにん' + JSON.stringify(this.comments))
   },
 
   methods: {
@@ -58,10 +53,6 @@ export default Vue.extend({
      */
     async addComment(): Promise<void> {
       console.log('コメント追加メソット発動')
-      if (this.inputComment === '') {
-        this.errorMsg = '空欄ではコメントできません'
-        return
-      }
       await axios.post('https://api-instagram-app.herokuapp.com/comment', {
         postId: this.getPostId,
         userId: this.$store.getters['user/getLoginUserId'],
@@ -78,7 +69,6 @@ export default Vue.extend({
         `https://api-instagram-app.herokuapp.com/postdetail/${this.getPostId}`
       )
       this.comments = response.data.comments
-      console.dir('コメント確認' + JSON.stringify(this.comments))
     },
   },
 })
@@ -105,10 +95,5 @@ export default Vue.extend({
   max-width: 428px;
   margin: 0 auto;
   background-color: white;
-}
-
-.c-comment {
-  padding: 1rem;
-  border-bottom: 1px solid #626262;
 }
 </style>

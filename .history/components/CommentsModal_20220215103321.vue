@@ -6,16 +6,13 @@
         <div v-for="comment of comments" :key="comment.id">
           <div class="c-comment">{{ comment.comment }}</div>
         </div>
-        <div class="text-xs">{{ errorMsg }}</div>
         <input
           v-model="inputComment"
           class="appearance-none bg-gray-100 border-none focus:outline-none px-5"
           type="text"
         />
 
-        <button type="button" @click="addComment()">
-          <i class="fa-solid fa-comment-arrow-up"></i>
-        </button>
+        <button type="button" @click="addComment()">comment</button>
       </div>
     </div>
   </section>
@@ -33,8 +30,6 @@ export default Vue.extend({
     return {
       // 入力されたコメント
       inputComment: '',
-      // コメント入力エラーメッセージ
-      errorMsg: '',
 
       // 現在の投稿のコメント一覧
       comments: [],
@@ -59,7 +54,6 @@ export default Vue.extend({
     async addComment(): Promise<void> {
       console.log('コメント追加メソット発動')
       if (this.inputComment === '') {
-        this.errorMsg = '空欄ではコメントできません'
         return
       }
       await axios.post('https://api-instagram-app.herokuapp.com/comment', {
