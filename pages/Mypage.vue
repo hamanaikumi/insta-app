@@ -60,10 +60,11 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue'
 import Post from '~/components/Post.vue'
 import Prefecture from '~/components/Prefecture.vue'
 
-export default {
+export default Vue.extend({
   components: {
     Post,
     Prefecture,
@@ -114,7 +115,7 @@ export default {
       this.postedPrefectures = Array.from(new Set(prefectures))
     },
   },
-}
+})
 </script>
 
 <style scoped>
