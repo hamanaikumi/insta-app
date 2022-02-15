@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Post from '~/components/Post.vue'
 import Prefecture from '~/components/Prefecture.vue'
 
@@ -73,7 +73,7 @@ export default {
       // ログイン中のユーザー情報
       userInformation: {},
       // ログインユーザーの投稿一覧
-      myPosts: [],
+      myPosts: [] as any,
       // フォロー数
       numberOfFollow: 0,
       // フォロワー数
@@ -81,7 +81,7 @@ export default {
       // 投稿数
       numberOfPost: 0,
       // 投稿に紐づいた都道府県情報
-      postedPrefectures: [],
+      postedPrefectures: [] as any,
     }
   },
   created() {
