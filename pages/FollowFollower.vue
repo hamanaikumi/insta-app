@@ -12,14 +12,20 @@
         {{ numberOfFollower }}フォロワー
       </label>
       <div class="tab-content">
-        <!-- <Post :post-informations="myPosts"></Post> -->
+        <Follow
+          :follow-user-informations="followerUserInformations"
+          is-follow="false"
+        ></Follow>
       </div>
       <input id="TAB-FOLLOW" type="radio" name="TAB" class="tab-switch" />
       <label class="tab-label text-base" for="TAB-FOLLOW">
         {{ numberOfFollow }}フォロー中
       </label>
       <div class="tab-content">
-        <!-- <Prefecture :posted-prefectures="postedPrefectures"></Prefecture> -->
+        <Follow
+          :follow-user-informations="followUserInformations"
+          is-follow="true"
+        ></Follow>
       </div>
     </div>
   </div>
@@ -27,14 +33,17 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Follow from '~/components/Follow.vue'
 export default Vue.extend({
-  components: {},
+  components: {
+    Follow,
+  },
   data() {
     return {
       // フォローユーザー情報一覧
-      followUserInformation: [] as any,
+      followUserInformations: [] as any,
       // フォロワー情報一覧
-      followerUserInformation: [] as any,
+      followerUserInformations: [] as any,
       // フォロー数
       numberOfFollow: 0,
       // フォロワー数
@@ -53,21 +62,15 @@ export default Vue.extend({
       const response = await this.$axios.$get(
         `https://api-instagram-app.herokuapp.com/followinfo/${userId}`
       )
+      console.log('フォローフォロワーのユーザー情報')
       console.dir(JSON.stringify(response))
 
-      this.followUserInformation = response.follow
-      this.followerUserInformation = response.follower
+      this.followUserInformations = response.follow
+      this.followerUserInformations = response.follower
       this.numberOfFollow = response.follow.length
       this.numberOfFollower = response.follower.length
-
-      console.dir(JSON.stringify(this.followerUserInformation))
-
-      //   this.userInformation = response.user
-      //   this.myPosts = response.post
-      //   this.numberOfFollow = response.user.follow.length
-      //   this.numberOfFollower = response.user.follower.length
-      //   this.numberOfPost = response.post.length
-      //   this.getPostedPrefecture()
+      console.log('格納後のフォロワーのユーザー情報')
+      console.dir(JSON.stringify(this.followerUserInformations))
     },
   },
 })
