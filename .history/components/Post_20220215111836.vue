@@ -1,0 +1,80 @@
+<template>
+  <div class="post-contents flex -ml-0.5">
+    <div
+      v-for="postInformation of postInformations"
+      :key="postInformation.postId"
+      class="w-1/3 mt-0.5 ml-0.5"
+    >
+      <!-- ここのリンクは後ほど変更 -->
+      <!-- <nuxt-link :to="`/PostDetail/${postInformation.postId}`"> -->
+      <img
+        :src="postInformation.imageUrl[0]"
+        @click="openModal(postInformation.postId)"
+      />
+      <!-- </nuxt-link> -->
+    </div>
+    <transition name="fade">
+      <PostModal
+        v-if="showContent"
+        :get-post-id="postId"
+        @close="closeModal()"
+      ></PostModal>
+    </transition>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import PostModal from '../components/PostModal.vue'
+export default Vue.extend({
+  components: { PostModal },
+
+  props: {
+    postInformations: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      // Modal画面の表示の有無
+      showContent: false,
+
+      // 親(ここ)から子(モーダルComponent)にpostIDを渡すための変数
+      postId: 0,
+    }
+  },
+  // created(){
+
+  // },
+  methods: {
+    /**
+     * モーダルウィンドウで投稿詳細画面を表示する.
+     */
+    openModal(postId: number) {
+      console.log('引数postID' + postId)
+      this.postId = postId
+      // this.postId = クリックした投稿のpostIDをthis.postIdに代入
+      this.showContent = true
+    },
+    /**
+     * モーダルウィンドウの投稿詳細画面を閉じる.
+     */
+    closeModal() {
+      this.showContent = false
+    },
+  },
+})
+</script>
+
+<style>
+/*モーダルの出現スピード htmlの<transition > にて*/
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

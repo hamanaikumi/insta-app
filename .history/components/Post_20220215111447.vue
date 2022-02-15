@@ -7,8 +7,8 @@
     >
       <!-- ここのリンクは後ほど変更 -->
       <nuxt-link :to="`/PostDetail/${postInformation.postId}`">
-        <img :src="postInformation.imageUrl[0]"
-      /></nuxt-link>
+        <img :src="postInformation.imageUrl[0]" />
+      </nuxt-link>
     </div>
   </div>
 </template>

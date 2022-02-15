@@ -199,11 +199,37 @@ export default Vue.extend({
           })
       }
     },
+
+    /**
+     * モーダルウィンドウで投稿詳細画面を表示する.
+     */
+    // openModal(id: number) {
+    //   console.log('投稿詳細モーダル発動')
+    //   this.postId = id
+    //   this.showContent = true
+    // },
+    /**
+     * モーダルウィンドウの投稿詳細画面を閉じる.
+     */
+    // closeModal() {
+    //   console.log('投稿詳細モーダル閉じる')
+    //   this.showContent = false
+    // },
   },
 })
 </script>
 <style scoped>
 html {
   margin: 0;
+}
+
+/*モーダルの出現スピード htmlの<transition > にて*/
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter-from, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

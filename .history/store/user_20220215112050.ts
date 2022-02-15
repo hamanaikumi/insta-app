@@ -8,7 +8,7 @@ export const state = () => ({
     icon: '',
     password: '',
     userId: 2,
-    userName: 'test_user2',
+    userName: 'test_user1',
   },
   // ログイン状態
   isLogin: false,

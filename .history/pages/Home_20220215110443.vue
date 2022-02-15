@@ -1,14 +1,14 @@
 <template>
   <div class="container mt-5 box-border p-5">
-    <article>
-      <div v-show="postsId.length === 0" class="none-posts">
-        <div class="msg">投稿がありません<br />友達をフォローしよう!</div>
-      </div>
-      <div v-for="postId of postsId" :key="postId" class="article-container">
-        <PostDetail :give-post-id="postId"></PostDetail>
-      </div>
-    </article>
-  </div>
+  <article>
+    <div v-show="postsId.length === 0" class="none-posts">
+      <div class="msg">投稿がありません<br />友達をフォローしよう!</div>
+    </div>
+    <div v-for="postId of postsId" :key="postId" class="article-container">
+      <PostDetail :give-post-id="postId"></PostDetail>
+    </div>
+  </article>
+  <div></div>
 </template>
 
 <script lang="ts">

@@ -6,8 +6,8 @@
       class="w-1/3 mt-0.5 ml-0.5"
     >
       <!-- ここのリンクは後ほど変更 -->
-      <nuxt-link :to="`/PostDetail/${postInformation.postId}`">
-        <img :src="postInformation.imageUrl[0]"
+      <nuxt-link :to="`/PostDetail/${postInformation.postId}`"
+        ><img :src="postInformation.imageUrl[0]"
       /></nuxt-link>
     </div>
   </div>

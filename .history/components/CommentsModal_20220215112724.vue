@@ -4,7 +4,7 @@
       <button type="button" @click="closeModal()">閉じる</button>
       <div id="content">
         <div v-for="comment of comments" :key="comment.id">
-          <div class="c-comment font-extralight">{{ comment.comment }}</div>
+          <div class="c-comment font-light">{{ comment.comment }}</div>
         </div>
         <div class="text-xs text-light-gray">{{ errorMsg }}</div>
         <input
