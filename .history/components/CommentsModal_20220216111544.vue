@@ -148,6 +148,8 @@ export default Vue.extend({
   background-color: white;
   .c-comment {
     font-weight: 200;
+    // padding: 0.5rem;
+    // border-bottom: 1px solid #8a8a8a;
   }
 }
 </style>

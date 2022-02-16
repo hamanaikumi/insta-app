@@ -37,8 +37,10 @@
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
-// npm install moment --save
 import moment from 'moment'
+// npm install date-fns --save
+// import { format } from 'date-fns'
+// import { parseISO } from 'date-fns'
 
 // コメント情報
 type commentInfo = {
@@ -82,6 +84,8 @@ export default Vue.extend({
      * コメントを追加する.
      */
     async addComment(): Promise<void> {
+      console.log('コメント追加メソット発動')
+
       // コメントが未入力だとコメントできない
       if (this.inputComment === '') {
         this.errorMsg = 'コメントを入力してください'
@@ -146,8 +150,11 @@ export default Vue.extend({
   max-width: 428px;
   margin: 0 auto;
   background-color: white;
-  .c-comment {
-    font-weight: 200;
-  }
+}
+
+.c-comment {
+  font-weight: 200;
+  // padding: 0.5rem;
+  // border-bottom: 1px solid #8a8a8a;
 }
 </style>
