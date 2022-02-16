@@ -89,5 +89,6 @@ sw.*
 # Vim swap files
 *.swp
 
+
 # 履歴
-.history
+.history/
