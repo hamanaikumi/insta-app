@@ -13,7 +13,20 @@
     </div>
     <!-- 投稿画像 -->
     <div class="img-container">
-      <img :src="currentPostDetail.imageUrl" alt="" />
+      <img
+        v-show="currentPostDetail.imageUrl.length === 1"
+        :src="currentPostDetail.imageUrl"
+      />
+      <swiper
+        v-show="currentPostDetail.imageUrl.length > 1"
+        :options="swiperOption"
+      >
+        <swiper-slide v-for="url of currentPostDetail.imageUrl" :key="url">
+          <img :src="url" alt="" />
+        </swiper-slide>
+        <!-- ページネーションオプション(ドット) -->
+        <div slot="pagination" class="swiper-pagination"></div>
+      </swiper>
     </div>
 
     <div class="activity-container">
@@ -31,7 +44,6 @@
         <button class="ml-2" @click="openCommentModal()">
           <i class="far fa-comment"></i>
         </button>
-        <!--       :get-comments="currentPostDetail.comments" -->
       </div>
       <div class="liked-container">
         <span>
@@ -40,11 +52,13 @@
         >
       </div>
     </div>
+    <!-- caption -->
     <div class="caption-container">
       <div class="user-name">{{ currentPostUserInfo.userName }}</div>
       <div class="caption-container">{{ currentPostDetail.caption }}</div>
       <div class="text-sm">{{ currentPostDetail.postData }}</div>
     </div>
+    <!-- コメントモーダル表示 -->
     <CommentsModal
       v-if="showCommentFlag"
       :get-post-id="givePostId"
@@ -88,6 +102,15 @@ export default Vue.extend({
       loginUserName: '',
       // コメントModalの表示の有無
       showCommentFlag: false,
+
+      // カルーセル
+      swiperOption: {
+        // 中略
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      },
     }
   },
 
@@ -108,7 +131,7 @@ export default Vue.extend({
       )
       // responseの投稿内容
       const responsePostDetail = response.data
-      console.dir('投稿response:' + JSON.stringify(responsePostDetail))
+
       // 投稿日時format化
       const MONTH_EN_LIST = [
         'January',
@@ -217,6 +240,12 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+// ページネーション
+.swiper-pagination {
+  .swiper-pagination-bullet-active {
+    background-color: #8a8a8a;
+  }
+}
 .post-container {
   width: 100%;
   padding: 0.63rem;
