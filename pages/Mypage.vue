@@ -13,14 +13,17 @@
             <span class="text-xs">投稿数</span>
           </div>
           <nuxt-link
-            to="/FollowFollower"
+            :to="'/FollowFollower/' + userInformation.userId"
             class="folower-number text-center p-1"
           >
             <span class="font-medium">{{ numberOfFollower }}</span>
             <br />
             <span class="text-xs">フォロワー</span>
           </nuxt-link>
-          <nuxt-link to="/FollowFollower" class="folow-number text-center p-1">
+          <nuxt-link
+            :to="'/FollowFollower/' + userInformation.userId"
+            class="folow-number text-center p-1"
+          >
             <span class="font-medium">{{ numberOfFollow }}</span>
             <br />
             <span class="text-xs">フォロー</span>

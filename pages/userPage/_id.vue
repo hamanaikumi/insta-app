@@ -13,14 +13,17 @@
             <span class="text-xs">投稿数</span>
           </div>
           <nuxt-link
-            to="/FollowFollower"
+            :to="'/FollowFollower/' + userId"
             class="folower-number text-center p-1"
           >
             <span class="font-medium">{{ numberOfFollower }}</span>
             <br />
             <span class="text-xs">フォロワー</span>
           </nuxt-link>
-          <nuxt-link to="/FollowFollower" class="folow-number text-center p-1">
+          <nuxt-link
+            :to="'/FollowFollower/' + userId"
+            class="folow-number text-center p-1"
+          >
             <span class="font-medium">{{ numberOfFollow }}</span>
             <br />
             <span class="text-xs">フォロー</span>
@@ -87,9 +90,16 @@ export default {
     }
   },
   created() {
+    const myUserId = this.$store.getters['user/getLoginUserId']
     // パラメーターよりuserID取得
     this.userId = parseInt(this.$route.params.id)
-    this.asyncPost()
+
+    // 自分のユーザーidと一致した場合マイページへ遷移（戻るボタン使えなくなっちゃった）
+    if (this.userId === myUserId) {
+      this.$router.push('/mypage')
+    } else {
+      this.asyncPost()
+    }
   },
   methods: {
     /**

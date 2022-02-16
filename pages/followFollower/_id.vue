@@ -1,6 +1,7 @@
 <template>
   <div class="container mt-5 box-border p-5">
     <div class="tab-wrap">
+      <!-- フォロワー -->
       <input
         id="TAB-FOLLOWER"
         type="radio"
@@ -15,8 +16,12 @@
         <Follow
           :follow-user-informations="followerUserInformations"
           :is-follow="false"
+          :my-user-id="myUserId"
+          :is-my-list="isMyList"
         ></Follow>
       </div>
+      <!-- ここまで -->
+      <!-- フォロー -->
       <input id="TAB-FOLLOW" type="radio" name="TAB" class="tab-switch" />
       <label class="tab-label text-base" for="TAB-FOLLOW">
         {{ numberOfFollow }}フォロー中
@@ -25,8 +30,11 @@
         <Follow
           :follow-user-informations="followUserInformations"
           :is-follow="true"
+          :my-user-id="myUserId"
+          :is-my-list="isMyList"
         ></Follow>
       </div>
+      <!-- ここまで -->
     </div>
   </div>
 </template>
@@ -48,21 +56,31 @@ export default Vue.extend({
       numberOfFollow: 0,
       // フォロワー数
       numberOfFollower: 0,
+      // ログイン中のユーザーid
+      myUserId: -1,
+      // 遷移元のユーザーid
+      fromUserId: -1,
+      // 自分のフォローフォロワーリストか否か
+      isMyList: true,
     }
   },
   created() {
+    this.myUserId = this.$store.getters['user/getLoginUserId']
+    this.fromUserId = parseInt(this.$route.params.id)
+    // 自分のフォローリストか否か判定
+    if (this.myUserId !== this.fromUserId) {
+      this.isMyList = false
+    }
     this.asyncPost()
   },
   methods: {
     /**
-     * ログイン中のユーザーidを基にAPIからユーザー情報、投稿一覧を取得してdataに格納.
+     * ユーザーidを基にAPIからユーザー情報、投稿一覧を取得してdataに格納.
      */
     async asyncPost() {
-      const userId = this.$store.getters['user/getLoginUserId']
       const response = await this.$axios.$get(
-        `https://api-instagram-app.herokuapp.com/followinfo/${userId}`
+        `https://api-instagram-app.herokuapp.com/followinfo/${this.fromUserId}`
       )
-
       this.followUserInformations = response.follow
       this.followerUserInformations = response.follower
       this.numberOfFollow = response.follow.length
