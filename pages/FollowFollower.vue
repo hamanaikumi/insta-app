@@ -14,7 +14,7 @@
       <div class="tab-content">
         <Follow
           :follow-user-informations="followerUserInformations"
-          is-follow="false"
+          :is-follow="false"
         ></Follow>
       </div>
       <input id="TAB-FOLLOW" type="radio" name="TAB" class="tab-switch" />
@@ -24,7 +24,7 @@
       <div class="tab-content">
         <Follow
           :follow-user-informations="followUserInformations"
-          is-follow="true"
+          :is-follow="true"
         ></Follow>
       </div>
     </div>
@@ -62,8 +62,6 @@ export default Vue.extend({
       const response = await this.$axios.$get(
         `https://api-instagram-app.herokuapp.com/followinfo/${userId}`
       )
-      console.log('フォローフォロワーのユーザー情報')
-      console.dir(JSON.stringify(response))
 
       this.followUserInformations = response.follow
       this.followerUserInformations = response.follower
@@ -71,6 +69,8 @@ export default Vue.extend({
       this.numberOfFollower = response.follower.length
       console.log('格納後のフォロワーのユーザー情報')
       console.dir(JSON.stringify(this.followerUserInformations))
+      console.log('格納後のフォローユーザー情報')
+      console.dir(JSON.stringify(this.followUserInformations))
     },
   },
 })
