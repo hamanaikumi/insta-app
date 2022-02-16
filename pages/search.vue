@@ -70,12 +70,13 @@
       </div>
     </div>
     <!-- ここまで -->
+
     <!-- 都道府県表示用 -->
     <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3">
       <div v-for="(item, i) of displayPrefectureList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
         <router-link :to="'/postDetail/' + item.postId">
-          <div class="m-px flex justify-center">
+          <div class="m-px flex justify-center" @click="openModal(item.postId)">
             <img :src="displayPrefectureList[i].imageUrl[0]" />
           </div>
         </router-link>
@@ -88,7 +89,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import AccountList from '~/components/AccountList.vue'
-// import axios from 'axios'
 
 export default Vue.extend({
   name: 'SearchPage',
