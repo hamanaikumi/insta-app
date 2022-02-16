@@ -36,20 +36,20 @@
     <!-- コンテンツ -->
     <div class="tab-wrap">
       <input
-        id="TAB-01"
+        id="TAB-POST"
         type="radio"
         name="TAB"
         class="tab-switch"
         checked="checked"
-      /><label class="tab-label" for="TAB-01"
+      /><label class="tab-label" for="TAB-POST"
         ><i class="fas fa-border-all"></i
       ></label>
       <div class="tab-content">
         <Post :post-informations="myPosts"></Post>
       </div>
-      <input id="TAB-02" type="radio" name="TAB" class="tab-switch" /><label
+      <input id="TAB-MAP" type="radio" name="TAB" class="tab-switch" /><label
         class="tab-label"
-        for="TAB-02"
+        for="TAB-MAP"
         ><i class="fas fa-map-marker-alt"></i
       ></label>
       <div class="tab-content">
@@ -59,11 +59,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import Post from '~/components/Post.vue'
 import Prefecture from '~/components/Prefecture.vue'
 
-export default {
+export default Vue.extend({
   components: {
     Post,
     Prefecture,
@@ -73,7 +74,7 @@ export default {
       // ログイン中のユーザー情報
       userInformation: {},
       // ログインユーザーの投稿一覧
-      myPosts: [],
+      myPosts: [] as any,
       // フォロー数
       numberOfFollow: 0,
       // フォロワー数
@@ -81,7 +82,7 @@ export default {
       // 投稿数
       numberOfPost: 0,
       // 投稿に紐づいた都道府県情報
-      postedPrefectures: [],
+      postedPrefectures: [] as any,
     }
   },
   created() {
@@ -114,7 +115,7 @@ export default {
       this.postedPrefectures = Array.from(new Set(prefectures))
     },
   },
-}
+})
 </script>
 
 <style scoped>
