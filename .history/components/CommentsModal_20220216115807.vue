@@ -29,7 +29,7 @@
       </div>
       <div class="py-1">
         <div class="text-xs text-light-gray">{{ errorMsg }}</div>
-        <div class="c-input flex justify-around">
+        <div class="c-input flex justify-between">
           <input
             v-model="inputComment"
             class="appearance-none bg-gray-100 border-none focus:outline-none px-2 w-10/12"

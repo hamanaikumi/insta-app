@@ -3,10 +3,10 @@
     <div id="content">
       <div class="flex flex-row-reverse">
         <button type="button" @click="closeModal()">
-          <i class="fas fa-times text-light-gray"></i>
+          <i class="fas fa-times"></i>
         </button>
       </div>
-      <div class="c-comments">
+      <div class="c-comment-list">
         <div v-for="comment of commentList" :key="comment.id">
           <div class="flex">
             <div>
@@ -27,23 +27,16 @@
           </div>
         </div>
       </div>
-      <div class="py-1">
+      <div class="c-input">
         <div class="text-xs text-light-gray">{{ errorMsg }}</div>
-        <div class="c-input flex justify-around">
-          <input
-            v-model="inputComment"
-            class="appearance-none bg-gray-100 border-none focus:outline-none px-2 w-10/12"
-            type="text"
-          />
-
-          <button
-            type="button"
-            class="text-accent-color content-center"
-            @click="addComment()"
-          >
-            Post
-          </button>
-        </div>
+        <input
+          v-model="inputComment"
+          class="appearance-none bg-gray-100 border-none focus:outline-none px-5 w-10/12"
+          type="text"
+        />
+        <button type="button" class="text-accent-color" @click="addComment()">
+          Post
+        </button>
       </div>
     </div>
   </section>
@@ -157,7 +150,7 @@ export default Vue.extend({
 #content {
   z-index: 10;
   width: 100%;
-  min-height: 20vh;
+  min-height: 30vh;
   max-width: 428px;
   margin: 0 auto;
   background-color: white;

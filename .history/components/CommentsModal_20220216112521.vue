@@ -1,50 +1,37 @@
 <template>
   <section>
     <div id="content">
-      <div class="flex flex-row-reverse">
-        <button type="button" @click="closeModal()">
-          <i class="fas fa-times text-light-gray"></i>
-        </button>
-      </div>
-      <div class="c-comments">
-        <div v-for="comment of commentList" :key="comment.id">
-          <div class="flex">
-            <div>
-              <img
-                :src="comment.userIconUrl"
-                alt=""
-                class="h-6 w-6 rounded-full object-cover"
-              />
-            </div>
-            <div class="ml-2">{{ comment.userName }}</div>
+      <button class="text-right" type="button" @click="closeModal()">
+        とじる
+      </button>
+      <div v-for="comment of commentList" :key="comment.id">
+        <div class="flex">
+          <div>
+            <img
+              :src="comment.userIconUrl"
+              alt=""
+              class="h-6 w-6 rounded-full object-cover"
+            />
           </div>
-          <div class="c-comment font-extralight p-px pb-0">
-            {{ comment.comment }}
-          </div>
-          <!-- font-extralight -->
-          <div class="pb-0.5 text-xs">
-            {{ comment.commentDate }}
-          </div>
+          <div class="ml-2">{{ comment.userName }}</div>
+        </div>
+        <div class="c-comment font-extralight p-px pb-0">
+          {{ comment.comment }}
+        </div>
+        <!-- font-extralight -->
+        <div class="pb-0.5 text-xs">
+          {{ comment.commentDate }}
         </div>
       </div>
-      <div class="py-1">
-        <div class="text-xs text-light-gray">{{ errorMsg }}</div>
-        <div class="c-input flex justify-around">
-          <input
-            v-model="inputComment"
-            class="appearance-none bg-gray-100 border-none focus:outline-none px-2 w-10/12"
-            type="text"
-          />
-
-          <button
-            type="button"
-            class="text-accent-color content-center"
-            @click="addComment()"
-          >
-            Post
-          </button>
-        </div>
-      </div>
+      <div class="text-xs text-light-gray">{{ errorMsg }}</div>
+      <input
+        v-model="inputComment"
+        class="appearance-none bg-gray-100 border-none focus:outline-none px-5 w-10/12"
+        type="text"
+      />
+      <button type="button" class="text-accent-color" @click="addComment()">
+        Post
+      </button>
     </div>
   </section>
 </template>
@@ -157,7 +144,7 @@ export default Vue.extend({
 #content {
   z-index: 10;
   width: 100%;
-  min-height: 20vh;
+  min-height: 30vh;
   max-width: 428px;
   margin: 0 auto;
   background-color: white;
