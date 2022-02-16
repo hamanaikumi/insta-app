@@ -4,20 +4,23 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   props: {
     postedPrefectures: {
-      type: Array,
+      // eslint-disable-next-line no-array-constructor
+      type: Array<any>(),
       required: true,
     },
   },
   data() {
     return {
       // mapオブジェクト
-      map: {},
+      map: {} as any,
       // 色付け用の都道府県配列
-      toColorPrefectures: [],
+      toColorPrefectures: [] as { id: any; name: any; fill: any }[],
     }
   },
   watch: {
@@ -42,11 +45,11 @@ export default {
      */
     setMap() {
       // プラグインから必要な情報を取得
-      const { am4core, am4maps, am4geodataJapanLow } = this.$am4core()
+      const { am4core, am4maps, am4geodataJapanLow } = (this as any).$am4core()
 
       // 親から渡された都道府県を基に色付け用の配列を作成
       this.toColorPrefectures = []
-      for (const postedPrefecture of this.postedPrefectures) {
+      for (const postedPrefecture of this.postedPrefectures as any) {
         this.toColorPrefectures.push({
           id: postedPrefecture.id,
           name: postedPrefecture.name,
@@ -85,7 +88,7 @@ export default {
       polygonTemplate.propertyFields.fill = 'fill'
     },
   },
-}
+})
 </script>
 <style scoped>
 #chartdiv {
