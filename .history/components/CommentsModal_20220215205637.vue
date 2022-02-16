@@ -13,18 +13,17 @@
           </div>
           <div class="ml-2">{{ comment.userName }}</div>
         </div>
-        <div class="c-comment font-extralight p-px pb-0">
+        <div class="c-comment font-extralight">
           {{ comment.comment }}
         </div>
-        <!-- font-extralight -->
-        <div class="pb-0.5 text-xs">
+        <div class="font-extralight">
           {{ comment.commentDate }}
         </div>
       </div>
       <div class="text-xs text-light-gray">{{ errorMsg }}</div>
       <input
         v-model="inputComment"
-        class="appearance-none bg-gray-100 border-none focus:outline-none px-5 w-10/12"
+        class="appearance-none bg-gray-100 border-none focus:outline-none px-5"
         type="text"
       />
       <button type="button" class="text-accent-color" @click="addComment()">
@@ -148,8 +147,7 @@ export default Vue.extend({
 }
 
 .c-comment {
-  font-weight: 200;
-  // padding: 0.5rem;
+  padding: 0.5rem;
   // border-bottom: 1px solid #8a8a8a;
 }
 </style>

@@ -43,7 +43,7 @@
     <div class="caption-container">
       <div class="user-name">{{ currentPostUserInfo.userName }}</div>
       <div class="caption-container">{{ currentPostDetail.caption }}</div>
-      <div class="text-sm">{{ currentPostDetail.postData }}</div>
+      <div class="text-base">{{ currentPostDetail.postData }}</div>
     </div>
     <CommentsModal
       v-if="showCommentFlag"
@@ -57,7 +57,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 import CommentsModal from '~/components/CommentsModal.vue'
-
 // no-this-in-fetch-data
 export default Vue.extend({
   components: { CommentsModal },
@@ -82,7 +81,7 @@ export default Vue.extend({
       currentLikes: [],
       // 投稿日時 ENGLISH
       postDateByEnglish: '',
-      // いいね する済(true) / 解除する(false)
+      // いいね する(true) / 解除する(false)
       likesFlag: false,
       // ログインしているユーザー名
       loginUserName: '',
@@ -97,6 +96,9 @@ export default Vue.extend({
 
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
+
+    // ログインユーザーがこの投稿をいいねしているかチェック
+    this.likesCheck()
   },
   methods: {
     /**
@@ -149,22 +151,35 @@ export default Vue.extend({
 
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-
-      // ログインユーザーが各投稿をいいねしているかをuserNameで判断
-
-      const RESULT = this.currentPostDetail.likes.find(
-        (name) => name === this.loginUserName
-      )
-      // .find()の結果一致する名前があればいいね済に
-      if (RESULT === this.loginUserName) {
+      // ログインユーザーが各投稿をいいねしているかを判断
+      // Array.every()が true/false で返してくれる
+      const RESULT = this.currentPostDetail.likes.every((userName) => {
+        return userName === this.loginUserName
+      })
+      if (RESULT === true) {
         this.likesFlag = true
-      } else {
+      } else if (RESULT === false) {
         this.likesFlag = false
       }
     },
-
+    /**
+     * いいねチェック
+     */
+    likesCheck() {
+      // ログインユーザーが各投稿をいいねしているかを判断
+      // Array.every()が true/false で返してくれる
+      const RESULT = this.currentPostDetail.likes.every((userName) => {
+        return userName === this.loginUserName
+      })
+      if (RESULT === true) {
+        this.likesFlag = true
+      } else if (RESULT === false) {
+        this.likesFlag = false
+      }
+    },
     /**
      * いいねする.
+     *
      */
     async clickLiked() {
       // いいね追加APIにpost
@@ -181,7 +196,6 @@ export default Vue.extend({
       // いいねの表示件数更新
       this.currentPostDetail.likes = responseLikes.data.favorites
     },
-
     /**
      * いいね解除する
      */

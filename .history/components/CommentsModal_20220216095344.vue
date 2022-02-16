@@ -13,11 +13,10 @@
           </div>
           <div class="ml-2">{{ comment.userName }}</div>
         </div>
-        <div class="c-comment font-extralight p-px pb-0">
+        <div class="c-comment font-extralight">
           {{ comment.comment }}
         </div>
-        <!-- font-extralight -->
-        <div class="pb-0.5 text-xs">
+        <div class="font-extralight">
           {{ comment.commentDate }}
         </div>
       </div>
@@ -148,8 +147,7 @@ export default Vue.extend({
 }
 
 .c-comment {
-  font-weight: 200;
-  // padding: 0.5rem;
+  padding: 0.5rem;
   // border-bottom: 1px solid #8a8a8a;
 }
 </style>

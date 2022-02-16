@@ -97,6 +97,9 @@ export default Vue.extend({
 
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
+
+    // ログインユーザーがこの投稿をいいねしているかチェック
+    // this.likesCheck()
   },
   methods: {
     /**
@@ -181,7 +184,6 @@ export default Vue.extend({
       // いいねの表示件数更新
       this.currentPostDetail.likes = responseLikes.data.favorites
     },
-
     /**
      * いいね解除する
      */

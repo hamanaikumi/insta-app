@@ -97,6 +97,9 @@ export default Vue.extend({
 
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
+
+    // ログインユーザーがこの投稿をいいねしているかチェック
+    // this.likesCheck()
   },
   methods: {
     /**
@@ -150,21 +153,44 @@ export default Vue.extend({
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
 
-      // ログインユーザーが各投稿をいいねしているかをuserNameで判断
-
-      const RESULT = this.currentPostDetail.likes.find(
-        (name) => name === this.loginUserName
+      // ログインユーザーが各投稿をいいねしているかを判断
+      // Array.every()が true/false で返してくれる
+      console.dir(
+        'いいねユーザーリスト' + JSON.stringify(this.currentPostDetail.likes)
       )
-      // .find()の結果一致する名前があればいいね済に
-      if (RESULT === this.loginUserName) {
-        this.likesFlag = true
-      } else {
-        this.likesFlag = false
-      }
-    },
+      // const loginUserName = this.$store.getters['user/getLoginUserName']
+      const RESULT = this.currentPostDetail.likes.find(
+        (element) => element === this.loginUserName
+      )
 
+      console.log('フィルター結果' + RESULT)
+      // if (RESULT === true) {
+      //   this.likesFlag = true
+      // }
+      // if (RESULT === false) {
+      //   this.likesFlag = false
+      // }
+    },
+    /**
+     * いいねチェック
+     */
+    // likesCheck() {
+    //   // ログインユーザーが各投稿をいいねしているかを判断
+    //   // Array.every()が true/false で返してくれる
+
+    //   const RESULT = this.currentPostDetail.likes.every((userName) => {
+    //     return userName === this.loginUserName
+    //   })
+    //   console.log('userNameでいいねチェック' + RESULT)
+    //   if (RESULT === true) {
+    //     this.likesFlag = true
+    //   } else {
+    //     this.likesFlag = false
+    //   }
+    // },
     /**
      * いいねする.
+     *
      */
     async clickLiked() {
       // いいね追加APIにpost
@@ -181,7 +207,6 @@ export default Vue.extend({
       // いいねの表示件数更新
       this.currentPostDetail.likes = responseLikes.data.favorites
     },
-
     /**
      * いいね解除する
      */

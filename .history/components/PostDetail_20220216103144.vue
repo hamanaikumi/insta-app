@@ -57,7 +57,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 import CommentsModal from '~/components/CommentsModal.vue'
-
 // no-this-in-fetch-data
 export default Vue.extend({
   components: { CommentsModal },
@@ -97,6 +96,9 @@ export default Vue.extend({
 
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
+
+    // ログインユーザーがこの投稿をいいねしているかチェック
+    this.likesCheck()
   },
   methods: {
     /**
@@ -147,24 +149,45 @@ export default Vue.extend({
         likes: responsePostDetail.favorites,
       }
 
+      console.dir(
+        '投稿のいいねしてるユーザーリスト' +
+          JSON.stringify(this.currentPostDetail.likes)
+      )
+
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
 
-      // ログインユーザーが各投稿をいいねしているかをuserNameで判断
+      // // ログインユーザーが各投稿をいいねしているかを判断
+      // // Array.every()が true/false で返してくれる
+      // const RESULT = this.currentPostDetail.likes.every((userName) => {
+      //   return userName === this.loginUserName
+      // })
+      // if (RESULT === true) {
+      //   this.likesFlag = true
+      // } else if (RESULT === false) {
+      //   this.likesFlag = false
+      // }
+    },
+    /**
+     * いいねチェック
+     */
+    likesCheck() {
+      // ログインユーザーが各投稿をいいねしているかを判断
+      // Array.every()が true/false で返してくれる
 
-      const RESULT = this.currentPostDetail.likes.find(
-        (name) => name === this.loginUserName
-      )
-      // .find()の結果一致する名前があればいいね済に
-      if (RESULT === this.loginUserName) {
+      const RESULT = this.currentPostDetail.likes.every((userName) => {
+        return userName === this.loginUserName
+      })
+      console.log('userNameでいいねチェック' + RESULT)
+      if (RESULT === true) {
         this.likesFlag = true
       } else {
         this.likesFlag = false
       }
     },
-
     /**
      * いいねする.
+     *
      */
     async clickLiked() {
       // いいね追加APIにpost
@@ -181,7 +204,6 @@ export default Vue.extend({
       // いいねの表示件数更新
       this.currentPostDetail.likes = responseLikes.data.favorites
     },
-
     /**
      * いいね解除する
      */

@@ -16,7 +16,7 @@
         <div class="c-comment font-extralight p-px pb-0">
           {{ comment.comment }}
         </div>
-        <!-- font-extralight -->
+        <!--  -->
         <div class="pb-0.5 text-xs">
           {{ comment.commentDate }}
         </div>
