@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div class="pt-2">
     <div
-      class="follow-user-list"
       v-for="followUserInformation of followUserInformations"
       :key="followUserInformation.userId"
+      class="follow-user-list flex flex-row items-center p-2"
     >
-      <div class="follow-user-icon">
-        <img :src="followUserInformation.icon" class="w-20 h-20 rounded-full" />
+      <div class="follow-user-icon w-1/5">
+        <img :src="followUserInformation.icon" class="w-16 h-16 rounded-full" />
       </div>
-      <div class="follow-user-name">
+      <div class="follow-user-name w-3/5">
         {{ followUserInformation.userName }}
       </div>
-      <div class="delete-follow">
+      <div class="delete-follow ml-auto">
         <DeleteFollow
           @delete="deleteFollow(followUserInformation.userId)"
           @follow="addFollow(followUserInformation.userId)"

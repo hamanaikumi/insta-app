@@ -1,6 +1,12 @@
 <template>
   <div>
-    <button type="button" @click="onClickDelete()">{{ button }}</button>
+    <button
+      class="text-xs bg-transparent text-black font-semibold py-1 px-2 border border-gray-300 rounded"
+      type="button"
+      @click="onClickDelete()"
+    >
+      {{ button }}
+    </button>
   </div>
 </template>
 
