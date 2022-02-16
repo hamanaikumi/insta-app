@@ -11,6 +11,9 @@
         <button type="button" class="border-b-2 w-8" @click="onSearch">
           <i class="fas fa-search"></i>
         </button>
+        <!-- <button type="button" class="border-b-2 w-8" @click="ononSearch">
+          <i class="fas fa-search"></i>
+        </button> -->
       </div>
       <div class="w-screen flex justify-center my-2">
         <div class="mx-2">
@@ -49,9 +52,10 @@
 
     <!-- 写真表示用 -->
     <div v-if="showErrorMessage" class="w-screen flex justify-center">
+      <!-- <div v-show="showErrorMessage" class="w-screen flex justify-center"> -->
       {{ errorMessage }}
     </div>
-    <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3">
+    <div v-show="display === 'keyword'" class="w-screen grid grid-cols-3">
       <!-- <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3"> -->
       <div v-for="(item, i) of displayCaptionList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
@@ -64,14 +68,17 @@
     </div>
     <!-- ここまで -->
     <!-- アカウント表示用 -->
-    <div v-else-if="display === 'account'">
+    <!-- <div v-else-if="display === 'account'"> -->
+    <div v-show="display === 'account'">
       <div v-for="(item, i) of displayAccountList" :key="i">
-        <AccountList key="testA" :user="displayAccountList[i]" />
+        <AccountList ref="accountList" :user="displayAccountList[i]" />
+        <!-- <AccountList :ref="accountList + i" :user="displayAccountList[i]" /> -->
       </div>
     </div>
     <!-- ここまで -->
     <!-- 都道府県表示用 -->
-    <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3">
+    <!-- <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3"> -->
+    <div v-show="display === 'prefecture'" class="w-screen grid grid-cols-3">
       <div v-for="(item, i) of displayPrefectureList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
         <router-link :to="'/postDetail/' + item.postId">
@@ -92,6 +99,7 @@ import AccountList from '~/components/AccountList.vue'
 
 export default Vue.extend({
   name: 'SearchPage',
+
   components: {
     AccountList,
   },
@@ -104,7 +112,7 @@ export default Vue.extend({
       button: 'Follow',
       // Followしていない
       follow: true,
-      // Followしていない
+      // Followしている
       following: false,
       // エラーメッセージ表示用
       showErrorMessage: false,
@@ -127,7 +135,9 @@ export default Vue.extend({
       // 全件表示用
       allPostsUrl: 'https://api-instagram-app.herokuapp.com/allposts',
       // 仮のユーザーID
-      userId: 2,
+      userId: 3,
+      //
+      // recreated(): void {},
     }
   },
   computed: {},
@@ -141,12 +151,35 @@ export default Vue.extend({
     })
     console.log('親:created')
   },
-
+  mounted() {
+    // Vue.nextTick(() => {
+    ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
+    // })
+    // ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
+  },
   methods: {
+    // get refs(): any {
+    //   return this.$refs
+    // },
+    // ononSearch() {
+    //   console.log('オンおんサーチ')
+    //   // this.refs().accountList.recreated()
+    //   ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
+    //   // this.$refs.accountList.recreated()
+    //   // ;(this.$refs as any).accountList.recreated()
+    //   // const accountList = <typeof AccountList>this.$refs.accountList
+    //   // accountList.recreated()
+    //   // (this.$refs.accountList as HTMLInputElement).recreated()
+    // },
     /**
      * 検索機能
      */
+
     async onSearch() {
+      // ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
+
+      // ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
+
       if (this.display === 'keyword') {
         /**
          * キーワード検索機能
@@ -167,6 +200,7 @@ export default Vue.extend({
         /**
          * アカウント検索機能
          */
+
         await this.$axios
           .$post(this.searchAccountUrl, { userName: this.searchWord })
           .then((res) => {
@@ -202,8 +236,4 @@ export default Vue.extend({
   },
 })
 </script>
-<style scoped>
-html {
-  margin: 0;
-}
-</style>
+<style scoped></style>

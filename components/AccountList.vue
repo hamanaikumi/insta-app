@@ -3,7 +3,7 @@
     <div class="flex w-screen my-1">
       <div class="w-1/4 flex justify-center flex-none self-center">
         <router-link :to="'/mypage/' + user.userId">
-          <img :src="user.icon" class="rounded-full w-16" />
+          <img :src="user.icon" class="rounded-full w-16 h-16" alt="" />
         </router-link>
       </div>
       <div class="flex-grow self-center">
@@ -79,6 +79,24 @@ export default Vue.extend({
   },
 
   methods: {
+    // 検索押した時に更新する用
+    recreated() {
+      console.log('子:呼ばれた！！！recreated')
+
+      if (this.userId === this.user.userId) {
+        this.followButton = false
+        this.followingButton = false
+      } else if (this.user.follower.includes(this.userId)) {
+        this.followButton = false
+        this.followingButton = true
+        this.buttonName = 'Following'
+      } else {
+        this.followButton = true
+        this.followingButton = false
+        this.buttonName = 'Follow'
+      }
+    },
+
     // フォローする
     clickFollow() {
       this.$axios
