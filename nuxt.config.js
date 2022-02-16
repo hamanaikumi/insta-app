@@ -31,6 +31,7 @@ export default {
     { src: '~/plugins/vue-js-modal.js', mode: 'client' },
     { src: '~/plugins/amCharts.js', mode: 'client' },
     { src: '~/plugins/persistedstate.js', mode: 'client' },
+    { src: '~/plugins/swiper', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
