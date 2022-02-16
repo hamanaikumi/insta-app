@@ -13,15 +13,16 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+export default Vue.extend({
   props: {
     postInformations: {
-      type: Array,
+      type: Array as PropType<any>,
       required: true,
     },
   },
-}
+})
 </script>
 
 <style></style>
