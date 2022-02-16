@@ -5,12 +5,24 @@
       :key="followUserInformation.userId"
       class="follow-user-list flex flex-row items-center p-2"
     >
-      <div class="follow-user-icon w-1/5">
+      <!-- <div class="follow-user-icon w-1/5"> -->
+      <nuxt-link
+        :to="'/UserPage/' + followUserInformation.userId"
+        class="follow-user-icon w-1/5"
+      >
         <img :src="followUserInformation.icon" class="w-16 h-16 rounded-full" />
-      </div>
-      <div class="follow-user-name w-3/5">
+      </nuxt-link>
+      <!-- </div> -->
+
+      <!-- <div class="follow-user-name w-3/5"> -->
+      <nuxt-link
+        :to="'/UserPage/' + followUserInformation.userId"
+        class="follow-user-name w-3/5"
+      >
         {{ followUserInformation.userName }}
-      </div>
+      </nuxt-link>
+      <!-- </div> -->
+
       <div class="delete-follow ml-auto">
         <DeleteFollow
           @delete="deleteFollow(followUserInformation.userId)"
