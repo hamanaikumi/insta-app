@@ -70,6 +70,8 @@ export default {
   },
   data() {
     return {
+      // 対象ユーザーのid
+      userId: -1,
       // ログイン中のユーザー情報
       userInformation: {},
       // ログインユーザーの投稿一覧
@@ -85,6 +87,8 @@ export default {
     }
   },
   created() {
+    // パラメーターよりuserID取得
+    this.userId = parseInt(this.$route.params.id)
     this.asyncPost()
   },
   methods: {
@@ -92,9 +96,8 @@ export default {
      * ログイン中のユーザーidを基にAPIからユーザー情報、投稿一覧を取得してdataに格納.
      */
     async asyncPost() {
-      const userId = this.$store.getters['user/getLoginUserId']
       const response = await this.$axios.$get(
-        `https://api-instagram-app.herokuapp.com/mypage/${userId}`
+        `https://api-instagram-app.herokuapp.com/mypage/${this.userId}`
       )
       this.userInformation = response.user
       this.myPosts = response.post
