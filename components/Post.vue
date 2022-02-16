@@ -11,7 +11,12 @@
         /></nuxt-link>
       </div>
     </div>
-    <div v-if="hasPost === false">投稿がありません</div>
+    <div
+      v-if="hasPost === false"
+      class="text-center pt-5 text-xl text-gray-600"
+    >
+      投稿がありません
+    </div>
   </div>
 </template>
 
