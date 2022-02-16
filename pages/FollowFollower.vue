@@ -67,10 +67,6 @@ export default Vue.extend({
       this.followerUserInformations = response.follower
       this.numberOfFollow = response.follow.length
       this.numberOfFollower = response.follower.length
-      console.log('格納後のフォロワーのユーザー情報')
-      console.dir(JSON.stringify(this.followerUserInformations))
-      console.log('格納後のフォローユーザー情報')
-      console.dir(JSON.stringify(this.followUserInformations))
     },
   },
 })

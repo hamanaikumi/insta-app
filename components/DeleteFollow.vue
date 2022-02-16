@@ -22,11 +22,16 @@ export default Vue.extend({
   },
   data() {
     return {
+      // ボタンに表示される文字
       button: '削除',
+      // ボタンの表示を切り替える変数
       displayButton: true,
     }
   },
   methods: {
+    /**
+     * ボタンが押された際に条件によって発火させるメソッドを変える.
+     */
     onClickDelete() {
       if (this.isFollow === true) {
         if (this.button === '削除') {

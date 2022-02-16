@@ -42,15 +42,21 @@ export default Vue.extend({
       type: Array,
       required: true,
     },
+    // フォロー、フォロワーどちらのコンポーネントか判断する変数
     isFollow: {
       type: Boolean,
       required: true,
     },
   },
   methods: {
+    /**
+     * フォローを解除する.
+     *
+     * @params id - フォロー解除したいユーザーのid
+     */
     async deleteFollow(id: number) {
       const userId = this.$store.getters['user/getLoginUserId']
-      const response = await this.$axios.post(
+      await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/unfollow',
         {
           // eslint-disable-next-line object-shorthand
@@ -58,12 +64,15 @@ export default Vue.extend({
           targetUserId: id,
         }
       )
-      console.log('フォロー解除後の自分のユーザー情報')
-      console.log(response)
     },
+    /**
+     * フォロワーを解除する.
+     *
+     * @params id - フォロワー解除したいユーザーのid
+     */
     async deleteFollower(id: number) {
       const userId = this.$store.getters['user/getLoginUserId']
-      const response = await this.$axios.post(
+      await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/unfollow',
         {
           // eslint-disable-next-line object-shorthand
@@ -71,21 +80,19 @@ export default Vue.extend({
           targetUserId: userId,
         }
       )
-      console.log('フォロワー解除後の自分のユーザー情報')
-      console.log(response)
     },
+    /**
+     * フォロー解除後再フォローする.
+     *
+     * @params id - 再フォローしたいユーザーのid
+     */
     async addFollow(id: number) {
       const userId = this.$store.getters['user/getLoginUserId']
-      const response = await this.$axios.post(
-        'https://api-instagram-app.herokuapp.com/follow',
-        {
-          // eslint-disable-next-line object-shorthand
-          userId: userId,
-          targetUserId: id,
-        }
-      )
-      console.log('フォロー後の自分のユーザー情報')
-      console.log(response)
+      await this.$axios.post('https://api-instagram-app.herokuapp.com/follow', {
+        // eslint-disable-next-line object-shorthand
+        userId: userId,
+        targetUserId: id,
+      })
     },
   },
 })
