@@ -7,8 +7,8 @@ export const state = () => ({
     follower: [],
     icon: '',
     password: '',
-    userId: 3,
-    userName: 'test_user1',
+    userId: 0,
+    userName: '',
   },
   // ログイン状態
   isLogin: false,
