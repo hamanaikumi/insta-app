@@ -36,6 +36,7 @@
         <span class="text-sm">{{ userInformation.bio }}</span>
       </div>
     </div>
+    <!-- ここまで -->
     <!-- コンテンツ -->
     <div class="tab-wrap">
       <input
@@ -59,14 +60,16 @@
         <Prefecture :posted-prefectures="postedPrefectures"></Prefecture>
       </div>
     </div>
+    <!-- ここまで -->
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import Post from '~/components/Post.vue'
 import Prefecture from '~/components/Prefecture.vue'
 
-export default {
+export default Vue.extend({
   components: {
     Post,
     Prefecture,
@@ -127,7 +130,7 @@ export default {
       this.postedPrefectures = Array.from(new Set(prefectures))
     },
   },
-}
+})
 </script>
 
 <style scoped>
