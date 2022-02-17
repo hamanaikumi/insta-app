@@ -222,6 +222,7 @@
         Share
       </button>
     </div>
+    {{ cropImageCodes }}
   </div>
 </template>
 
@@ -240,7 +241,8 @@ export default Vue.extend({
       // トリミング後の画像のソース(変換前)
       cropImageCode: '',
       // トリミング後の画像のソース(変換後)
-      cropImageFile: {},
+      // eslint-disable-next-line no-array-constructor
+      cropImageFiles: Array<any>(),
       // トリミング後の画像のソース(変換前)を格納する配列
       // eslint-disable-next-line no-array-constructor
       cropImageCodes: Array<any>(),
@@ -310,7 +312,7 @@ export default Vue.extend({
         const imageFile = new File([buffer.buffer], fileName, {
           type: fileType,
         })
-        this.cropImageFile = imageFile
+        this.cropImageFiles.push(imageFile)
         // 初期化
         this.selectedImage = ''
         // トリミング後のコードを配列に格納
@@ -400,15 +402,15 @@ export default Vue.extend({
       // S3のバケットに写真をPOST
       this.imageUrlArray = []
       let imageUrl = ''
-      for (const url of urlArray) {
-        await fetch(url, {
+      for (let i = 0; i < urlArray.length; urlArray) {
+        await fetch(urlArray[i], {
           method: 'PUT',
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-          body: this.cropImageFile as any,
+          body: this.cropImageFiles[i] as any,
         })
-        imageUrl = url.split('?')[0]
+        imageUrl = urlArray[i].split('?')[0]
         await this.imageUrlArray.push(imageUrl)
       }
       // ログインしているユーザーIDを取得.
@@ -466,8 +468,8 @@ export default Vue.extend({
   position: absolute;
   top: 1%;
   right: 5%;
-  margin: 0; /*余計な隙間を除く*/
-  padding: 0; /*余計な隙間を除く*/
-  color: white; /*アイコン色*/
+  margin: 0;
+  padding: 0;
+  color: white;
 }
 </style>
