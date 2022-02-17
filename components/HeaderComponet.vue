@@ -15,7 +15,8 @@
             $route.path === '/Mypage' ||
             $route.path === '/Userpage' ||
             $route.path === '/Setting' ||
-            $route.path === '/FollowFollower'
+            $route.path === '/FollowFollower' ||
+            $route.path === '/activity'
           "
           to="/Mypage"
           class="font-bold"
@@ -31,7 +32,8 @@
             $route.path === '/Mypage' ||
             $route.path === '/Userpage' ||
             $route.path === '/Home' ||
-            $route.path === '/Search'
+            $route.path === '/Search' ||
+            $route.path === '/activity'
           "
           to="/addPost"
           class="mr-4"
@@ -41,7 +43,7 @@
         <!-- 通知アイコン（仮） -->
         <nuxt-link
           v-if="$route.path === '/Home' || $route.path === '/Search'"
-          to="/"
+          to="/activity"
           class="mr-4"
         >
           <i class="far fa-heart fa-lg fa-fw"></i>
@@ -51,7 +53,8 @@
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path === '/Userpage'
+            $route.path === '/Userpage' ||
+            $route.path === '/activity'
           "
           to="/Setting"
           class="mr-4"
