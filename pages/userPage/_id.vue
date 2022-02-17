@@ -114,12 +114,6 @@ export default Vue.extend({
     this.myUserId = this.$store.getters['user/getLoginUserId']
     // パラメーターより対象のuserID取得
     this.userId = parseInt(this.$route.params.id)
-    // 自分のユーザーidと一致した場合マイページへ遷移（戻るボタン使えなくなっちゃった）
-    if (this.userId === this.myUserId) {
-      this.$router.push('/mypage')
-    } else {
-      this.asyncPost()
-    }
 
     // ログイン中のユーザーが対象ユーザーをフォローしているか判定、初期表示を行う
     const response = await this.$axios.$get(

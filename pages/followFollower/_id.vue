@@ -2,13 +2,7 @@
   <div class="container mt-5 box-border p-5">
     <div class="tab-wrap">
       <!-- フォロワー -->
-      <input
-        id="TAB-FOLLOWER"
-        type="radio"
-        name="TAB"
-        class="tab-switch"
-        checked="checked"
-      />
+      <input id="TAB-FOLLOWER" type="radio" name="TAB" class="tab-switch" />
       <label class="tab-label text-base" for="TAB-FOLLOWER">
         {{ numberOfFollower }}フォロワー
       </label>
@@ -25,7 +19,13 @@
       </div>
       <!-- ここまで -->
       <!-- フォロー -->
-      <input id="TAB-FOLLOW" type="radio" name="TAB" class="tab-switch" />
+      <input
+        id="TAB-FOLLOW"
+        type="radio"
+        name="TAB"
+        class="tab-switch"
+        :checked="true"
+      />
       <label class="tab-label text-base" for="TAB-FOLLOW">
         {{ numberOfFollow }}フォロー中
       </label>

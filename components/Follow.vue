@@ -5,18 +5,18 @@
       :key="followUserInformation.userId"
       class="follow-user-list flex flex-row items-center p-2"
     >
-      <nuxt-link
-        :to="'/UserPage/' + followUserInformation.userId"
+      <button
         class="follow-user-icon w-3/12"
+        @click="jumpUserPage(followUserInformation.userId)"
       >
         <img :src="followUserInformation.icon" class="w-16 h-16 rounded-full" />
-      </nuxt-link>
-      <nuxt-link
-        :to="'/UserPage/' + followUserInformation.userId"
-        class="follow-user-name w-6/12"
+      </button>
+      <button
+        class="follow-user-name w-6/12 text-left"
+        @click="jumpUserPage(followUserInformation.userId)"
       >
         {{ followUserInformation.userName }}
-      </nuxt-link>
+      </button>
 
       <div class="delete-follow ml-auto">
         <DeleteFollow
@@ -143,6 +143,13 @@ export default Vue.extend({
         userId: this.myUserId,
         targetUserId: id,
       })
+    },
+    jumpUserPage(targetId: number) {
+      if (this.myUserId === targetId) {
+        this.$router.push('/mypage')
+      } else {
+        this.$router.push('/UserPage/' + targetId)
+      }
     },
   },
 })
