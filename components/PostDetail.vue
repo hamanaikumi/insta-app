@@ -1,36 +1,43 @@
 <template>
-  <div class="post-container">
-    <div class="top-container flex flex-row">
+  <div class="w-full py-2">
+    <div class="items-center flex flex-row mb-0.5 max-w-full">
       <div class="icon-container">
         <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
-          <img :src="currentPostUserInfo.icon" alt="icon-img" />
+          <img
+            :src="currentPostUserInfo.icon"
+            alt="icon"
+            class="h-10 w-10 rounded-full object-cover"
+          />
         </nuxt-link>
       </div>
-      <div class="top-item-container">
+      <div class="top-item-container ml-2">
         <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
-          <div class="user-name">{{ currentPostUserInfo.userName }}</div>
+          <div class="user-name font-medium text-sm">
+            {{ currentPostUserInfo.userName }}
+          </div>
         </nuxt-link>
-        <div class="prefecture-name">
+        <div class="prefecture-name font-light text-xs">
           {{ currentPostDetail.prefectureName }}
         </div>
       </div>
     </div>
-    <!-- 投稿画像 -->
-    <div class="img-container">
-      <img
-        v-show="currentPostDetail.imageUrl.length === 1"
-        :src="currentPostDetail.imageUrl"
-        alt="投稿画像"
-      />
-      <swiper
-        v-show="currentPostDetail.imageUrl.length > 1"
-        :options="swiperOption"
-      >
-        <swiper-slide v-for="url of currentPostDetail.imageUrl" :key="url">
-          <img :src="url" alt="投稿画像" />
+
+    <!-- 投稿画像 2枚以上 -->
+    <div>
+      <swiper :options="swiperOption">
+        <swiper-slide
+          v-for="url of currentPostDetail.imageUrl"
+          :key="url"
+          class="images-container"
+        >
+          <img :src="url" alt="投稿画像" class="max-w-full my-0 mx-auto" />
         </swiper-slide>
         <!-- ページネーションオプション(ドット) -->
-        <div slot="pagination" class="swiper-pagination"></div>
+        <div
+          v-show="currentPostDetail.imageUrl.length > 1"
+          slot="pagination"
+          class="swiper-pagination swiper-pagination-black"
+        ></div>
       </swiper>
     </div>
 
@@ -58,9 +65,11 @@
       </div>
     </div>
     <!-- caption -->
-    <div class="caption-container">
-      <div class="user-name">{{ currentPostUserInfo.userName }}</div>
-      <div class="caption-container">{{ currentPostDetail.caption }}</div>
+    <div class="font-light">
+      <div class="user-name font-normal">
+        {{ currentPostUserInfo.userName }}
+      </div>
+      <div class="font-light">{{ currentPostDetail.caption }}</div>
       <div class="text-sm">{{ currentPostDetail.postData }}</div>
     </div>
     <!-- コメントモーダル表示 -->
@@ -177,9 +186,6 @@ export default Vue.extend({
 
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
-      console.dir(
-        '投稿のユーザー情報' + JSON.stringify(this.currentPostUserInfo)
-      )
 
       // ログインユーザーが各投稿をいいねしているかをuserNameで判断
 
@@ -249,57 +255,21 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 // ページネーション
-.swiper-pagination {
-  .swiper-pagination-bullet-active {
-    background-color: #8a8a8a;
-  }
-}
-.post-container {
-  width: 100%;
-  padding: 0.63rem;
-}
-.top-container {
-  max-width: 100%;
-  align-items: center;
-  box-sizing: border-box;
-}
-.icon-container {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-}
-.icon-container img {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-}
-.top-item-container {
-  margin-left: 1rem;
-}
-.user-name {
-  font-size: 0.87rem;
-  font-weight: 500;
-  line-height: 1;
-}
-.prefecture-name {
-  font-size: 0.75rem;
-  font-weight: 300;
-}
-.img-container {
+// .images-container {
+//   position: relative;
+
+//   .swiper-pagination {
+//     position: absolute;
+//     left: 50%;
+//     bottom: -30px;
+//     transform: translateX(-50%);
+
+//   }
+// }
+
+.images-container {
   width: 100%;
   min-height: 17.5rem;
   text-align: center;
-}
-.img-container img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  margin: 0 auto;
-}
-.caption-container {
-  max-width: 100%;
-  width: 100%;
-  font-weight: 300;
 }
 </style>
