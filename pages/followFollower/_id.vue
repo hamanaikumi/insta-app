@@ -81,6 +81,10 @@ export default Vue.extend({
       const response = await this.$axios.$get(
         `https://api-instagram-app.herokuapp.com/followinfo/${this.fromUserId}`
       )
+      const test = await this.$axios.$get(
+        `https://api-instagram-app.herokuapp.com/mypage/${this.fromUserId}`
+      )
+      console.dir(JSON.stringify(test))
       this.followUserInformations = response.follow
       this.followerUserInformations = response.follower
       this.numberOfFollow = response.follow.length
