@@ -36,6 +36,17 @@
         <span class="text-sm">{{ userInformation.bio }}</span>
       </div>
     </div>
+
+    <!-- フォローボタン -->
+    <div>
+      <button
+        class="text-xs bg-transparent w-full text-black font-semibold py-1 px-2 border border-gray-300 rounded"
+        type="button"
+        @click="onClickFollowButton()"
+      >
+        {{ followButton }}
+      </button>
+    </div>
     <!-- ここまで -->
     <!-- コンテンツ -->
     <div class="tab-wrap">
@@ -78,9 +89,9 @@ export default Vue.extend({
     return {
       // 対象ユーザーのid
       userId: -1,
-      // ログイン中のユーザー情報
+      // 対象ユーザーのユーザー情報
       userInformation: {},
-      // ログインユーザーの投稿一覧
+      // 対象ユーザーの投稿一覧
       myPosts: [],
       // フォロー数
       numberOfFollow: 0,
@@ -90,23 +101,45 @@ export default Vue.extend({
       numberOfPost: 0,
       // 投稿に紐づいた都道府県情報
       postedPrefectures: [],
+      //   ログイン中のユーザーid
+      myUserId: -1,
+      // フォローボタン
+      followButton: '',
+      // ログイン中のユーザーがフォローしているかを表すフラグ
+      isFollowing: true,
     }
   },
-  created() {
-    const myUserId = this.$store.getters['user/getLoginUserId']
-    // パラメーターよりuserID取得
+  async created() {
+    // ログイン中のユーザーid
+    this.myUserId = this.$store.getters['user/getLoginUserId']
+    // パラメーターより対象のuserID取得
     this.userId = parseInt(this.$route.params.id)
-
     // 自分のユーザーidと一致した場合マイページへ遷移（戻るボタン使えなくなっちゃった）
-    if (this.userId === myUserId) {
+    if (this.userId === this.myUserId) {
       this.$router.push('/mypage')
     } else {
       this.asyncPost()
     }
+
+    // ログイン中のユーザーが対象ユーザーをフォローしているか判定、初期表示を行う
+    const response = await this.$axios.$get(
+      `https://api-instagram-app.herokuapp.com/mypage/${this.myUserId}`
+    )
+    const myFollowLists = response.user.follow
+    for (const myFollowList of myFollowLists) {
+      if (this.userId === myFollowList) {
+        this.isFollowing = true
+        this.followButton = 'フォロー中'
+        break
+      } else {
+        this.isFollowing = false
+        this.followButton = 'フォローする'
+      }
+    }
   },
   methods: {
     /**
-     * ログイン中のユーザーidを基にAPIからユーザー情報、投稿一覧を取得してdataに格納.
+     * ユーザーidを基にAPIからユーザー情報、投稿一覧を取得してdataに格納.
      */
     async asyncPost() {
       const response = await this.$axios.$get(
@@ -128,6 +161,43 @@ export default Vue.extend({
         prefectures.push(myPost.prefecture)
       }
       this.postedPrefectures = Array.from(new Set(prefectures))
+    },
+    /**
+     * フォローボタンが押された際の処理.
+     */
+    onClickFollowButton() {
+      if (this.isFollowing === true) {
+        this.isFollowing = false
+        this.followButton = 'フォローする'
+        this.deleteFollow()
+      } else if (this.isFollowing === false) {
+        this.isFollowing = true
+        this.followButton = 'フォロー中'
+        this.addFollow()
+      }
+    },
+    /**
+     * フォローする.
+     */
+    async addFollow() {
+      await this.$axios.post('https://api-instagram-app.herokuapp.com/follow', {
+        userId: this.myUserId,
+        targetUserId: this.userId,
+      })
+      this.asyncPost()
+    },
+    /**
+     * フォローを解除する.
+     */
+    async deleteFollow() {
+      await this.$axios.post(
+        'https://api-instagram-app.herokuapp.com/unfollow',
+        {
+          userId: this.myUserId,
+          targetUserId: this.userId,
+        }
+      )
+      this.asyncPost()
     },
   },
 })
