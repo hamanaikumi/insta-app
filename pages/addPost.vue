@@ -42,7 +42,7 @@
             <modal
               name="image-modal"
               :click-to-close="false"
-              width="80%"
+              width="300px"
               height="auto"
             >
               <div class="modal-body my-4 flex flex-col">
@@ -85,13 +85,20 @@
       </div>
       <!-- トリミング後の画像 -->
       <div class="px-2 py-2 border border-light-gray col-span-3">
-        <div v-for="(image, i) of cropImageCodes" :key="i">
+        <div v-for="(image, i) of cropImageCodes" :key="i" class="crop-image">
           <img
             v-show="index === i"
             :src="image"
             alt="Cropped Image"
             class="object-center"
           />
+          <button
+            v-show="index === i"
+            class="rounded-full px-2"
+            @click="deleteImage(i)"
+          >
+            &times;
+          </button>
         </div>
         <div class="mt-2 flex justify-between">
           <div>
@@ -153,7 +160,7 @@
             <modal
               name="prefecture-modal"
               :click-to-close="false"
-              width="80%"
+              width="300px"
               height="400px"
             >
               <div class="modal-body my-8 flex flex-col">
@@ -424,6 +431,15 @@ export default Vue.extend({
     cancel() {
       this.$router.push('/Home')
     },
+    /**
+     * 選択した写真を削除する.
+     */
+    deleteImage(i: number) {
+      this.cropImageCodes.splice(i, 1)
+      if (i !== 0) {
+        this.prev()
+      }
+    },
   },
 })
 </script>
@@ -442,5 +458,16 @@ export default Vue.extend({
 }
 .fa {
   color: white;
+}
+.crop-image {
+  position: relative;
+}
+.crop-image > button {
+  position: absolute;
+  top: 1%;
+  right: 5%;
+  margin: 0; /*余計な隙間を除く*/
+  padding: 0; /*余計な隙間を除く*/
+  color: white; /*アイコン色*/
 }
 </style>
