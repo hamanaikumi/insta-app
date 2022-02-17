@@ -138,9 +138,9 @@ export default Vue.extend({
       for (const comment of resComments) {
         // 日付フォーマット moment.utc().format() 日本時間に変換してる感じ？
         // eslint-disable-next-line import/no-named-as-default-member
-        const formatDate = moment
-          .utc(comment.commentDate)
-          .format('yyyy-MM-DD HH:mm:ss')
+        const formatDate = moment(comment.commentDate).format(
+          'yyyy-MM-DD HH:mm:ss'
+        )
 
         // オブジェクト化  (Date: moment().fromNow() で何分前の形式で表示できるメソッド)
         const commentInfo: commentInfo = {
