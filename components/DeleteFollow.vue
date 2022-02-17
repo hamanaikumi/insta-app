@@ -48,7 +48,6 @@ export default Vue.extend({
   },
   watch: {
     statusId() {
-      console.log('ボタンのwatchが呼ばれた')
       // 他人のフォロー・フォロワー一覧画面の時の初期表示
       if (this.statusId === 3 || this.statusId === 4) {
         if (this.myUserId === this.followUserId) {
@@ -60,12 +59,9 @@ export default Vue.extend({
           this.button = 'フォローする'
         }
       }
-      console.log(this.statusId)
-      console.log(this.button)
     },
   },
   created() {
-    console.log('ボタンのcreatedが呼ばれた')
     // ログイン中ユーザーが対象ユーザーをフォローしているか判定
     for (const myFollowList of this.myFollowLists) {
       if (this.followUserId === myFollowList) {
@@ -87,8 +83,6 @@ export default Vue.extend({
         this.button = 'フォローする'
       }
     }
-    console.log(this.statusId)
-    console.log(this.button)
   },
   methods: {
     /**

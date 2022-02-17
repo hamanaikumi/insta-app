@@ -71,15 +71,11 @@ export default Vue.extend({
     }
   },
   async created() {
-    console.log('Followのコンポーネントのcreatedがよばれた')
     // 子コンポーネントに渡すため自分のフォローしている人を配列に格納する
     const response = await this.$axios.$get(
       `https://api-instagram-app.herokuapp.com/mypage/${this.myUserId}`
     )
     this.myFollowLists = response.user.follow
-
-    console.log(`isMyList:${this.isMyList}`)
-    console.log(`isMyFollow:${this.isFollow}`)
 
     // 状態ごとに番号をつける
     if (this.isMyList === true && this.isFollow === true) {
