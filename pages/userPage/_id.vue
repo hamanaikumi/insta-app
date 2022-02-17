@@ -12,22 +12,26 @@
             <br />
             <span class="text-xs">投稿数</span>
           </div>
-          <nuxt-link
+          <button
             :to="'/FollowFollower/' + userId"
+            type="button"
             class="folower-number text-center p-1"
+            @click="jumpFollowFollowerPage(userId, false)"
           >
             <span class="font-medium">{{ numberOfFollower }}</span>
             <br />
             <span class="text-xs">フォロワー</span>
-          </nuxt-link>
-          <nuxt-link
+          </button>
+          <button
             :to="'/FollowFollower/' + userId"
+            type="button"
             class="folow-number text-center p-1"
+            @click="jumpFollowFollowerPage(userId, true)"
           >
             <span class="font-medium">{{ numberOfFollow }}</span>
             <br />
             <span class="text-xs">フォロー</span>
-          </nuxt-link>
+          </button>
         </div>
       </div>
       <div class="bio-contents py-2.5">
@@ -75,7 +79,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import Post from '~/components/Post.vue'
 import Prefecture from '~/components/Prefecture.vue'
@@ -92,7 +96,7 @@ export default Vue.extend({
       // 対象ユーザーのユーザー情報
       userInformation: {},
       // 対象ユーザーの投稿一覧
-      myPosts: [],
+      myPosts: [] as any,
       // フォロー数
       numberOfFollow: 0,
       // フォロワー数
@@ -100,7 +104,7 @@ export default Vue.extend({
       // 投稿数
       numberOfPost: 0,
       // 投稿に紐づいた都道府県情報
-      postedPrefectures: [],
+      postedPrefectures: [] as any,
       //   ログイン中のユーザーid
       myUserId: -1,
       // フォローボタン
@@ -130,6 +134,7 @@ export default Vue.extend({
         this.followButton = 'フォローする'
       }
     }
+    this.asyncPost()
   },
   methods: {
     /**
@@ -192,6 +197,19 @@ export default Vue.extend({
         }
       )
       this.asyncPost()
+    },
+    /**
+     * フォロー・フォロワー一覧に飛ぶ.
+     *
+     * @param userId - 現在表示されているプロフィールのユーザーid
+     * @param fromFollow - フォローをクリック:true、フォロワーをクリック:false
+     */
+    jumpFollowFollowerPage(userId: number, fromFollow: boolean) {
+      this.$router.push({
+        path: '/FollowFollower/' + userId,
+        // 型判定のエラーを消すためString型で渡す
+        query: { clickFromFollow: String(fromFollow) },
+      })
     },
   },
 })

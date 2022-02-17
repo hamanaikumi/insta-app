@@ -149,7 +149,7 @@ export default Vue.extend({
     /**
      * リンク先が自分のプロフィールの場合とリンク先を分ける.
      *
-     * @params targetId - リンク先のユーザーid
+     * @param targetId - リンク先のユーザーid
      */
     jumpUserPage(targetId: number) {
       if (this.myUserId === targetId) {

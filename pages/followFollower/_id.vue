@@ -2,7 +2,13 @@
   <div class="container mt-5 box-border p-5">
     <div class="tab-wrap">
       <!-- フォロワー -->
-      <input id="TAB-FOLLOWER" type="radio" name="TAB" class="tab-switch" />
+      <input
+        id="TAB-FOLLOWER"
+        type="radio"
+        name="TAB"
+        class="tab-switch"
+        :checked="fromFollower"
+      />
       <label class="tab-label text-base" for="TAB-FOLLOWER">
         {{ numberOfFollower }}フォロワー
       </label>
@@ -24,7 +30,7 @@
         type="radio"
         name="TAB"
         class="tab-switch"
-        :checked="true"
+        :checked="fromFollow"
       />
       <label class="tab-label text-base" for="TAB-FOLLOW">
         {{ numberOfFollow }}フォロー中
@@ -68,6 +74,11 @@ export default Vue.extend({
       fromUserId: -1,
       // 自分のフォローフォロワーリストか否か
       isMyList: true,
+      // 初期表示用フラグ
+      // フォローをクリックして遷移:true
+      fromFollow: true,
+      // フォロワーをクリックして遷移:true
+      fromFollower: false,
     }
   },
   created() {
@@ -76,6 +87,14 @@ export default Vue.extend({
     // 自分のフォローリストか否か判定
     if (this.myUserId !== this.fromUserId) {
       this.isMyList = false
+    }
+    // フォロー・フォロワーどちらをクリックしたかで初期表示を変える
+    if (this.$route.query.clickFromFollow === 'true') {
+      this.fromFollow = true
+      this.fromFollower = false
+    } else if (this.$route.query.clickFromFollow === 'false') {
+      this.fromFollow = false
+      this.fromFollower = true
     }
     this.asyncPost()
   },
@@ -92,12 +111,21 @@ export default Vue.extend({
       this.numberOfFollow = response.follow.length
       this.numberOfFollower = response.follower.length
     },
+    /**
+     * フォローの表示を1減らす.
+     */
     deleteFollowNumber() {
       this.numberOfFollow--
     },
+    /**
+     * フォロワーの表示を1減らす.
+     */
     deleteFollowerNumber() {
       this.numberOfFollower--
     },
+    /**
+     * フォローの表示を1増やす.
+     */
     addFollowNumber() {
       this.numberOfFollow++
     },
