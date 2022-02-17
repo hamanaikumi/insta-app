@@ -26,6 +26,9 @@ export default Vue.extend({
   updated() {
     this.getNotice()
   },
+  created(){
+    this.getNotice()
+  },
   methods: {
     /**
      * 通知を受け取って、一番最新の通知をすでに確認済みかどうかをヘッダーに渡す.

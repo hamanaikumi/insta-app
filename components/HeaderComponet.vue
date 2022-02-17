@@ -46,7 +46,18 @@
           to="/activity"
           class="mr-4"
         >
-          <i class="far fa-heart fa-lg fa-fw"></i>
+          <i class="far fa-heart fa-lg fa-fw relative">
+            <div v-if="giveNotice===false">
+              <p
+                class="animate-ping absolute right-0 top-[-8px] text-red-400 text-[1px]"
+              >
+                ●
+              </p>
+              <p class="absolute right-0 top-[-8px] text-red-400 text-[1px]">
+                ●
+              </p>
+            </div>
+          </i>
         </nuxt-link>
         <!-- 設定アイコン -->
         <nuxt-link
@@ -72,7 +83,7 @@ import Vue from 'vue'
 /* eslint no-unused-expressions: "off" */
 export default Vue.extend({
   props: {
-    giveNotice: { type: Boolean, required: true },
+    giveNotice: { type: Boolean, required: true, },
   },
   computed: {
     /**
