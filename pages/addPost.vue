@@ -3,7 +3,7 @@
     <!-- image -->
     <div class="flex justify-center grid grid-cols-6 gap-1 mb-4 mx-2">
       <div
-        class="flex justify-center pt-5 pb-6 border border-light-gray col-span-3 h-64"
+        class="flex justify-center pt-5 pb-6 border border-light-gray col-span-3 h-60"
       >
         <div class="space-y-1 text-center mt-12">
           <svg
@@ -84,39 +84,38 @@
         </div>
       </div>
       <!-- トリミング後の画像 -->
-      <div
-        class="flex justify-center px-3 pt-5 pb-4 border border-light-gray col-span-3"
-      >
-        <div class="grid content-center w-32">
-          <button
-            v-show="cropImageCodes.length > 1 && index > 0"
-            type="button"
-            @click="prev"
-          >
-            <i class="fas fa-angle-left"></i>
-          </button>
-        </div>
-
+      <div class="px-2 py-2 border border-light-gray col-span-3">
         <div v-for="(image, i) of cropImageCodes" :key="i">
           <img
             v-show="index === i"
             :src="image"
             alt="Cropped Image"
-            width="100%"
-            height="100%"
-            class="mt-12"
+            class="object-center"
           />
         </div>
-        <div class="grid content-center w-32">
-          <button
-            v-if="
-              cropImageCodes.length > 1 && index < cropImageCodes.length - 1
-            "
-            type="button"
-            @click="next"
-          >
-            <i class="fas fa-angle-right"></i>
-          </button>
+        <div class="mt-2 flex justify-between">
+          <div>
+            <button
+              v-show="cropImageCodes.length > 1 && index > 0"
+              type="button"
+              class="bg-light-gray hover:bg-dark-gray rounded-full px-2"
+              @click="prev"
+            >
+              <i class="fa fa-chevron-left"></i>
+            </button>
+          </div>
+          <div>
+            <button
+              v-if="
+                cropImageCodes.length > 1 && index < cropImageCodes.length - 1
+              "
+              type="button"
+              class="bg-light-gray hover:bg-dark-gray rounded-full px-2"
+              @click="next"
+            >
+              <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -440,5 +439,8 @@ export default Vue.extend({
 
 ::placeholder {
   color: #8a8a8a;
+}
+.fa {
+  color: white;
 }
 </style>
