@@ -7,12 +7,14 @@
     >
       <button
         class="follow-user-icon w-3/12"
+        type="button"
         @click="jumpUserPage(followUserInformation.userId)"
       >
         <img :src="followUserInformation.icon" class="w-16 h-16 rounded-full" />
       </button>
       <button
         class="follow-user-name w-6/12 text-left"
+        type="button"
         @click="jumpUserPage(followUserInformation.userId)"
       >
         {{ followUserInformation.userName }}
@@ -144,6 +146,11 @@ export default Vue.extend({
         targetUserId: id,
       })
     },
+    /**
+     * リンク先が自分のプロフィールの場合とリンク先を分ける.
+     *
+     * @params targetId - リンク先のユーザーid
+     */
     jumpUserPage(targetId: number) {
       if (this.myUserId === targetId) {
         this.$router.push('/mypage')
