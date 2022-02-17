@@ -1,41 +1,105 @@
 <template>
   <div>
     <div v-for="log of logs" :key="log.logId">
-      <div class="flex mt-1 mb-1 relative">
-        <img :src="log.contents.newUser.icon" class="w-16 h-16 rounded-full" />
-        <!-- いいねのとき -->
-        <div v-if="log.type === 'favorite'" class="">
-          <div class="">
-            <p class="font-bold inline-block">
-              {{ log.contents.newUser.userName }}
-            </p>
-            さんがあなたの投稿にいいねしました！
+      <!-- 通知を端初めて見たとき -->
+      <div v-if="log.checked === false">
+        <div class="flex mt-1 mb-1 relative">
+          <nuxt-link :to="'/userPage/' + log.contents.newUser.userId">
+            <img
+              :src="log.contents.newUser.icon"
+              class="w-16 h-16 rounded-full"
+            />
+          </nuxt-link>
+          <!-- いいねのとき -->
+          <div v-if="log.type === 'favorite'" class="">
+            <nuxt-link :to="'/postdetail/' + log.contents.postId">
+              <div class="">
+                <p class="font-bold inline-block">
+                  {{ log.contents.newUser.userName }}
+                </p>
+                さんがあなたの投稿にいいねしました！
+              </div>
+            </nuxt-link>
+          </div>
+          <!-- 新しいコメントのとき -->
+          <div v-if="log.type === 'comment'">
+            <nuxt-link :to="'/postdetail/' + log.contents.postId">
+              <div class="">
+                <p class="font-bold inline-block">
+                  {{ log.contents.newUser.userName }}
+                </p>
+                さんがあなたの投稿にコメントしました！
+              </div>
+            </nuxt-link>
+          </div>
+          <!-- 新しいフォロワーのとき -->
+          <div v-if="log.type === 'follow'">
+            <nuxt-link :to="'/userPage/' + log.contents.newUser.userId">
+              <div class="">
+                <p class="font-bold inline-block">
+                  {{ log.contents.newUser.userName }}
+                </p>
+                さんがあなたをフォローしました！
+              </div>
+            </nuxt-link>
+          </div>
+          <!-- 日付 -->
+          <div class="absolute right-3 bottom-0 text-xs text-gray-500">
+            {{ log.date }}
           </div>
         </div>
-        <!-- 新しいコメントのとき -->
-        <div v-if="log.type === 'comment'">
-          <div class="">
-            <p class="font-bold inline-block">
-              {{ log.contents.newUser.userName }}
-            </p>
-            さんがあなたの投稿にコメントしました！
-          </div>
-        </div>
-        <!-- 新しいフォロワーのとき -->
-        <div v-if="log.type === 'follow'">
-          <div class="">
-            <p class="font-bold inline-block">
-              {{ log.contents.newUser.userName }}
-            </p>
-            さんがあなたをフォローしました！
-          </div>
-        </div>
-        <!-- 日付 -->
-        <div class="absolute right-3 bottom-0 text-xs text-gray-500">
-          {{ log.date }}
-        </div>
+        <hr />
       </div>
-      <hr />
+
+      <!-- すでに見たことがある場合は薄くする -->
+      <div v-if="log.checked === true" class="opacity-60">
+        <div class="flex mt-1 mb-1 relative">
+          <nuxt-link :to="'/userPage/' + log.contents.newUser.userId">
+            <img
+              :src="log.contents.newUser.icon"
+              class="w-16 h-16 rounded-full"
+            />
+          </nuxt-link>
+          <!-- いいねのとき -->
+          <div v-if="log.type === 'favorite'" class="">
+            <nuxt-link :to="'/postdetail/' + log.contents.postId">
+              <div class="">
+                <p class="font-bold inline-block">
+                  {{ log.contents.newUser.userName }}
+                </p>
+                さんがあなたの投稿にいいねしました！
+              </div>
+            </nuxt-link>
+          </div>
+          <!-- 新しいコメントのとき -->
+          <div v-if="log.type === 'comment'">
+            <nuxt-link :to="'/postdetail/' + log.contents.postId">
+              <div class="">
+                <p class="font-bold inline-block">
+                  {{ log.contents.newUser.userName }}
+                </p>
+                さんがあなたの投稿にコメントしました！
+              </div>
+            </nuxt-link>
+          </div>
+          <!-- 新しいフォロワーのとき -->
+          <div v-if="log.type === 'follow'">
+            <nuxt-link :to="'/userPage/' + log.contents.newUser.userId">
+              <div class="">
+                <p class="font-bold inline-block">
+                  {{ log.contents.newUser.userName }}
+                </p>
+                さんがあなたをフォローしました！
+              </div>
+            </nuxt-link>
+          </div>
+          <!-- 日付 -->
+          <div class="absolute right-3 bottom-0 text-xs text-gray-500">
+            {{ log.date }}
+          </div>
+        </div>
+        <hr />
+      </div>
     </div>
   </div>
 </template>
@@ -46,7 +110,7 @@ import moment from 'moment'
 export default Vue.extend({
   data() {
     return {
-      logs: []as any,
+      logs: [] as any,
       loginUserId: Number,
     }
   },
@@ -56,6 +120,9 @@ export default Vue.extend({
     this.getLogs().then(() => {
       this.getdate()
     })
+  },
+  beforeDestroy() {
+    this.chekedNotice()
   },
   methods: {
     /**
@@ -77,6 +144,15 @@ export default Vue.extend({
         const newDate = moment(new Date(log.date)).fromNow()
         log.date = newDate
       }
+    },
+    /**
+     * 通知を確認したことをAPIに送る.
+     */
+    async chekedNotice() {
+      await this.$axios.post(
+        'https://api-instagram-app.herokuapp.com/notice/checked',
+        { userId: this.loginUserId }
+      )
     },
   },
 })
