@@ -99,6 +99,9 @@ export default Vue.extend({
      * @params id - フォロー解除したいユーザーのid
      */
     async deleteFollow(id: number) {
+      if (this.isMyList) {
+        this.$emit('deleteFollowNumber')
+      }
       await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/unfollow',
         {
@@ -114,6 +117,9 @@ export default Vue.extend({
      * @params id - フォロワー解除したいユーザーのid
      */
     async deleteFollower(id: number) {
+      if (this.isMyList) {
+        this.$emit('deleteFollowerNumber')
+      }
       await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/unfollow',
         {
@@ -129,6 +135,9 @@ export default Vue.extend({
      * @params id - 再フォローしたいユーザーのid
      */
     async addFollow(id: number) {
+      if (this.isMyList) {
+        this.$emit('addFollowNumber')
+      }
       await this.$axios.post('https://api-instagram-app.herokuapp.com/follow', {
         // eslint-disable-next-line object-shorthand
         userId: this.myUserId,

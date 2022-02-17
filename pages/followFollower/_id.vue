@@ -18,6 +18,9 @@
           :is-follow="false"
           :my-user-id="myUserId"
           :is-my-list="isMyList"
+          @deleteFollowNumber="deleteFollowNumber()"
+          @deleteFollowerNumber="deleteFollowerNumber()"
+          @addFollowNumber="addFollowNumber()"
         ></Follow>
       </div>
       <!-- ここまで -->
@@ -32,6 +35,9 @@
           :is-follow="true"
           :my-user-id="myUserId"
           :is-my-list="isMyList"
+          @deleteFollowNumber="deleteFollowNumber()"
+          @deleteFollowerNumber="deleteFollowerNumber()"
+          @addFollowNumber="addFollowNumber()"
         ></Follow>
       </div>
       <!-- ここまで -->
@@ -85,6 +91,15 @@ export default Vue.extend({
       this.followerUserInformations = response.follower
       this.numberOfFollow = response.follow.length
       this.numberOfFollower = response.follower.length
+    },
+    deleteFollowNumber() {
+      this.numberOfFollow--
+    },
+    deleteFollowerNumber() {
+      this.numberOfFollower--
+    },
+    addFollowNumber() {
+      this.numberOfFollow++
     },
   },
 })
