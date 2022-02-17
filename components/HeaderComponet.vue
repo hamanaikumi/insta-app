@@ -71,12 +71,25 @@ import Vue from 'vue'
 
 /* eslint no-unused-expressions: "off" */
 export default Vue.extend({
-  data() {
-    return {}
+  props: {
+    giveNotice: { type: Boolean, required: true },
   },
   computed: {
+    /**
+     * ログインしているユーザー名を取得する
+     */
     userName(): string {
       return this.$store.getters['user/getLoginUserName']
+    },
+    /**
+     * 親から最新の通知を受け取ってそれが確認済みの場合はtrue,していない場合はfalseを渡す.
+     */
+    notices(): Boolean {
+      if (this.giveNotice === false) {
+        return false
+      } else {
+        return true
+      }
     },
   },
 })
