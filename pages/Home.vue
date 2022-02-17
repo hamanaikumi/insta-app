@@ -1,9 +1,19 @@
 <template>
-  <div class="container mt-5 box-border p-5">
-    <article>
-      <div v-show="postsId.length === 0" class="none-posts">
-        <div class="msg">投稿がありません<br />友達をフォローしよう!</div>
+  <div class="container mx-auto px-4 py-8">
+    <div
+      v-show="postsId.length === 0"
+      class="none-posts flex flex-col justify-center"
+    >
+      <div class="msg text-dark-gray text-lg">
+        <strong class="font-medium"> Welcome to まるまるgram</strong>
+        <br /><br />
+        <span class="font-extralight">
+          When you follow people,<br />
+          you'll see the photos they post here.
+        </span>
       </div>
+    </div>
+    <article>
       <div v-for="postId of postsId" :key="postId" class="article-container">
         <PostDetail :give-post-id="postId"></PostDetail>
       </div>
@@ -65,14 +75,8 @@ article {
 
 .none-posts {
   width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  height: 75vh;
   .msg {
-    font-size: 1.8rem;
-    color: #626262;
-    font-weight: 600;
     text-align: center;
     align-items: center;
   }
