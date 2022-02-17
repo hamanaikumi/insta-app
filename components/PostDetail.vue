@@ -24,11 +24,11 @@
 
     <!-- 投稿画像 2枚以上 -->
     <div>
-      <swiper :options="swiperOption">
+      <swiper :options="swiperOption" class="c-swiper">
         <swiper-slide
           v-for="url of currentPostDetail.imageUrl"
           :key="url"
-          class="images-container"
+          class="images-container w-full"
         >
           <img :src="url" alt="投稿画像" class="max-w-full my-0 mx-auto" />
         </swiper-slide>
@@ -46,15 +46,15 @@
         <!-- いいねボタン -->
         <!-- いいねする -->
         <button v-show="!likesFlag" type="button" @click="clickLiked()">
-          <i class="far fa-heart"></i>
+          <i class="far fa-heart text-xl"></i>
         </button>
         <!-- いいね解除 -->
         <button v-show="likesFlag" type="button" @click="clickUnLiked()">
-          <i class="fas fa-heart" style="color: crimson"></i>
+          <i class="fas fa-heart text-xl" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
-        <button class="ml-2" @click="openCommentModal()">
-          <i class="far fa-comment"></i>
+        <button class="ml-3" @click="openCommentModal()">
+          <i class="far fa-comment text-xl"></i>
         </button>
       </div>
       <div class="liked-container">
@@ -67,7 +67,7 @@
     <!-- caption -->
     <div class="font-light">
       <div class="user-name font-normal">
-        {{ currentPostUserInfo.userName }}
+        @{{ currentPostUserInfo.userName }}
       </div>
       <div class="font-light">{{ currentPostDetail.caption }}</div>
       <div class="text-sm">{{ currentPostDetail.postData }}</div>
@@ -268,8 +268,15 @@ export default Vue.extend({
 // }
 
 .images-container {
-  width: 100%;
-  min-height: 17.5rem;
-  text-align: center;
+  min-height: 15rem;
+}
+.swiper-container {
+  position: relative;
+  padding-bottom: 1.2rem;
+  .swiper-pagination {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+  }
 }
 </style>

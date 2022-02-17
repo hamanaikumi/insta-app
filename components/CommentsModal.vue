@@ -10,19 +10,23 @@
         <div v-for="comment of commentList" :key="comment.id">
           <div class="flex">
             <div>
-              <img
-                :src="comment.userIconUrl"
-                alt=""
-                class="h-6 w-6 rounded-full object-cover"
-              />
+              <nuxt-link :to="'/UserPage/' + comment.userId">
+                <img
+                  :src="comment.userIconUrl"
+                  alt=""
+                  class="h-6 w-6 rounded-full object-cover"
+                />
+              </nuxt-link>
             </div>
-            <div class="ml-2">{{ comment.userName }}</div>
+            <nuxt-link :to="'/UserPage/' + comment.userId">
+              <div class="ml-2">{{ comment.userName }}</div>
+            </nuxt-link>
           </div>
-          <div class="c-comment font-extralight p-px pb-0">
+          <div class="c-comment font-light p-px pb-0">
             {{ comment.comment }}
           </div>
           <!-- font-extralight -->
-          <div class="pb-0.5 text-xs">
+          <div class="pb-0.5 text-xs font-light">
             {{ comment.commentDate }}
           </div>
         </div>
@@ -161,8 +165,5 @@ export default Vue.extend({
   max-width: 428px;
   margin: 0 auto;
   background-color: white;
-  .c-comment {
-    font-weight: 200;
-  }
 }
 </style>
