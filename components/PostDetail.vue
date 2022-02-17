@@ -2,10 +2,14 @@
   <div class="post-container">
     <div class="top-container flex flex-row">
       <div class="icon-container">
-        <img :src="currentPostUserInfo.icon" alt="" />
+        <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+          <img :src="currentPostUserInfo.icon" alt="icon-img" />
+        </nuxt-link>
       </div>
       <div class="top-item-container">
-        <div class="user-name">{{ currentPostUserInfo.userName }}</div>
+        <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+          <div class="user-name">{{ currentPostUserInfo.userName }}</div>
+        </nuxt-link>
         <div class="prefecture-name">
           {{ currentPostDetail.prefectureName }}
         </div>
@@ -16,13 +20,14 @@
       <img
         v-show="currentPostDetail.imageUrl.length === 1"
         :src="currentPostDetail.imageUrl"
+        alt="投稿画像"
       />
       <swiper
         v-show="currentPostDetail.imageUrl.length > 1"
         :options="swiperOption"
       >
         <swiper-slide v-for="url of currentPostDetail.imageUrl" :key="url">
-          <img :src="url" alt="" />
+          <img :src="url" alt="投稿画像" />
         </swiper-slide>
         <!-- ページネーションオプション(ドット) -->
         <div slot="pagination" class="swiper-pagination"></div>
@@ -172,6 +177,9 @@ export default Vue.extend({
 
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
+      console.dir(
+        '投稿のユーザー情報' + JSON.stringify(this.currentPostUserInfo)
+      )
 
       // ログインユーザーが各投稿をいいねしているかをuserNameで判断
 
