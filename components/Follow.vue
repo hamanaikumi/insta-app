@@ -7,20 +7,23 @@
     >
       <nuxt-link
         :to="'/UserPage/' + followUserInformation.userId"
-        class="follow-user-icon w-1/5"
+        class="follow-user-icon w-3/12"
       >
         <img :src="followUserInformation.icon" class="w-16 h-16 rounded-full" />
       </nuxt-link>
       <nuxt-link
         :to="'/UserPage/' + followUserInformation.userId"
-        class="follow-user-name w-3/5"
+        class="follow-user-name w-6/12"
       >
         {{ followUserInformation.userName }}
       </nuxt-link>
 
       <div class="delete-follow ml-auto">
         <DeleteFollow
-          :is-follow="isFollow"
+          :status-id="statusId"
+          :my-follow-lists="myFollowLists"
+          :follow-user-id="followUserInformation.userId"
+          :my-user-id="myUserId"
           @deleteFollow="deleteFollow(followUserInformation.userId)"
           @deleteFollower="deleteFollower(followUserInformation.userId)"
           @follow="addFollow(followUserInformation.userId)"
@@ -38,6 +41,7 @@ export default Vue.extend({
     DeleteFollow,
   },
   props: {
+    // フォローまたはフォロワーの情報一覧
     followUserInformations: {
       type: Array,
       required: true,
@@ -47,6 +51,45 @@ export default Vue.extend({
       type: Boolean,
       required: true,
     },
+    // 自分のフォローフォロワー一覧か否か
+    isMyList: {
+      type: Boolean,
+      required: true,
+    },
+    // ログイン中のユーザーid
+    myUserId: {
+      type: Number,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      // 状態ごとの番号
+      statusId: -1,
+      // ログイン中ユーザーがフォローしている人のid一覧
+      myFollowLists: [],
+    }
+  },
+  async created() {
+    // 子コンポーネントに渡すため自分のフォローしている人を配列に格納する
+    const response = await this.$axios.$get(
+      `https://api-instagram-app.herokuapp.com/mypage/${this.myUserId}`
+    )
+    this.myFollowLists = response.user.follow
+    // 状態ごとに番号をつける
+    if (this.isMyList === true && this.isFollow === true) {
+      // このリストは自分のフォローリスト
+      this.statusId = 1
+    } else if (this.isMyList === true && this.isFollow === false) {
+      // このリストは自分のフォロワーリスト
+      this.statusId = 2
+    } else if (this.isMyList === false && this.isFollow === true) {
+      // このリストは他人のフォローリスト
+      this.statusId = 3
+    } else if (this.isMyList === false && this.isFollow === false) {
+      // このリストは他人のフォロワーリスト
+      this.statusId = 4
+    }
   },
   methods: {
     /**
@@ -55,12 +98,11 @@ export default Vue.extend({
      * @params id - フォロー解除したいユーザーのid
      */
     async deleteFollow(id: number) {
-      const userId = this.$store.getters['user/getLoginUserId']
       await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/unfollow',
         {
           // eslint-disable-next-line object-shorthand
-          userId: userId,
+          userId: this.myUserId,
           targetUserId: id,
         }
       )
@@ -71,13 +113,12 @@ export default Vue.extend({
      * @params id - フォロワー解除したいユーザーのid
      */
     async deleteFollower(id: number) {
-      const userId = this.$store.getters['user/getLoginUserId']
       await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/unfollow',
         {
           // eslint-disable-next-line object-shorthand
           userId: id,
-          targetUserId: userId,
+          targetUserId: this.myUserId,
         }
       )
     },
@@ -87,10 +128,9 @@ export default Vue.extend({
      * @params id - 再フォローしたいユーザーのid
      */
     async addFollow(id: number) {
-      const userId = this.$store.getters['user/getLoginUserId']
       await this.$axios.post('https://api-instagram-app.herokuapp.com/follow', {
         // eslint-disable-next-line object-shorthand
-        userId: userId,
+        userId: this.myUserId,
         targetUserId: id,
       })
     },
