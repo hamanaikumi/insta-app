@@ -5,18 +5,20 @@
       :key="followUserInformation.userId"
       class="follow-user-list flex flex-row items-center p-2"
     >
-      <nuxt-link
-        :to="'/UserPage/' + followUserInformation.userId"
+      <button
         class="follow-user-icon w-3/12"
+        type="button"
+        @click="jumpUserPage(followUserInformation.userId)"
       >
         <img :src="followUserInformation.icon" class="w-16 h-16 rounded-full" />
-      </nuxt-link>
-      <nuxt-link
-        :to="'/UserPage/' + followUserInformation.userId"
-        class="follow-user-name w-6/12"
+      </button>
+      <button
+        class="follow-user-name w-6/12 text-left"
+        type="button"
+        @click="jumpUserPage(followUserInformation.userId)"
       >
         {{ followUserInformation.userName }}
-      </nuxt-link>
+      </button>
 
       <div class="delete-follow ml-auto">
         <DeleteFollow
@@ -76,6 +78,7 @@ export default Vue.extend({
       `https://api-instagram-app.herokuapp.com/mypage/${this.myUserId}`
     )
     this.myFollowLists = response.user.follow
+
     // 状態ごとに番号をつける
     if (this.isMyList === true && this.isFollow === true) {
       // このリストは自分のフォローリスト
@@ -98,6 +101,9 @@ export default Vue.extend({
      * @params id - フォロー解除したいユーザーのid
      */
     async deleteFollow(id: number) {
+      if (this.isMyList) {
+        this.$emit('deleteFollowNumber')
+      }
       await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/unfollow',
         {
@@ -113,6 +119,9 @@ export default Vue.extend({
      * @params id - フォロワー解除したいユーザーのid
      */
     async deleteFollower(id: number) {
+      if (this.isMyList) {
+        this.$emit('deleteFollowerNumber')
+      }
       await this.$axios.post(
         'https://api-instagram-app.herokuapp.com/unfollow',
         {
@@ -128,11 +137,26 @@ export default Vue.extend({
      * @params id - 再フォローしたいユーザーのid
      */
     async addFollow(id: number) {
+      if (this.isMyList) {
+        this.$emit('addFollowNumber')
+      }
       await this.$axios.post('https://api-instagram-app.herokuapp.com/follow', {
         // eslint-disable-next-line object-shorthand
         userId: this.myUserId,
         targetUserId: id,
       })
+    },
+    /**
+     * リンク先が自分のプロフィールの場合とリンク先を分ける.
+     *
+     * @param targetId - リンク先のユーザーid
+     */
+    jumpUserPage(targetId: number) {
+      if (this.myUserId === targetId) {
+        this.$router.push('/mypage')
+      } else {
+        this.$router.push('/UserPage/' + targetId)
+      }
     },
   },
 })
