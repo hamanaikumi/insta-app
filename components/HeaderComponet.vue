@@ -3,19 +3,24 @@
     <div class="w-full flex">
       <div>
         <nuxt-link
-          v-if="$route.path === '/Home' || $route.path === '/Search'"
+          v-if="
+            $route.path === '/Home' ||
+            $route.path === '/Search' ||
+            $route.path.toLowerCase().includes('/postdetail')
+          "
           to="/Home"
         >
           <!-- 後で変更 -->
-          <p>instagram</p>
+          <p class="font-serif">instagram</p>
         </nuxt-link>
         <nuxt-link
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path === '/Userpage' ||
+            $route.path.includes('/userPage') ||
             $route.path === '/Setting' ||
-            $route.path === '/FollowFollower'
+            $route.path.includes('/FollowFollower') ||
+            $route.path === '/activity'
           "
           to="/Mypage"
           class="font-bold"
@@ -29,29 +34,47 @@
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path === '/Userpage' ||
+            $route.path.includes('/userPage') ||
             $route.path === '/Home' ||
-            $route.path === '/Search'
+            $route.path === '/Search' ||
+            $route.path === '/activity' ||
+            $route.path.toLowerCase().includes('/postdetail') ||
+            $route.path.includes('/FollowFollower')
           "
           to="/addPost"
           class="mr-4"
         >
           <i class="far fa-plus-square fa-lg fa-fw"></i>
         </nuxt-link>
-        <!-- 通知アイコン（仮） -->
+        <!-- 通知アイコン -->
         <nuxt-link
           v-if="$route.path === '/Home' || $route.path === '/Search'"
-          to="/"
+          to="/activity"
           class="mr-4"
         >
-          <i class="far fa-heart fa-lg fa-fw"></i>
+          <i class="far fa-heart fa-lg fa-fw relative">
+            <!-- まだ通知を確認していないときの点滅アイコン -->
+            <div v-if="giveNotice === false">
+              <p
+                class="animate-ping absolute right-0 top-[-8px] text-red-400 text-[1px]"
+              >
+                ●
+              </p>
+              <p class="absolute right-0 top-[-8px] text-red-400 text-[1px]">
+                ●
+              </p>
+            </div>
+          </i>
         </nuxt-link>
         <!-- 設定アイコン -->
         <nuxt-link
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path === '/Userpage'
+            $route.path.includes('/userPage') ||
+            $route.path === '/activity' ||
+            $route.path.includes('/FollowFollower') ||
+            $route.path.toLowerCase().includes('/postdetail')
           "
           to="/Setting"
           class="mr-4"
@@ -68,12 +91,25 @@ import Vue from 'vue'
 
 /* eslint no-unused-expressions: "off" */
 export default Vue.extend({
-  data() {
-    return {}
+  props: {
+    giveNotice: { type: Boolean, required: true },
   },
   computed: {
+    /**
+     * ログインしているユーザー名を取得する
+     */
     userName(): string {
       return this.$store.getters['user/getLoginUserName']
+    },
+    /**
+     * 親から最新の通知を受け取ってそれが確認済みの場合はtrue,していない場合はfalseを渡す.
+     */
+    notices(): Boolean {
+      if (this.giveNotice === false) {
+        return false
+      } else {
+        return true
+      }
     },
   },
 })
