@@ -402,7 +402,7 @@ export default Vue.extend({
       // S3のバケットに写真をPOST
       this.imageUrlArray = []
       let imageUrl = ''
-      for (let i = 0; i < urlArray.length; urlArray) {
+      for (let i = 0; i < urlArray.length; i++) {
         await fetch(urlArray[i], {
           method: 'PUT',
           headers: {
