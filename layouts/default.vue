@@ -6,7 +6,7 @@
         class="fixed top-0 w-full z-10 max-w-[428px]"
         :give-notice="notice"
       />
-      <Nuxt class="pt-[56px] z-0 mb-10" />
+      <Nuxt class="pt-[56px] z-0 mb-20" />
       <footer-componet
         v-if="$route.path !== '/' && $route.path !== '/Signup'"
         class="fixed bottom-0 w-full z-10 max-w-[428px]"
@@ -31,7 +31,7 @@ export default Vue.extend({
   },
   methods: {
     /**
-     * 通知を受け取って、一番最新の通知をすでに確認済みかどうかをヘッダーに渡す.
+     * 通知を受け取って、一番最新の通知をすでに確認済みかどうかをヘッダーに渡す（通知アイコンが表示されるホームと検索画面のみ）.
      */
     async getNotice() {
       const userId = this.$store.getters['user/getLoginUserId']

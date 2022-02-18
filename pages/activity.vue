@@ -1,43 +1,43 @@
 <template>
   <div>
-    <div v-for="log of logs" :key="log.logId">
-      <!-- 通知を端初めて見たとき -->
-      <div v-if="log.checked === false">
+    <div v-for="notice of notices" :key="notice.noticeId">
+      <!-- 通知を初めて見たとき -->
+      <div v-if="notice.checked === false">
         <div class="flex mt-1 mb-1 relative">
-          <nuxt-link :to="'/userPage/' + log.contents.newUser.userId">
+          <nuxt-link :to="'/userPage/' + notice.contents.newUser.userId">
             <img
-              :src="log.contents.newUser.icon"
+              :src="notice.contents.newUser.icon"
               class="w-16 h-16 rounded-full"
             />
           </nuxt-link>
           <!-- いいねのとき -->
-          <div v-if="log.type === 'favorite'" class="">
-            <nuxt-link :to="'/postdetail/' + log.contents.postId">
+          <div v-if="notice.type === 'favorite'" class="p-1">
+            <nuxt-link :to="'/postdetail/' + notice.contents.postId">
               <div class="">
                 <p class="font-bold inline-block">
-                  {{ log.contents.newUser.userName }}
+                  {{ notice.contents.newUser.userName }}
                 </p>
                 さんがあなたの投稿にいいねしました！
               </div>
             </nuxt-link>
           </div>
           <!-- 新しいコメントのとき -->
-          <div v-if="log.type === 'comment'">
-            <nuxt-link :to="'/postdetail/' + log.contents.postId">
-              <div class="">
+          <div v-if="notice.type === 'comment'" class="p-1">
+            <nuxt-link :to="'/postdetail/' + notice.contents.postId">
+              <div class="p-4">
                 <p class="font-bold inline-block">
-                  {{ log.contents.newUser.userName }}
+                  {{ notice.contents.newUser.userName }}
                 </p>
                 さんがあなたの投稿にコメントしました！
               </div>
             </nuxt-link>
           </div>
           <!-- 新しいフォロワーのとき -->
-          <div v-if="log.type === 'follow'">
-            <nuxt-link :to="'/userPage/' + log.contents.newUser.userId">
+          <div v-if="notice.type === 'follow'" class="p-1">
+            <nuxt-link :to="'/userPage/' + notice.contents.newUser.userId">
               <div class="">
                 <p class="font-bold inline-block">
-                  {{ log.contents.newUser.userName }}
+                  {{ notice.contents.newUser.userName }}
                 </p>
                 さんがあなたをフォローしました！
               </div>
@@ -45,49 +45,49 @@
           </div>
           <!-- 日付 -->
           <div class="absolute right-3 bottom-0 text-xs text-gray-500">
-            {{ log.date }}
+            {{ notice.date }}
           </div>
         </div>
         <hr />
       </div>
 
       <!-- すでに見たことがある場合は薄くする -->
-      <div v-if="log.checked === true" class="opacity-60">
+      <div v-if="notice.checked === true" class="opacity-60">
         <div class="flex mt-1 mb-1 relative">
-          <nuxt-link :to="'/userPage/' + log.contents.newUser.userId">
+          <nuxt-link :to="'/userPage/' + notice.contents.newUser.userId">
             <img
-              :src="log.contents.newUser.icon"
+              :src="notice.contents.newUser.icon"
               class="w-16 h-16 rounded-full"
             />
           </nuxt-link>
           <!-- いいねのとき -->
-          <div v-if="log.type === 'favorite'" class="">
-            <nuxt-link :to="'/postdetail/' + log.contents.postId">
+          <div v-if="notice.type === 'favorite'" class="p-1">
+            <nuxt-link :to="'/postdetail/' + notice.contents.postId">
               <div class="">
                 <p class="font-bold inline-block">
-                  {{ log.contents.newUser.userName }}
+                  {{ notice.contents.newUser.userName }}
                 </p>
                 さんがあなたの投稿にいいねしました！
               </div>
             </nuxt-link>
           </div>
           <!-- 新しいコメントのとき -->
-          <div v-if="log.type === 'comment'">
-            <nuxt-link :to="'/postdetail/' + log.contents.postId">
+          <div v-if="notice.type === 'comment'" class="p-1">
+            <nuxt-link :to="'/postdetail/' + notice.contents.postId">
               <div class="">
                 <p class="font-bold inline-block">
-                  {{ log.contents.newUser.userName }}
+                  {{ notice.contents.newUser.userName }}
                 </p>
                 さんがあなたの投稿にコメントしました！
               </div>
             </nuxt-link>
           </div>
           <!-- 新しいフォロワーのとき -->
-          <div v-if="log.type === 'follow'">
-            <nuxt-link :to="'/userPage/' + log.contents.newUser.userId">
+          <div v-if="notice.type === 'follow'" class="p-1">
+            <nuxt-link :to="'/userPage/' + notice.contents.newUser.userId">
               <div class="">
                 <p class="font-bold inline-block">
-                  {{ log.contents.newUser.userName }}
+                  {{ notice.contents.newUser.userName }}
                 </p>
                 さんがあなたをフォローしました！
               </div>
@@ -95,7 +95,7 @@
           </div>
           <!-- 日付 -->
           <div class="absolute right-3 bottom-0 text-xs text-gray-500">
-            {{ log.date }}
+            {{ notice.date }}
           </div>
         </div>
         <hr />
@@ -110,7 +110,7 @@ import moment from 'moment'
 export default Vue.extend({
   data() {
     return {
-      logs: [] as any,
+      notices: [] as any,
       loginUserId: Number,
     }
   },
@@ -120,10 +120,9 @@ export default Vue.extend({
     this.getLogs().then(() => {
       this.getdate()
     })
-  },
-  beforeDestroy() {
     this.chekedNotice()
   },
+
   methods: {
     /**
      * APIから通知の履歴をとってくる.
@@ -132,17 +131,17 @@ export default Vue.extend({
       const res = await this.$axios.get(
         `https://api-instagram-app.herokuapp.com/notice/${this.loginUserId}`
       )
-      this.logs = res.data
+      this.notices = res.data
     },
     /**
      * 日付を今からどれくらい前の表示にする
      */
     getdate() {
-      for (const log of this.logs) {
+      for (const notice of this.notices) {
         // eslint-disable-next-line import/no-named-as-default-member
         moment.locale('ja')
-        const newDate = moment(new Date(log.date)).fromNow()
-        log.date = newDate
+        const newDate = moment(new Date(notice.date)).fromNow()
+        notice.date = newDate
       }
     },
     /**

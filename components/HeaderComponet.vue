@@ -3,19 +3,23 @@
     <div class="w-full flex">
       <div>
         <nuxt-link
-          v-if="$route.path === '/Home' || $route.path === '/Search'"
+          v-if="
+            $route.path === '/Home' ||
+            $route.path === '/Search' ||
+            $route.path.toLowerCase().includes('/postdetail')
+          "
           to="/Home"
         >
           <!-- 後で変更 -->
-          <p>instagram</p>
+          <p class="font-serif">instagram</p>
         </nuxt-link>
         <nuxt-link
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path === '/Userpage' ||
+            $route.path.includes('/userPage') ||
             $route.path === '/Setting' ||
-            $route.path === '/FollowFollower' ||
+            $route.path.includes('/FollowFollower') ||
             $route.path === '/activity'
           "
           to="/Mypage"
@@ -30,24 +34,27 @@
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path === '/Userpage' ||
+            $route.path.includes('/userPage') ||
             $route.path === '/Home' ||
             $route.path === '/Search' ||
-            $route.path === '/activity'
+            $route.path === '/activity' ||
+            $route.path.toLowerCase().includes('/postdetail') ||
+            $route.path.includes('/FollowFollower')
           "
           to="/addPost"
           class="mr-4"
         >
           <i class="far fa-plus-square fa-lg fa-fw"></i>
         </nuxt-link>
-        <!-- 通知アイコン（仮） -->
+        <!-- 通知アイコン -->
         <nuxt-link
           v-if="$route.path === '/Home' || $route.path === '/Search'"
           to="/activity"
           class="mr-4"
         >
           <i class="far fa-heart fa-lg fa-fw relative">
-            <div v-if="giveNotice===false">
+            <!-- まだ通知を確認していないときの点滅アイコン -->
+            <div v-if="giveNotice === false">
               <p
                 class="animate-ping absolute right-0 top-[-8px] text-red-400 text-[1px]"
               >
@@ -64,8 +71,10 @@
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path === '/Userpage' ||
-            $route.path === '/activity'
+            $route.path.includes('/userPage') ||
+            $route.path === '/activity' ||
+            $route.path.includes('/FollowFollower') ||
+            $route.path.toLowerCase().includes('/postdetail')
           "
           to="/Setting"
           class="mr-4"
@@ -83,7 +92,7 @@ import Vue from 'vue'
 /* eslint no-unused-expressions: "off" */
 export default Vue.extend({
   props: {
-    giveNotice: { type: Boolean, required: true, },
+    giveNotice: { type: Boolean, required: true },
   },
   computed: {
     /**
