@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ ff }}
     <div class="flex w-screen my-1">
       <div class="w-1/4 flex justify-center flex-none self-center">
         <router-link :to="'/mypage/' + user.userId">
@@ -16,7 +17,7 @@
           v-if="followButton"
           key="followbutton"
           type="button"
-          class="bg-green-500 w-24 h-8 mx-2 rounded-md"
+          class="text-white bg-accent-color w-24 h-8 mx-2 rounded-md"
           @click="clickFollow"
         >
           {{ buttonName }}
@@ -59,6 +60,7 @@ export default Vue.extend({
   },
   props: {
     user: Object,
+    ff: [],
   },
 
   mounted() {

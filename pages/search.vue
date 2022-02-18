@@ -71,7 +71,7 @@
     <!-- <div v-else-if="display === 'account'"> -->
     <div v-show="display === 'account'">
       <div v-for="(item, i) of displayAccountList" :key="i">
-        <AccountList ref="accountList" :user="displayAccountList[i]" />
+        <AccountList ref='"accountList"+i' :user="item" ff='"fFFFf"+i' />
         <!-- <AccountList :ref="accountList + i" :user="displayAccountList[i]" /> -->
       </div>
     </div>
@@ -120,6 +120,7 @@ export default Vue.extend({
       // 検索表示用
       displayCaptionList: [],
       displayAccountList: [],
+      ff: 'fffff',
       displayPrefectureList: [],
       // 検索ワード
       searchWord: '',
@@ -148,14 +149,23 @@ export default Vue.extend({
     this.$axios.$get(this.allPostsUrl).then((res) => {
       this.displayCaptionList = res
       this.displayPrefectureList = res
+      this.displayAccountList = res.userId
     })
+
+    //
+
     console.log('親:created')
   },
   mounted() {
+    // console.log('TR' + JSON.stringify(this.$refs))
+    // console.log(
+    //   'recre:' + (this.$refs.accountList[] as InstanceType<typeof AccountList>)
+    // )
     // Vue.nextTick(() => {
-    ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
+    // ;(this.$refs.accountList1 as InstanceType<typeof AccountList>).recreated()
     // })
     // ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
+    // (this.$refs.accountList as HTMLInputElement).recreated()
   },
   methods: {
     // get refs(): any {
@@ -176,7 +186,10 @@ export default Vue.extend({
      */
 
     async onSearch() {
-      // ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
+      // console.log('DL:' + JSON.stringify(this.displayAccountList))
+      // ;(this as any).$refs.accountList1.recreated()
+
+      // ;(this.$refs.accountList1[0] as InstanceType<typeof AccountList>).recreated()
 
       // ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
 
