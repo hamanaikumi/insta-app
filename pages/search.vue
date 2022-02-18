@@ -71,7 +71,7 @@
     <!-- <div v-else-if="display === 'account'"> -->
     <div v-show="display === 'account'">
       <div v-for="(item, i) of displayAccountList" :key="i">
-        <AccountList ref='"accountList"+i' :user="item" ff='"fFFFf"+i' />
+        <AccountList ref="accountList" :user="item" ff='"fFFFf"+i' />
         <!-- <AccountList :ref="accountList + i" :user="displayAccountList[i]" /> -->
       </div>
     </div>
@@ -120,7 +120,6 @@ export default Vue.extend({
       // 検索表示用
       displayCaptionList: [],
       displayAccountList: [],
-      ff: 'fffff',
       displayPrefectureList: [],
       // 検索ワード
       searchWord: '',
@@ -137,8 +136,6 @@ export default Vue.extend({
       allPostsUrl: 'https://api-instagram-app.herokuapp.com/allposts',
       // 仮のユーザーID
       userId: 3,
-      //
-      // recreated(): void {},
     }
   },
   computed: {},
@@ -149,50 +146,14 @@ export default Vue.extend({
     this.$axios.$get(this.allPostsUrl).then((res) => {
       this.displayCaptionList = res
       this.displayPrefectureList = res
-      this.displayAccountList = res.userId
     })
-
-    //
-
-    console.log('親:created')
   },
-  mounted() {
-    // console.log('TR' + JSON.stringify(this.$refs))
-    // console.log(
-    //   'recre:' + (this.$refs.accountList[] as InstanceType<typeof AccountList>)
-    // )
-    // Vue.nextTick(() => {
-    // ;(this.$refs.accountList1 as InstanceType<typeof AccountList>).recreated()
-    // })
-    // ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
-    // (this.$refs.accountList as HTMLInputElement).recreated()
-  },
+  mounted() {},
   methods: {
-    // get refs(): any {
-    //   return this.$refs
-    // },
-    // ononSearch() {
-    //   console.log('オンおんサーチ')
-    //   // this.refs().accountList.recreated()
-    //   ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
-    //   // this.$refs.accountList.recreated()
-    //   // ;(this.$refs as any).accountList.recreated()
-    //   // const accountList = <typeof AccountList>this.$refs.accountList
-    //   // accountList.recreated()
-    //   // (this.$refs.accountList as HTMLInputElement).recreated()
-    // },
     /**
      * 検索機能
      */
-
     async onSearch() {
-      // console.log('DL:' + JSON.stringify(this.displayAccountList))
-      // ;(this as any).$refs.accountList1.recreated()
-
-      // ;(this.$refs.accountList1[0] as InstanceType<typeof AccountList>).recreated()
-
-      // ;(this.$refs.accountList as InstanceType<typeof AccountList>).recreated()
-
       if (this.display === 'keyword') {
         /**
          * キーワード検索機能
@@ -213,7 +174,6 @@ export default Vue.extend({
         /**
          * アカウント検索機能
          */
-
         await this.$axios
           .$post(this.searchAccountUrl, { userName: this.searchWord })
           .then((res) => {

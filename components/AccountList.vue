@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ ff }}
     <div class="flex w-screen my-1">
       <div class="w-1/4 flex justify-center flex-none self-center">
         <router-link :to="'/mypage/' + user.userId">
@@ -50,22 +49,34 @@ export default Vue.extend({
       unfollowUrl: 'https://api-instagram-app.herokuapp.com/unfollow',
       // フォローフォロワー一覧
       followInfoUrl: 'https://api-instagram-app.herokuapp.com/followinfo/',
-      // 仮のログインユーザーID
-      userId: 3,
-      // 相手のユーザーID:this.user.userId,
-
+      // ログインユーザーID
+      userId: '',
+      // FollowFollowingボタン
       followButton: false,
       followingButton: true,
     }
   },
   props: {
     user: Object,
-    ff: [],
   },
 
-  mounted() {
-    console.log('子:mounted')
-
+  created() {
+    // ログインしているユーザーIDを取得.
+    this.userId = this.$store.getters['user/getLoginUserId']
+    if (this.userId === this.user.userId) {
+      this.followButton = false
+      this.followingButton = false
+    } else if (this.user.follower.includes(this.userId)) {
+      this.followButton = false
+      this.followingButton = true
+      this.buttonName = 'Following'
+    } else {
+      this.followButton = true
+      this.followingButton = false
+      this.buttonName = 'Follow'
+    }
+  },
+  beforeUpdate() {
     if (this.userId === this.user.userId) {
       this.followButton = false
       this.followingButton = false
@@ -81,24 +92,6 @@ export default Vue.extend({
   },
 
   methods: {
-    // 検索押した時に更新する用
-    recreated() {
-      console.log('子:呼ばれた！！！recreated')
-
-      if (this.userId === this.user.userId) {
-        this.followButton = false
-        this.followingButton = false
-      } else if (this.user.follower.includes(this.userId)) {
-        this.followButton = false
-        this.followingButton = true
-        this.buttonName = 'Following'
-      } else {
-        this.followButton = true
-        this.followingButton = false
-        this.buttonName = 'Follow'
-      }
-    },
-
     // フォローする
     clickFollow() {
       this.$axios
@@ -111,7 +104,6 @@ export default Vue.extend({
       this.followButton = false
       this.followingButton = true
       this.buttonName = 'Following'
-      console.log('Follow:' + this.userId + '→' + this.user.userId)
     },
     // フォロー解除
     clickUnFollow() {
@@ -124,7 +116,6 @@ export default Vue.extend({
       this.followButton = true
       this.followingButton = false
       this.buttonName = 'Follow'
-      console.log('Follow解除:' + this.userId + '→' + this.user.userId)
     },
   },
 })
