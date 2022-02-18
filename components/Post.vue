@@ -1,10 +1,13 @@
 <template>
   <div>
-    <div v-if="hasPost === true" class="post-contents flex -ml-0.5">
+    <div
+      v-if="hasPost === true"
+      class="post-contents flex flex-wrap justify-between"
+    >
       <div
         v-for="postInformation of postInformations"
         :key="postInformation.postId"
-        class="w-1/3 mt-0.5 ml-0.5"
+        class="w-33/100 mt-px"
       >
         <nuxt-link :to="`/PostDetail/${postInformation.postId}`">
           <img :src="postInformation.imageUrl[0]"
