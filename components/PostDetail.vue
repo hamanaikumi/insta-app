@@ -2,7 +2,10 @@
   <div class="w-full py-2">
     <div class="items-center flex flex-row mb-0.5 max-w-full">
       <div class="icon-container">
-        <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+        <nuxt-link
+          :to="'/UserPage/' + currentPostUserInfo.userId"
+          @click="testclick()"
+        >
           <img
             :src="currentPostUserInfo.icon"
             alt="icon"
@@ -16,7 +19,10 @@
             {{ currentPostUserInfo.userName }}
           </div>
         </nuxt-link>
-        <div class="prefecture-name font-light text-xs">
+        <div
+          class="prefecture-name font-light text-xs"
+          @click="searchPrefecture(currentPostDetail.prefectureName)"
+        >
           {{ currentPostDetail.prefectureName }}
         </div>
       </div>
@@ -136,6 +142,19 @@ export default Vue.extend({
     this.loginUserName = this.$store.getters['user/getLoginUserName']
   },
   methods: {
+    /**
+     * 都道府県をクリックする.
+     * @remarks 都道府県をクリックするとその都道府県の投稿一覧へ
+     */
+    searchPrefecture(prefecture: string) {
+      console.log('都道府県:' + prefecture)
+      this.$store.commit('searchPrefecture/catchPrefecture', prefecture)
+      console.log(
+        'state getters' +
+          this.$store.getters['searchPrefecture/getPrefectureName']
+      )
+      this.$router.push('/search')
+    },
     /**
      *  親から渡されたpostIDに基づいて、投稿詳細内容をAPIから取得する.
      */

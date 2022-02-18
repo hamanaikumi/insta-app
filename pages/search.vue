@@ -99,7 +99,7 @@ export default Vue.extend({
   data() {
     return {
       // 表示切り替え用
-      display: 'account',
+      display: 'keyword',
       // FollowFollowingボタン
       button: 'Follow',
       // Followしていない
@@ -139,7 +139,20 @@ export default Vue.extend({
       this.displayCaptionList = res
       this.displayPrefectureList = res
     })
-    console.log('親:created')
+
+    // 投稿詳細画面から都道府県名クリックの結果表示
+
+    // 投稿詳細から取得した都道府県
+    const PREFECTURE_NAME: any =
+      this.$store.getters['searchPrefecture/getPrefectureName']
+    // searchPrefectureのstateが空欄じゃない時の処理
+    if (PREFECTURE_NAME !== '') {
+      this.display = 'prefecture'
+      this.searchWord = PREFECTURE_NAME
+      this.onSearch()
+      // searchPrefectureのstateを初期化
+      this.$store.commit('searchPrefecture/catchPrefecture', '')
+    }
   },
 
   methods: {
