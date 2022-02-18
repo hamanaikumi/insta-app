@@ -1,8 +1,24 @@
 module.exports = {
-  mode: "jit",
+  mode: 'jit',
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    fontFamily: {
+      body: [
+        'Avenir',
+        'Helvetica Neue',
+        'Helvetica',
+        'Arial',
+        'Hiragino Sans',
+        'ヒラギノ角ゴシック',
+        'メイリオ',
+        'Meiryo',
+        'YuGothic',
+        'Yu Gothic',
+        'MS PGothic',
+        'sans-serif',
+      ],
+    },
     extend: {
       colors: {
         // 'カラー名': 'カラーコード'
