@@ -139,7 +139,7 @@ export default Vue.extend({
     getdate() {
       for (const notice of this.notices) {
         // eslint-disable-next-line import/no-named-as-default-member
-        moment.locale('ja')
+        // moment.locale('ja')
         const newDate = moment(new Date(notice.date)).fromNow()
         notice.date = newDate
       }
