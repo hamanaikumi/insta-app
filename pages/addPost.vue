@@ -222,7 +222,6 @@
         Share
       </button>
     </div>
-    {{ cropImageCodes }}
   </div>
 </template>
 
