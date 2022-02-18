@@ -83,7 +83,7 @@
       <div v-for="(item, i) of displayPrefectureList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
         <router-link :to="'/postDetail/' + item.postId">
-          <div class="m-px flex justify-center" @click="openModal(item.postId)">
+          <div class="m-px flex justify-center">
             <img :src="displayPrefectureList[i].imageUrl[0]" />
           </div>
         </router-link>
@@ -107,7 +107,7 @@ export default Vue.extend({
   data() {
     return {
       // 表示切り替え用
-      display: 'account',
+      display: 'keyword',
       // FollowFollowingボタン
       button: 'Follow',
       // Followしていない
@@ -147,6 +147,20 @@ export default Vue.extend({
       this.displayCaptionList = res
       this.displayPrefectureList = res
     })
+
+    // 投稿詳細画面から都道府県名クリックの結果表示
+
+    // 投稿詳細から取得した都道府県
+    const PREFECTURE_NAME: any =
+      this.$store.getters['searchPrefecture/getPrefectureName']
+    // searchPrefectureのstateが空欄じゃない時の処理
+    if (PREFECTURE_NAME !== '') {
+      this.display = 'prefecture'
+      this.searchWord = PREFECTURE_NAME
+      this.onSearch()
+      // searchPrefectureのstateを初期化
+      this.$store.commit('searchPrefecture/catchPrefecture', '')
+    }
   },
   mounted() {},
   methods: {

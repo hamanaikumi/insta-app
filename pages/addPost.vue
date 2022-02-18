@@ -3,7 +3,7 @@
     <!-- image -->
     <div class="flex justify-center grid grid-cols-6 gap-1 mb-4 mx-2">
       <div
-        class="flex justify-center pt-5 pb-6 border border-light-gray col-span-3 h-64"
+        class="flex justify-center pt-5 pb-6 border border-light-gray col-span-3 h-60"
       >
         <div class="space-y-1 text-center mt-12">
           <svg
@@ -42,7 +42,7 @@
             <modal
               name="image-modal"
               :click-to-close="false"
-              width="80%"
+              width="300px"
               height="auto"
             >
               <div class="modal-body my-4 flex flex-col">
@@ -84,39 +84,45 @@
         </div>
       </div>
       <!-- トリミング後の画像 -->
-      <div
-        class="flex justify-center px-3 pt-5 pb-4 border border-light-gray col-span-3"
-      >
-        <div class="grid content-center w-32">
-          <button
-            v-show="cropImageCodes.length > 1 && index > 0"
-            type="button"
-            @click="prev"
-          >
-            <i class="fas fa-angle-left"></i>
-          </button>
-        </div>
-
-        <div v-for="(image, i) of cropImageCodes" :key="i">
+      <div class="px-2 py-2 border border-light-gray col-span-3">
+        <div v-for="(image, i) of cropImageCodes" :key="i" class="crop-image">
           <img
             v-show="index === i"
             :src="image"
             alt="Cropped Image"
-            width="100%"
-            height="100%"
-            class="mt-12"
+            class="object-center"
           />
-        </div>
-        <div class="grid content-center w-32">
           <button
-            v-if="
-              cropImageCodes.length > 1 && index < cropImageCodes.length - 1
-            "
-            type="button"
-            @click="next"
+            v-show="index === i"
+            class="rounded-full px-2"
+            @click="deleteImage(i)"
           >
-            <i class="fas fa-angle-right"></i>
+            &times;
           </button>
+        </div>
+        <div class="mt-2 flex justify-between">
+          <div>
+            <button
+              v-show="cropImageCodes.length > 1 && index > 0"
+              type="button"
+              class="bg-light-gray hover:bg-dark-gray rounded-full px-2"
+              @click="prev"
+            >
+              <i class="fa fa-chevron-left"></i>
+            </button>
+          </div>
+          <div>
+            <button
+              v-if="
+                cropImageCodes.length > 1 && index < cropImageCodes.length - 1
+              "
+              type="button"
+              class="bg-light-gray hover:bg-dark-gray rounded-full px-2"
+              @click="next"
+            >
+              <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -154,7 +160,7 @@
             <modal
               name="prefecture-modal"
               :click-to-close="false"
-              width="80%"
+              width="300px"
               height="400px"
             >
               <div class="modal-body my-8 flex flex-col">
@@ -234,7 +240,8 @@ export default Vue.extend({
       // トリミング後の画像のソース(変換前)
       cropImageCode: '',
       // トリミング後の画像のソース(変換後)
-      cropImageFile: {},
+      // eslint-disable-next-line no-array-constructor
+      cropImageFiles: Array<any>(),
       // トリミング後の画像のソース(変換前)を格納する配列
       // eslint-disable-next-line no-array-constructor
       cropImageCodes: Array<any>(),
@@ -304,7 +311,7 @@ export default Vue.extend({
         const imageFile = new File([buffer.buffer], fileName, {
           type: fileType,
         })
-        this.cropImageFile = imageFile
+        this.cropImageFiles.push(imageFile)
         // 初期化
         this.selectedImage = ''
         // トリミング後のコードを配列に格納
@@ -394,15 +401,15 @@ export default Vue.extend({
       // S3のバケットに写真をPOST
       this.imageUrlArray = []
       let imageUrl = ''
-      for (const url of urlArray) {
-        await fetch(url, {
+      for (let i = 0; i < urlArray.length; i++) {
+        await fetch(urlArray[i], {
           method: 'PUT',
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-          body: this.cropImageFile as any,
+          body: this.cropImageFiles[i] as any,
         })
-        imageUrl = url.split('?')[0]
+        imageUrl = urlArray[i].split('?')[0]
         await this.imageUrlArray.push(imageUrl)
       }
       // ログインしているユーザーIDを取得.
@@ -425,6 +432,15 @@ export default Vue.extend({
     cancel() {
       this.$router.push('/Home')
     },
+    /**
+     * 選択した写真を削除する.
+     */
+    deleteImage(i: number) {
+      this.cropImageCodes.splice(i, 1)
+      if (i !== 0) {
+        this.prev()
+      }
+    },
   },
 })
 </script>
@@ -440,5 +456,19 @@ export default Vue.extend({
 
 ::placeholder {
   color: #8a8a8a;
+}
+.fa {
+  color: white;
+}
+.crop-image {
+  position: relative;
+}
+.crop-image > button {
+  position: absolute;
+  top: 1%;
+  right: 5%;
+  margin: 0;
+  padding: 0;
+  color: white;
 }
 </style>
