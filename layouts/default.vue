@@ -26,7 +26,7 @@ export default Vue.extend({
   updated() {
     this.getNotice()
   },
-  created(){
+  created() {
     this.getNotice()
   },
   methods: {
@@ -39,7 +39,9 @@ export default Vue.extend({
         const res = await this.$axios.get(
           `https://api-instagram-app.herokuapp.com/notice/${userId}`
         )
-        this.notice = res.data[0].checked
+        if (res.data.length !== 0) {
+          this.notice = res.data[0].checked
+        }
       }
     },
   },
