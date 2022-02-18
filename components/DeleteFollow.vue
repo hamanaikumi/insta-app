@@ -46,6 +46,21 @@ export default Vue.extend({
       isFollowing: true,
     }
   },
+  watch: {
+    statusId() {
+      // 他人のフォロー・フォロワー一覧画面の時の初期表示
+      if (this.statusId === 3 || this.statusId === 4) {
+        if (this.myUserId === this.followUserId) {
+          this.displayButton = false
+        }
+        if (this.isFollowing === true) {
+          this.button = 'フォロー中'
+        } else {
+          this.button = 'フォローする'
+        }
+      }
+    },
+  },
   created() {
     // ログイン中ユーザーが対象ユーザーをフォローしているか判定
     for (const myFollowList of this.myFollowLists) {
