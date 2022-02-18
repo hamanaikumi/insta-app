@@ -1,19 +1,44 @@
 <template>
-  <div class="post-container">
-    <div class="top-container flex flex-row">
+  <div class="w-full py-2">
+    <div class="items-center flex flex-row mb-0.5 max-w-full">
       <div class="icon-container">
-        <img :src="currentPostUserInfo.icon" alt="" />
+        <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+          <img
+            :src="currentPostUserInfo.icon"
+            alt="icon"
+            class="h-10 w-10 rounded-full object-cover"
+          />
+        </nuxt-link>
       </div>
-      <div class="top-item-container">
-        <div class="user-name">{{ currentPostUserInfo.userName }}</div>
-        <div class="prefecture-name">
-          {{ currentPostDetail.prefectureName[0] }}
+      <div class="top-item-container ml-2">
+        <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+          <div class="user-name font-medium text-sm">
+            {{ currentPostUserInfo.userName }}
+          </div>
+        </nuxt-link>
+        <div class="prefecture-name font-light text-xs">
+          {{ currentPostDetail.prefectureName }}
         </div>
       </div>
     </div>
-    <!-- 投稿画像 -->
-    <div class="img-container">
-      <img :src="currentPostDetail.imageUrl" alt="" />
+
+    <!-- 投稿画像 2枚以上 -->
+    <div>
+      <swiper :options="swiperOption" class="c-swiper">
+        <swiper-slide
+          v-for="url of currentPostDetail.imageUrl"
+          :key="url"
+          class="images-container w-full"
+        >
+          <img :src="url" alt="投稿画像" class="max-w-full my-0 mx-auto" />
+        </swiper-slide>
+        <!-- ページネーションオプション(ドット) -->
+        <div
+          v-show="currentPostDetail.imageUrl.length > 1"
+          slot="pagination"
+          class="swiper-pagination swiper-pagination-black"
+        ></div>
+      </swiper>
     </div>
 
     <div class="activity-container">
@@ -21,14 +46,16 @@
         <!-- いいねボタン -->
         <!-- いいねする -->
         <button v-show="!likesFlag" type="button" @click="clickLiked()">
-          <i class="far fa-heart"></i>
+          <i class="far fa-heart text-xl"></i>
         </button>
         <!-- いいね解除 -->
         <button v-show="likesFlag" type="button" @click="clickUnLiked()">
-          <i class="fas fa-heart" style="color: crimson"></i>
+          <i class="fas fa-heart text-xl" style="color: crimson"></i>
         </button>
         <!-- コメントボタン -->
-        <button class="ml-2"><i class="far fa-comment"></i></button>
+        <button class="ml-3" @click="openCommentModal()">
+          <i class="far fa-comment text-xl"></i>
+        </button>
       </div>
       <div class="liked-container">
         <span>
@@ -37,54 +64,69 @@
         >
       </div>
     </div>
-    <div class="caption-container">
-      <div class="user-name">{{ currentPostUserInfo.userName }}</div>
-      <div class="caption-container">{{ currentPostDetail.caption }}</div>
-      <div>{{ currentPostDetail.postData }}</div>
+    <!-- caption -->
+    <div class="font-light">
+      <div class="user-name font-normal">
+        @{{ currentPostUserInfo.userName }}
+      </div>
+      <div class="font-light">{{ currentPostDetail.caption }}</div>
+      <div class="text-sm">{{ currentPostDetail.postData }}</div>
     </div>
+    <!-- コメントモーダル表示 -->
+    <CommentsModal
+      v-if="showCommentFlag"
+      :get-post-id="givePostId"
+      @commentClose="closeCommentModal()"
+    ></CommentsModal>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import axios from 'axios'
-// no-this-in-fetch-data
+import CommentsModal from '~/components/CommentsModal.vue'
 
+// no-this-in-fetch-data
 export default Vue.extend({
+  components: { CommentsModal },
   props: {
     // 親コンポーネント（PostModal.vueやHome.vue）から受けたpostID
-    givePostId: Number,
+    givePostId: { type: Number, required: true },
   },
-
   data() {
     return {
       // 現在取得している投稿
       currentPostDetail: {
+        postId: 0,
         caption: '',
-        prefectureName: [],
+        prefectureName: '',
         postData: '',
         imageUrl: [],
         likes: [],
       },
-
       // 現在取得している投稿のユーザー情報
       currentPostUserInfo: Object,
-
       // 現在の投稿のいいね数
       currentLikes: [],
-
       // 投稿日時 ENGLISH
       postDateByEnglish: '',
-
-      // いいね する(true) / 解除する(false)
+      // いいね する済(true) / 解除する(false)
       likesFlag: false,
-
       // ログインしているユーザー名
       loginUserName: '',
+      // コメントModalの表示の有無
+      showCommentFlag: false,
+
+      // カルーセル
+      swiperOption: {
+        // 中略
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      },
     }
   },
-
-  computed: {},
 
   created() {
     // poatIDに基づいた投稿詳細内容を取得するメソッド
@@ -93,7 +135,6 @@ export default Vue.extend({
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
   },
-
   methods: {
     /**
      *  親から渡されたpostIDに基づいて、投稿詳細内容をAPIから取得する.
@@ -135,30 +176,32 @@ export default Vue.extend({
 
       // 投稿詳細オブジェクト生成
       this.currentPostDetail = {
+        postId: this.givePostId,
         caption: responsePostDetail.caption,
-        prefectureName: Object.values(responsePostDetail.prefecture),
+        prefectureName: responsePostDetail.prefecture.name,
         postData: this.postDateByEnglish,
         imageUrl: responsePostDetail.imageUrl,
         likes: responsePostDetail.favorites,
       }
+
       // 現在のpostのユーザー情報
       this.currentPostUserInfo = response.data.userinfo
 
-      // ログインユーザーが各投稿をいいねしているかを判断
-      // Array.every()が true/false で返してくれる
-      const RESULT = this.currentPostDetail.likes.every((userName) => {
-        return userName === this.loginUserName
-      })
-      if (RESULT === true) {
+      // ログインユーザーが各投稿をいいねしているかをuserNameで判断
+
+      const RESULT = this.currentPostDetail.likes.find(
+        (name) => name === this.loginUserName
+      )
+      // .find()の結果一致する名前があればいいね済に
+      if (RESULT === this.loginUserName) {
         this.likesFlag = true
-      } else if (RESULT === false) {
+      } else {
         this.likesFlag = false
       }
     },
 
     /**
      * いいねする.
-     *
      */
     async clickLiked() {
       // いいね追加APIにpost
@@ -166,10 +209,8 @@ export default Vue.extend({
         userName: this.$store.getters['user/getLoginUserName'],
         postId: this.givePostId,
       })
-
       // いいねフラグをいいね済み(true)に変更
       this.likesFlag = true
-
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
@@ -187,10 +228,8 @@ export default Vue.extend({
         userName: this.$store.getters['user/getLoginUserName'],
         postId: this.givePostId,
       })
-
       // いいねフラグをいいね解除(false)に変更
       this.likesFlag = false
-
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
@@ -198,62 +237,46 @@ export default Vue.extend({
       // いいねの表示件数更新
       this.currentPostDetail.likes = responseLikes.data.favorites
     },
+    /**
+     * モーダルでコメント一覧を表示する.
+     */
+    openCommentModal() {
+      this.showCommentFlag = true
+    },
+    /**
+     * モーダルのコメント一覧を閉じる.
+     */
+    closeCommentModal() {
+      this.showCommentFlag = false
+    },
   },
 })
 </script>
 
 <style scoped lang="scss">
-.post-container {
-  width: 100%;
-  padding: 0.63rem;
-}
+// ページネーション
+// .images-container {
+//   position: relative;
 
-.top-container {
-  max-width: 100%;
+//   .swiper-pagination {
+//     position: absolute;
+//     left: 50%;
+//     bottom: -30px;
+//     transform: translateX(-50%);
 
-  align-items: center;
-  box-sizing: border-box;
-}
+//   }
+// }
 
-.icon-container {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
+.images-container {
+  min-height: 15rem;
 }
-.icon-container img {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-}
-.top-item-container {
-  margin-left: 1rem;
-}
-.user-name {
-  font-size: 0.87rem;
-  font-weight: 500;
-  line-height: 1;
-}
-.prefecture-name {
-  font-size: 0.75rem;
-  font-weight: 300;
-}
-
-.img-container {
-  width: 100%;
-  max-height: 17.5rem;
-  text-align: center;
-}
-.img-container img {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  margin: 0 auto;
-}
-
-.caption-container {
-  max-width: 100%;
-  width: 100%;
-  font-weight: 300;
+.swiper-container {
+  position: relative;
+  padding-bottom: 1.2rem;
+  .swiper-pagination {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+  }
 }
 </style>
