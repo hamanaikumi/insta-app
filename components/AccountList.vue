@@ -2,12 +2,12 @@
   <div>
     <div class="flex w-screen my-1">
       <div class="w-1/4 flex justify-center flex-none self-center">
-        <router-link :to="'/mypage/' + user.userId">
+        <router-link :to="'/UserPage/' + user.userId">
           <img :src="user.icon" class="rounded-full w-16 h-16" alt="" />
         </router-link>
       </div>
       <div class="flex-grow self-center">
-        <router-link :to="'/mypage/' + user.userId">
+        <router-link :to="'/UserPage/' + user.userId">
           {{ user.userName }} <br />
         </router-link>
       </div>
@@ -54,6 +54,9 @@ export default Vue.extend({
       // FollowFollowingボタン
       followButton: false,
       followingButton: true,
+      //
+      searchUserId: '',
+      //
     }
   },
   props: {
@@ -76,24 +79,11 @@ export default Vue.extend({
       this.buttonName = 'Follow'
     }
   },
-  beforeUpdate() {
-    if (this.userId === this.user.userId) {
-      this.followButton = false
-      this.followingButton = false
-    } else if (this.user.follower.includes(this.userId)) {
-      this.followButton = false
-      this.followingButton = true
-      this.buttonName = 'Following'
-    } else {
-      this.followButton = true
-      this.followingButton = false
-      this.buttonName = 'Follow'
-    }
-  },
 
   methods: {
     // フォローする
     clickFollow() {
+      // this.reCreated()
       this.$axios
         .$post(this.followUrl, {
           userId: this.userId,
@@ -107,6 +97,8 @@ export default Vue.extend({
     },
     // フォロー解除
     clickUnFollow() {
+      // this.reCreated()
+
       this.$axios
         .$post(this.unfollowUrl, {
           userId: this.userId,
