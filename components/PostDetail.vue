@@ -147,12 +147,7 @@ export default Vue.extend({
      * @remarks 都道府県をクリックするとその都道府県の投稿一覧へ
      */
     searchPrefecture(prefecture: string) {
-      console.log('都道府県:' + prefecture)
       this.$store.commit('searchPrefecture/catchPrefecture', prefecture)
-      console.log(
-        'state getters' +
-          this.$store.getters['searchPrefecture/getPrefectureName']
-      )
       this.$router.push('/search')
     },
     /**

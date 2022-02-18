@@ -9,7 +9,7 @@ export const state = () => ({
 // mutaions
 export const mutations = {
   /**
-   * 都道府県名を取得して保存 (stateの初期化も)
+   * 都道府県名を取得して保存 (stateの初期化も).
    * @param state -ステート
    * @param context - 投稿詳細から取得した都道府県名
    */
@@ -21,7 +21,7 @@ export const mutations = {
 // getters
 export const getters = {
   /**
-   * 都道府県名を取得
+   * 都道府県名を取得する.
    * @param state -ステート
    * @returns ステートに保存してる都道府県
    */
