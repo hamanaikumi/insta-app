@@ -49,14 +49,12 @@
         </div>
       </div>
     </form>
-
     <!-- 写真表示用 -->
-    <div v-if="showErrorMessage" class="w-screen flex justify-center">
-      <!-- <div v-show="showErrorMessage" class="w-screen flex justify-center"> -->
-      {{ errorMessage }}
-    </div>
-    <div v-show="display === 'keyword'" class="w-screen grid grid-cols-3">
-      <!-- <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3"> -->
+    <!-- <div v-show="display === 'keyword'" class="w-screen grid grid-cols-3"> -->
+    <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3">
+      <div v-if="keyErrorMessage" class="w-screen flex justify-center">
+        {{ errorMessage }}
+      </div>
       <div v-for="(item, i) of displayCaptionList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
         <router-link :to="'/postDetail/' + item.postId">
@@ -68,8 +66,11 @@
     </div>
     <!-- ここまで -->
     <!-- アカウント表示用 -->
-    <!-- <div v-else-if="display === 'account'"> -->
-    <div v-show="display === 'account'">
+    <div v-else-if="display === 'account'">
+      <!-- <div v-show="display === 'account'"> -->
+      <div v-if="accErrorMessage" class="w-screen flex justify-center">
+        {{ errorMessage }}
+      </div>
       <div v-for="(item, i) of displayAccountList" :key="i">
         <AccountList ref="accountList" :user="item" ff='"fFFFf"+i' />
         <!-- <AccountList :ref="accountList + i" :user="displayAccountList[i]" /> -->
@@ -78,8 +79,11 @@
     <!-- ここまで -->
 
     <!-- 都道府県表示用 -->
-    <!-- <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3"> -->
-    <div v-show="display === 'prefecture'" class="w-screen grid grid-cols-3">
+    <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3">
+      <!-- <div v-show="display === 'prefecture'" class="w-screen grid grid-cols-3"> -->
+      <div v-if="preErrorMessage" class="w-screen flex justify-center">
+        {{ errorMessage }}
+      </div>
       <div v-for="(item, i) of displayPrefectureList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
         <router-link :to="'/postDetail/' + item.postId">
@@ -115,7 +119,9 @@ export default Vue.extend({
       // Followしている
       following: false,
       // エラーメッセージ表示用
-      showErrorMessage: false,
+      keyErrorMessage: false,
+      accErrorMessage: false,
+      preErrorMessage: false,
       errorMessage: '',
       // 検索表示用
       displayCaptionList: [],
@@ -147,7 +153,6 @@ export default Vue.extend({
       this.displayCaptionList = res
       this.displayPrefectureList = res
     })
-
     // 投稿詳細画面から都道府県名クリックの結果表示
 
     // 投稿詳細から取得した都道府県
@@ -163,12 +168,19 @@ export default Vue.extend({
     }
   },
   mounted() {},
+  updated() {
+    this.displayAccountList.length = 0
+  },
+
   methods: {
     /**
      * 検索機能
      */
     async onSearch() {
+      this.displayAccountList.length = 0
       if (this.display === 'keyword') {
+        this.accErrorMessage = false
+        this.preErrorMessage = false
         /**
          * キーワード検索機能
          */
@@ -177,14 +189,15 @@ export default Vue.extend({
           .then((res) => {
             if (res.status === 'error') {
               this.displayCaptionList.length = 0
-              this.showErrorMessage = true
+              this.keyErrorMessage = true
               this.errorMessage = res.message
             } else {
-              this.showErrorMessage = false
               this.displayCaptionList = res
             }
           })
       } else if (this.display === 'account') {
+        this.keyErrorMessage = false
+        this.accErrorMessage = false
         /**
          * アカウント検索機能
          */
@@ -194,15 +207,19 @@ export default Vue.extend({
             // 検索結果がなかった時
             if (res.status === 'error') {
               this.displayAccountList.length = 0
-              this.showErrorMessage = true
+              this.accErrorMessage = true
               this.errorMessage = res.message
               // 検索結果があったとき
+            } else if (this.searchWord === '') {
+              this.accErrorMessage = true
+              this.errorMessage = '検索ワードを入力してください'
             } else {
-              this.showErrorMessage = false
               this.displayAccountList = res
             }
           })
       } else if (this.display === 'prefecture') {
+        this.keyErrorMessage = false
+        this.accErrorMessage = false
         /**
          * 都道府県検索機能
          */
@@ -211,10 +228,10 @@ export default Vue.extend({
           .then((res) => {
             if (res.status === 'error') {
               this.displayPrefectureList.length = 0
-              this.showErrorMessage = true
+              this.preErrorMessage = true
               this.errorMessage = res.message
             } else {
-              this.showErrorMessage = false
+              // this.showErrorMessage = false
               this.displayPrefectureList = res
             }
           })
