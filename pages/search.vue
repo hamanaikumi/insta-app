@@ -76,7 +76,7 @@
       <div v-for="(item, i) of displayPrefectureList" :key="i">
         <!-- ルーターリンクは投稿詳細に飛ぶ -->
         <router-link :to="'/postDetail/' + item.postId">
-          <div class="m-px flex justify-center" @click="openModal(item.postId)">
+          <div class="m-px flex justify-center">
             <img :src="displayPrefectureList[i].imageUrl[0]" />
           </div>
         </router-link>
