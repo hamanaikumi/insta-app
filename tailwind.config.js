@@ -30,6 +30,11 @@ module.exports = {
         'warning-color': '#DC143C',
         'accent-color': '#0D9900',
       },
+      // widthのカスタマイズ
+      width: {
+        '1/100': '1%',
+        '33/100': '33%',
+      },
     },
   },
   variants: {
