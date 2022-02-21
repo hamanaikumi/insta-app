@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!-- 通知がなにもないとき -->
+    <div
+      v-if="notices.length === 0"
+      class="flex flex-col justify-center w-full h-[75vh]"
+    >
+      <div class="text-center text-dark-gray text-xl">No notification</div>
+    </div>
     <div v-for="notice of notices" :key="notice.noticeId">
       <!-- 通知を初めて見たとき -->
       <div v-if="notice.checked === false">
@@ -13,7 +20,7 @@
           <!-- いいねのとき -->
           <div v-if="notice.type === 'favorite'" class="p-1">
             <nuxt-link :to="'/postdetail/' + notice.contents.postId">
-              <div class="">
+              <div class="w-full h-full">
                 <p class="font-bold inline-block">
                   {{ notice.contents.newUser.userName }}
                 </p>
@@ -24,7 +31,7 @@
           <!-- 新しいコメントのとき -->
           <div v-if="notice.type === 'comment'" class="p-1">
             <nuxt-link :to="'/postdetail/' + notice.contents.postId">
-              <div class="p-4">
+              <div class="w-full h-full">
                 <p class="font-bold inline-block">
                   {{ notice.contents.newUser.userName }}
                 </p>
@@ -35,7 +42,7 @@
           <!-- 新しいフォロワーのとき -->
           <div v-if="notice.type === 'follow'" class="p-1">
             <nuxt-link :to="'/userPage/' + notice.contents.newUser.userId">
-              <div class="">
+              <div class="w-full h-full">
                 <p class="font-bold inline-block">
                   {{ notice.contents.newUser.userName }}
                 </p>
@@ -63,7 +70,7 @@
           <!-- いいねのとき -->
           <div v-if="notice.type === 'favorite'" class="p-1">
             <nuxt-link :to="'/postdetail/' + notice.contents.postId">
-              <div class="">
+              <div class="w-full h-full">
                 <p class="font-bold inline-block">
                   {{ notice.contents.newUser.userName }}
                 </p>
@@ -74,7 +81,7 @@
           <!-- 新しいコメントのとき -->
           <div v-if="notice.type === 'comment'" class="p-1">
             <nuxt-link :to="'/postdetail/' + notice.contents.postId">
-              <div class="">
+              <div class="w-full h-full">
                 <p class="font-bold inline-block">
                   {{ notice.contents.newUser.userName }}
                 </p>
@@ -85,7 +92,7 @@
           <!-- 新しいフォロワーのとき -->
           <div v-if="notice.type === 'follow'" class="p-1">
             <nuxt-link :to="'/userPage/' + notice.contents.newUser.userId">
-              <div class="">
+              <div class="w-full h-full">
                 <p class="font-bold inline-block">
                   {{ notice.contents.newUser.userName }}
                 </p>
@@ -110,7 +117,7 @@ import moment from 'moment'
 export default Vue.extend({
   data() {
     return {
-      notices: [] as any,
+      notices: {} as any,
       loginUserId: Number,
     }
   },
