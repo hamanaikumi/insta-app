@@ -7,11 +7,17 @@
       <div
         v-for="postInformation of postInformations"
         :key="postInformation.postId"
-        class="w-33/100 mt-px"
+        class="w-33/100 mt-px relative"
       >
         <nuxt-link :to="`/PostDetail/${postInformation.postId}`">
           <img :src="postInformation.imageUrl[0]"
         /></nuxt-link>
+        <div
+          v-if="multipleImages(postInformation.imageUrl)"
+          class="absolute top-1 right-1.5"
+        >
+          <i class="far fa-images text-white"></i>
+        </div>
       </div>
     </div>
     <div
@@ -49,6 +55,15 @@ export default Vue.extend({
     if (this.postInformations.length === 0) {
       this.hasPost = false
     }
+  },
+  methods: {
+    multipleImages(images: []) {
+      if (images.length > 1) {
+        return true
+      } else {
+        return false
+      }
+    },
   },
 })
 </script>
