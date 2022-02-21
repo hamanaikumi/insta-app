@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-wrap w-screen">
-    <form class="my-8">
-      <div class="w-screen flex justify-center my-2 h-8">
+  <div class="flex flex-wrap w-full">
+    <form class="my-8 w-full flex justify-center flex-wrap">
+      <div class="w-full flex justify-center my-2 h-8">
         <input
           v-model="searchWord"
           class="focus:outline-none p-2 border-b-2"
@@ -11,11 +11,8 @@
         <button type="button" class="border-b-2 w-8" @click="onSearch">
           <i class="fas fa-search"></i>
         </button>
-        <!-- <button type="button" class="border-b-2 w-8" @click="ononSearch">
-          <i class="fas fa-search"></i>
-        </button> -->
       </div>
-      <div class="w-screen flex justify-center my-2">
+      <div class="w-full flex justify-center my-2">
         <div class="mx-2">
           <input
             id="keyword"
@@ -49,44 +46,48 @@
         </div>
       </div>
     </form>
-
     <!-- 写真表示用 -->
-    <div v-if="showErrorMessage" class="w-screen flex justify-center">
-      <!-- <div v-show="showErrorMessage" class="w-screen flex justify-center"> -->
-      {{ errorMessage }}
-    </div>
-    <div v-show="display === 'keyword'" class="w-screen grid grid-cols-3">
-      <!-- <div v-if="display === 'keyword'" class="w-screen grid grid-cols-3"> -->
-      <div v-for="(item, i) of displayCaptionList" :key="i">
-        <!-- ルーターリンクは投稿詳細に飛ぶ -->
-        <router-link :to="'/postDetail/' + item.postId">
-          <div class="m-px flex justify-center">
-            <img :src="displayCaptionList[i].imageUrl[0]" />
-          </div>
-        </router-link>
+    <div v-if="display === 'keyword'" class="w-full">
+      <div v-if="keyErrorMessage" class="w-full flex justify-center">
+        {{ errorMessage }}
+      </div>
+      <div class="w-full grid grid-cols-3">
+        <div v-for="(item, i) of displayCaptionList" :key="i">
+          <router-link :to="'/postDetail/' + item.postId">
+            <div class="m-px flex justify-center">
+              <img :src="displayCaptionList[i].imageUrl[0]" />
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
     <!-- ここまで -->
     <!-- アカウント表示用 -->
-    <!-- <div v-else-if="display === 'account'"> -->
-    <div v-show="display === 'account'">
-      <div v-for="(item, i) of displayAccountList" :key="i">
-        <AccountList ref="accountList" :user="item" ff='"fFFFf"+i' />
-        <!-- <AccountList :ref="accountList + i" :user="displayAccountList[i]" /> -->
+    <div v-else-if="display === 'account'" class="w-full">
+      <div v-if="accErrorMessage" class="w-full flex justify-center">
+        {{ errorMessage }}
+      </div>
+      <div class="w-full">
+        <div v-for="(item, i) of displayAccountList" :key="i">
+          <AccountList ref="accountList" :user="item" ff='"fFFFf"+i' />
+        </div>
       </div>
     </div>
     <!-- ここまで -->
-
     <!-- 都道府県表示用 -->
-    <!-- <div v-else-if="display === 'prefecture'" class="w-screen grid grid-cols-3"> -->
-    <div v-show="display === 'prefecture'" class="w-screen grid grid-cols-3">
-      <div v-for="(item, i) of displayPrefectureList" :key="i">
-        <!-- ルーターリンクは投稿詳細に飛ぶ -->
-        <router-link :to="'/postDetail/' + item.postId">
-          <div class="m-px flex justify-center">
-            <img :src="displayPrefectureList[i].imageUrl[0]" />
-          </div>
-        </router-link>
+    <div v-else-if="display === 'prefecture'" class="w-full">
+      <div v-if="preErrorMessage" class="w-full flex justify-center">
+        {{ errorMessage }}
+      </div>
+      <div class="w-full grid grid-cols-3">
+        <div v-for="(item, i) of displayPrefectureList" :key="i">
+          <!-- ルーターリンクは投稿詳細に飛ぶ -->
+          <router-link :to="'/postDetail/' + item.postId">
+            <div class="m-px flex justify-center">
+              <img :src="displayPrefectureList[i].imageUrl[0]" />
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
     <!-- ここまで -->
@@ -115,7 +116,9 @@ export default Vue.extend({
       // Followしている
       following: false,
       // エラーメッセージ表示用
-      showErrorMessage: false,
+      keyErrorMessage: false,
+      accErrorMessage: false,
+      preErrorMessage: false,
       errorMessage: '',
       // 検索表示用
       displayCaptionList: [],
@@ -146,6 +149,9 @@ export default Vue.extend({
     this.$axios.$get(this.allPostsUrl).then((res) => {
       this.displayCaptionList = res
       this.displayPrefectureList = res
+      // 初期表示の写真をランダムに並べ替え
+      this.shuffleArray(this.displayCaptionList)
+      this.shuffleArray(this.displayPrefectureList)
     })
 
     // 投稿詳細画面から都道府県名クリックの結果表示
@@ -163,12 +169,25 @@ export default Vue.extend({
     }
   },
   mounted() {},
+  updated() {
+    this.displayAccountList.length = 0
+  },
+
   methods: {
+    // 画像シャッフル用
+    shuffleArray(inputArray: any[]) {
+      inputArray.sort(() => Math.random() - 0.5)
+    },
+
     /**
      * 検索機能
      */
     async onSearch() {
+      // this.displayAccountList.length = 0
       if (this.display === 'keyword') {
+        this.accErrorMessage = false
+        this.preErrorMessage = false
+        this.keyErrorMessage = false
         /**
          * キーワード検索機能
          */
@@ -177,14 +196,18 @@ export default Vue.extend({
           .then((res) => {
             if (res.status === 'error') {
               this.displayCaptionList.length = 0
-              this.showErrorMessage = true
+              this.keyErrorMessage = true
               this.errorMessage = res.message
+            } else if (this.searchWord === '') {
+              this.displayCaptionList = res
+              this.shuffleArray(this.displayCaptionList)
             } else {
-              this.showErrorMessage = false
               this.displayCaptionList = res
             }
           })
       } else if (this.display === 'account') {
+        this.keyErrorMessage = false
+        this.accErrorMessage = false
         /**
          * アカウント検索機能
          */
@@ -194,15 +217,21 @@ export default Vue.extend({
             // 検索結果がなかった時
             if (res.status === 'error') {
               this.displayAccountList.length = 0
-              this.showErrorMessage = true
+              this.accErrorMessage = true
               this.errorMessage = res.message
               // 検索結果があったとき
+            } else if (this.searchWord === '') {
+              this.accErrorMessage = true
+              this.errorMessage = '検索ワードを入力してください'
             } else {
-              this.showErrorMessage = false
               this.displayAccountList = res
             }
           })
       } else if (this.display === 'prefecture') {
+        this.keyErrorMessage = false
+        this.accErrorMessage = false
+        this.preErrorMessage = false
+
         /**
          * 都道府県検索機能
          */
@@ -211,10 +240,12 @@ export default Vue.extend({
           .then((res) => {
             if (res.status === 'error') {
               this.displayPrefectureList.length = 0
-              this.showErrorMessage = true
+              this.preErrorMessage = true
               this.errorMessage = res.message
+            } else if (this.searchWord === '') {
+              this.displayPrefectureList = res
+              this.shuffleArray(this.displayPrefectureList)
             } else {
-              this.showErrorMessage = false
               this.displayPrefectureList = res
             }
           })
