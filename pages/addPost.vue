@@ -201,7 +201,7 @@
       <textarea
         v-model="caption"
         rows="5"
-        class="block w-full sm:text-sm border border-light-gray p-2"
+        class="block w-full text-sm border border-light-gray p-2 focus:outline-none"
         placeholder="Write a caption..."
       />
     </div>
@@ -392,7 +392,7 @@ export default Vue.extend({
     async submit(): Promise<void> {
       // 画像が添付されていない場合エラー文を表示
       if (this.cropImageCodes.length < 1) {
-        alert('画像ファイルを選択してください')
+        this.errorImage = '画像ファイルを選択してください'
         return
       }
       const urlArray = []
