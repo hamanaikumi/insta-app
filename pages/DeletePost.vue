@@ -4,13 +4,15 @@
     <div class="flex justify-end">
       <button @click="showMenu"><i class="fas fa-ellipsis-h"></i></button>
     </div>
-    <div v-if="menuFlag" class="flex justify-end">
-      <div
-        class="flex justify-center w-16 h-8 border border-light-gray rounded text-sm"
-      >
-        <button @click="showModal">Delete</button>
+    <transition name="fade">
+      <div v-if="menuFlag" class="flex justify-end">
+        <div
+          class="flex justify-center w-16 h-8 border border-light-gray rounded text-sm"
+        >
+          <button @click="showModal">Delete</button>
+        </div>
       </div>
-    </div>
+    </transition>
     <!-- modal -->
     <client-only>
       <modal
@@ -55,10 +57,14 @@ export default Vue.extend({
   },
   data() {
     return {
+      // 削除のプルダウン表示判定用
       menuFlag: false,
     }
   },
   methods: {
+    /**
+     * 削除のブルダウンの表示切り替えをする.
+     */
     showMenu() {
       if (this.menuFlag) {
         this.menuFlag = false
@@ -67,14 +73,14 @@ export default Vue.extend({
       }
     },
     /**
-     * 投稿削除のモーダルウィンドウを表示する.
+     * モーダルウィンドウを表示する.
      */
     showModal() {
       ;(this as any).$modal.show('delete-modal')
       this.menuFlag = false
     },
     /**
-     * 投稿削除のモーダルウィンドウを閉じる.
+     * モーダルウィンドウを閉じる.
      */
     hideModal() {
       ;(this as any).$modal.hide('delete-modal')
@@ -98,5 +104,15 @@ URL：https://api-instagram-app.herokuapp.com/post
 <style>
 .modal-body {
   padding: 5px 25px;
+}
+/* トランジションが始まる/終わるフェーズ中 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+/* 開始/終了状態 */
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
