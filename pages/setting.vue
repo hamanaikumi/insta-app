@@ -1,9 +1,12 @@
 <template>
-  <div class="container mx-auto mt-8">
+  <div class="container mx-auto mt-6">
     <!-- icon -->
-    <div class="grid justify-items-center py-8">
+    <div class="grid justify-items-center py-6">
       <img class="h-28 w-28 rounded-full object-cover" :src="icon" />
-      <label for="file-upload" class="cursor-pointer rounded-md py-2 px-4">
+      <span class="pt-2 text-sm text-warning-color h-6">
+        {{ errorIcon }}
+      </span>
+      <label for="file-upload" class="cursor-pointer rounded-md px-4">
         <span class="text-xl text-accent-color">
           Change Profile Photo
           <input
@@ -84,8 +87,12 @@ export default Vue.extend({
       bio: '',
       // ユーザー名エラー文
       errorUserName: '',
+      // アイコンエラー文
+      errorIcon: '',
       // S3に送信する画像ファイル
       iconFile: {},
+      // アップデート用アイコンURL
+      imageUrl: '',
     }
   },
   /**
@@ -104,6 +111,7 @@ export default Vue.extend({
         this.icon = 'https://jmva.or.jp/wp-content/uploads/2018/07/noimage.png'
       } else {
         this.icon = res.icon
+        this.imageUrl = res.icon
       }
       this.userName = res.userName
       this.bio = res.bio
@@ -113,31 +121,42 @@ export default Vue.extend({
      * @param e - 添付ファイル
      */
     fileSelected(e: any): void {
+      this.errorIcon = ''
       const file = e.target.files[0]
-      if (!file.type.includes('image/')) {
-        alert('画像ファイルを選択してください')
-        return
+      if (file) {
+        if (!file.type.includes('image/')) {
+          this.errorIcon = '画像ファイルを選択してください'
+          return
+        }
+        this.icon = window.URL.createObjectURL(file)
+        this.iconFile = file
       }
-      this.icon = window.URL.createObjectURL(file)
-      this.iconFile = file
     },
     /**
      * アイコン、名前、自己紹介文を変更する.
      */
     async updateUserInfo() {
-      // S3からURLを取得
-      const { url } = await fetch(
-        'https://api-instagram-app.herokuapp.com/s3Url'
-      ).then((res) => res.json())
-      // S3のバケットに写真をPOST
-      await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        body: this.iconFile as any,
-      })
-      const imageUrl: string = url.split('?')[0]
+      // ユーザー名空欄チェック
+      if (this.userName.length === 0) {
+        this.errorUserName = 'ユーザー名を入力してください'
+        return
+      }
+      // アイコンの変更チェック
+      if (this.icon !== this.imageUrl) {
+        // S3からURLを取得
+        const { url } = await fetch(
+          'https://api-instagram-app.herokuapp.com/s3Url'
+        ).then((res) => res.json())
+        // S3のバケットに写真をPOST
+        await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          body: this.iconFile as any,
+        })
+        this.imageUrl = url.split('?')[0]
+      }
       // ログインしているユーザーIDを取得.
       const userId = await this.$store.getters['user/getLoginUserId']
       // APIに更新後のユーザー情報をPOST
@@ -145,7 +164,7 @@ export default Vue.extend({
         'https://api-instagram-app.herokuapp.com/setting',
         {
           userId,
-          icon: imageUrl,
+          icon: this.imageUrl,
           userName: this.userName,
           bio: this.bio,
         }
