@@ -9,10 +9,14 @@
         class="follow-user-list flex flex-row items-center p-2"
       >
         <div class="follow-user-icon w-3/12" type="button">
-          <img :src="userInfo.icon" class="w-16 h-16 rounded-full" />
+          <nuxt-link :to="'/UserPage/' + userInfo.userId">
+            <img :src="userInfo.icon" class="w-16 h-16 rounded-full" />
+          </nuxt-link>
         </div>
         <div class="follow-user-name w-6/12 text-left" type="button">
-          {{ userInfo.userName }}
+          <nuxt-link :to="'/UserPage/' + userInfo.userId">
+            {{ userInfo.userName }}
+          </nuxt-link>
         </div>
 
         <!-- <div class="delete-follow ml-auto">
@@ -64,9 +68,6 @@ export default Vue.extend({
         (userInfo: any) => userInfo.userName === userName
       )
       this.likesUserInfoList.push(result)
-      // console.log('フィルター結果' + JSON.stringify(result))
-
-      console.dir('pushできてる？' + JSON.stringify(this.likesUserInfoList))
     }
   },
   methods: {
