@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto mt-10">
-    <!-- image -->
     <div class="flex justify-center grid grid-cols-6 gap-1 mb-4 mx-2">
+      <!-- image -->
       <div
         class="flex justify-center pt-5 pb-6 border border-light-gray col-span-3 h-60"
       >
@@ -21,10 +21,7 @@
               stroke-linejoin="round"
             />
           </svg>
-          <div
-            v-if="isBeforeSelect"
-            class="flex justify-center text-light-gray"
-          >
+          <div v-if="isBeforeSelect" class="mx-auto text-light-gray">
             <label for="file-upload" class="cursor-pointer rounded-md">
               <span class="text-lg">
                 Select Image
@@ -36,6 +33,9 @@
                   @change="fileSelected"
               /></span>
             </label>
+            <div class="pt-4 text-sm text-warning-color">
+              {{ errorImage }}
+            </div>
           </div>
           <!-- modal -->
           <client-only>
@@ -143,7 +143,7 @@
               d="M168.3 499.2C116.1 435 0 279.4 0 192C0 85.96 85.96 0 192 0C298 0 384 85.96 384 192C384 279.4 267 435 215.7 499.2C203.4 514.5 180.6 514.5 168.3 499.2H168.3zM192 256C227.3 256 256 227.3 256 192C256 156.7 227.3 128 192 128C156.7 128 128 156.7 128 192C128 227.3 156.7 256 192 256z"
             ></path>
           </svg>
-          <div class="flex justify-center text-light-gray">
+          <div class="mx-auto text-light-gray">
             <label
               for="file-upload"
               class="cursor-pointer rounded-md font-medium"
@@ -200,8 +200,8 @@
     <div class="mx-2">
       <textarea
         v-model="caption"
-        rows="4"
-        class="block w-full sm:text-sm border border-light-gray p-2"
+        rows="5"
+        class="block w-full text-sm border border-light-gray p-2 focus:outline-none"
         placeholder="Write a caption..."
       />
     </div>
@@ -256,6 +256,8 @@ export default Vue.extend({
       showPrefecture: '',
       // キャプション(APIにPOST)
       caption: '',
+      // 添付画像エラー文
+      errorImage: '',
     }
   },
 
@@ -266,26 +268,29 @@ export default Vue.extend({
      */
     fileSelected(e: any): void {
       const file = e.target.files[0]
-      if (!file.type.includes('image/')) {
-        alert('画像ファイルを選択してください')
-        return
-      }
-      if (typeof FileReader === 'function') {
-        const reader = new FileReader()
-        reader.onload = (event: any) => {
-          this.selectedImage = event.target.result
-          // rebuild cropperjs with the updated source
-          if (this.$refs.cropper) {
-            ;(this as any).$refs.cropper.replace(event.target.result)
-          }
+      if (file) {
+        if (!file.type.includes('image/')) {
+          this.errorImage = '画像ファイルを選択してください'
+          return
         }
-        reader.readAsDataURL(file)
-      } else {
-        alert('Sorry, FileReader API not supported')
+        if (typeof FileReader === 'function') {
+          const reader = new FileReader()
+          reader.onload = (event: any) => {
+            this.selectedImage = event.target.result
+            // rebuild cropperjs with the updated source
+            if (this.$refs.cropper) {
+              ;(this as any).$refs.cropper.replace(event.target.result)
+            }
+          }
+          reader.readAsDataURL(file)
+        } else {
+          this.errorImage = 'Sorry, FileReader API not supported'
+        }
+        // 表示切り替え
+        this.isBeforeSelect = false
+        this.showImageModal()
+        this.errorImage = ''
       }
-      // 表示切り替え
-      this.isBeforeSelect = false
-      this.showImageModal()
     },
 
     /**
@@ -387,7 +392,7 @@ export default Vue.extend({
     async submit(): Promise<void> {
       // 画像が添付されていない場合エラー文を表示
       if (this.cropImageCodes.length < 1) {
-        alert('画像ファイルを選択してください')
+        this.errorImage = '画像ファイルを選択してください'
         return
       }
       const urlArray = []

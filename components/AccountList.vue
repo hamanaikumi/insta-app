@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="flex w-screen my-1">
+    <div class="flex w-full my-1">
       <div class="w-1/4 flex justify-center flex-none self-center">
-        <router-link :to="'/mypage/' + user.userId">
-          <img :src="user.icon" class="rounded-full w-16" />
+        <router-link :to="'/UserPage/' + user.userId">
+          <img :src="user.icon" class="rounded-full w-16 h-16" alt="" />
         </router-link>
       </div>
       <div class="flex-grow self-center">
-        <router-link :to="'/mypage/' + user.userId">
+        <router-link :to="'/UserPage/' + user.userId">
           {{ user.userName }} <br />
         </router-link>
       </div>
@@ -16,7 +16,7 @@
           v-if="followButton"
           key="followbutton"
           type="button"
-          class="bg-green-500 w-24 h-8 mx-2 rounded-md"
+          class="text-white bg-accent-color w-24 h-8 mx-2 rounded-md"
           @click="clickFollow"
         >
           {{ buttonName }}
@@ -49,21 +49,23 @@ export default Vue.extend({
       unfollowUrl: 'https://api-instagram-app.herokuapp.com/unfollow',
       // フォローフォロワー一覧
       followInfoUrl: 'https://api-instagram-app.herokuapp.com/followinfo/',
-      // 仮のログインユーザーID
-      userId: 3,
-      // 相手のユーザーID:this.user.userId,
-
+      // ログインユーザーID
+      userId: '',
+      // FollowFollowingボタン
       followButton: false,
       followingButton: true,
+      //
+      searchUserId: '',
+      //
     }
   },
   props: {
     user: Object,
   },
 
-  mounted() {
-    console.log('子:mounted')
-
+  created() {
+    // ログインしているユーザーIDを取得.
+    this.userId = this.$store.getters['user/getLoginUserId']
     if (this.userId === this.user.userId) {
       this.followButton = false
       this.followingButton = false
@@ -81,6 +83,7 @@ export default Vue.extend({
   methods: {
     // フォローする
     clickFollow() {
+      // this.reCreated()
       this.$axios
         .$post(this.followUrl, {
           userId: this.userId,
@@ -91,10 +94,11 @@ export default Vue.extend({
       this.followButton = false
       this.followingButton = true
       this.buttonName = 'Following'
-      console.log('Follow:' + this.userId + '→' + this.user.userId)
     },
     // フォロー解除
     clickUnFollow() {
+      // this.reCreated()
+
       this.$axios
         .$post(this.unfollowUrl, {
           userId: this.userId,
@@ -104,7 +108,6 @@ export default Vue.extend({
       this.followButton = true
       this.followingButton = false
       this.buttonName = 'Follow'
-      console.log('Follow解除:' + this.userId + '→' + this.user.userId)
     },
   },
 })
