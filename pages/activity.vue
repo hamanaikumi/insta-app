@@ -115,6 +115,7 @@
 import Vue from 'vue'
 import moment from 'moment'
 export default Vue.extend({
+  middleware: 'auth',
   data() {
     return {
       notices: {} as any,
