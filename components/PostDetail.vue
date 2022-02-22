@@ -92,7 +92,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 import CommentsModal from '~/components/CommentsModal.vue'
-// import Follow from '~/components/Follow.vue'
 
 // no-this-in-fetch-data
 export default Vue.extend({
@@ -127,7 +126,7 @@ export default Vue.extend({
       // コメントModalの表示の有無
       showCommentFlag: false,
 
-      // カルーセル
+      // 投稿画像 カルーセル
       swiperOption: {
         // 中略
         pagination: {
@@ -151,7 +150,6 @@ export default Vue.extend({
      * いいねリストを表示する.
      */
     showLikesList() {
-      console.log('いいね一覧を表示する')
       this.$store.commit(
         'likesList/getLikesUsers',
         this.currentPostDetail.likes
