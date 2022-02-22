@@ -6,8 +6,13 @@
           <i class="fas fa-times text-light-gray"></i>
         </button>
       </div>
-      <div class="c-comments">
-        <div v-for="comment of commentList" :key="comment.id">
+
+      <div
+        v-for="comment of commentList"
+        :key="comment.commentId"
+        class="flex items-center justify-between"
+      >
+        <div>
           <div class="flex">
             <div>
               <nuxt-link :to="'/UserPage/' + comment.userId">
@@ -30,7 +35,18 @@
             {{ comment.commentDate }}
           </div>
         </div>
+        <!-- コメント削除するボタン ログインユーザーの投稿orログインユーザーのしたコメントの時だけ -->
+        <div>
+          <button
+            v-if="postUserId === loginUserId || comment.userId === loginUserId"
+            type="button"
+            @click="deleteComment(comment.commentId)"
+          >
+            <i class="far fa-trash-alt text-warning-color"></i>
+          </button>
+        </div>
       </div>
+
       <div class="py-1">
         <div class="text-xs text-light-gray">{{ errorMsg }}</div>
         <div class="c-input flex justify-around">
@@ -61,6 +77,7 @@ import moment from 'moment'
 
 // コメント情報 型
 type commentInfo = {
+  commentId: Number
   comment: String
   commentDate: Object
   userId: Number
@@ -70,7 +87,10 @@ type commentInfo = {
 
 export default Vue.extend({
   props: {
+    // postIDを取得
     getPostId: { type: Number, required: true },
+    // postの投稿者ユーザーのID
+    postUserId: { type: Number, required: true },
   },
   data() {
     return {
@@ -78,15 +98,19 @@ export default Vue.extend({
       inputComment: '',
       // コメント入力エラーメッセージ
       errorMsg: '',
+      // ログインユーザー
+      loginUserId: 0,
 
       // 現在の投稿のコメント一覧
       // eslint-disable-next-line no-array-constructor
-      commentList: new Array(),
+      commentList: [] as any,
     }
   },
   created() {
     // コメント一覧を取得する
     this.getComment()
+    // ログインユーザーID
+    this.loginUserId = this.$store.getters['user/getLoginUserId']
   },
 
   methods: {
@@ -110,23 +134,26 @@ export default Vue.extend({
       // コメントをAPIにpost
       const LOGIN_USER_ID = this.$store.getters['user/getLoginUserId']
 
-      await axios.post('https://api-instagram-app.herokuapp.com/comment', {
-        postId: this.getPostId,
-        userId: LOGIN_USER_ID,
-        comment: this.inputComment,
-      })
-
-      // コメント入力欄初期化
-      this.inputComment = ''
-
-      // コメント一覧初期化と更新
-      this.commentList = []
-      this.getComment()
+      const response = await axios.post(
+        'https://api-instagram-app.herokuapp.com/comment',
+        {
+          postId: this.getPostId,
+          userId: LOGIN_USER_ID,
+          comment: this.inputComment,
+        }
+      )
+      if (response.data.status === 'success') {
+        // コメント入力欄初期化
+        this.inputComment = ''
+        // コメント一覧初期化と更新
+        this.commentList = []
+        this.getComment()
+      }
     },
+
     /**
      * コメント一覧を取得してオブジェクトをpush.
      */
-
     async getComment() {
       const response = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.getPostId}`
@@ -136,12 +163,11 @@ export default Vue.extend({
 
       // コメントとそのユーザー情報を一つずつthis.commentListに格納
       for (const comment of resComments) {
-        // 日付フォーマット moment.utc().format() 日本時間に変換してる感じ？
         // eslint-disable-next-line import/no-named-as-default-member
-        // const formatDate = moment(new Date(comment.commentDate))
 
         // オブジェクト化  (Date: moment().fromNow() で何分前の形式で表示できるメソッド)
         const commentInfo: commentInfo = {
+          commentId: comment.commentId,
           comment: comment.comment,
           commentDate: moment(new Date(comment.commentDate)).fromNow(),
           userId: comment.userInfo.userId,
@@ -150,6 +176,18 @@ export default Vue.extend({
         }
         this.commentList.push(commentInfo)
       }
+    },
+    /**
+     * コメントを削除する.
+     */
+    async deleteComment(id: any) {
+      await this.$axios.$delete(
+        'https://api-instagram-app.herokuapp.com/comment',
+        { data: { commentId: id } }
+      )
+      // コメント一覧初期化と更新
+      this.commentList = []
+      this.getComment()
     },
   },
 })
