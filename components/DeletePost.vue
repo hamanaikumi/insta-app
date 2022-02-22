@@ -100,7 +100,7 @@ export default Vue.extend({
       if (res.data.status === 'success') {
         this.hideModal()
         // 投稿詳細画面にいた場合、マイページに遷移
-        if (this.$route.path.includes('/PostDetail')) {
+        if (this.$route.path === `/postDetail/${this.postId}`) {
           this.$router.push('/Mypage')
         } else {
           //  親コンポーネント(PostDetail.vue)のイベントを発火し、ホーム画面を更新する
