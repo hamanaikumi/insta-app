@@ -2,9 +2,9 @@
   <div class="container mx-auto px-4 py-8">
     <div
       v-show="postsId.length === 0"
-      class="none-posts flex flex-col justify-center"
+      class="none-posts flex flex-col justify-center w-full"
     >
-      <div class="msg text-dark-gray text-lg">
+      <div class="msg text-dark-gray text-lg text-center items-center">
         <strong class="font-medium"> Welcome to まるまるgram</strong>
         <br /><br />
         <span class="font-extralight">
@@ -73,19 +73,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-article {
-  padding: 0.63rem;
-}
 .article-container {
   border-bottom: 0.3px solid #b3b3b3;
 }
 
 .none-posts {
-  width: 100%;
   height: 75vh;
-  .msg {
-    text-align: center;
-    align-items: center;
-  }
 }
 </style>
