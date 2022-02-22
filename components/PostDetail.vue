@@ -5,8 +5,8 @@
         <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
           <img
             :src="currentPostUserInfo.icon"
-            alt="icon"
             class="h-10 w-10 rounded-full object-cover"
+            @error="errorImg"
           />
         </nuxt-link>
       </div>
@@ -277,24 +277,18 @@ export default Vue.extend({
     closeCommentModal() {
       this.showCommentFlag = false
     },
+
+    /**
+     * アイコンが設定されていない時
+     */
+    errorImg(element: any) {
+      element.target.src = '/images/user.png'
+    },
   },
 })
 </script>
 
 <style scoped lang="scss">
-// ページネーション
-// .images-container {
-//   position: relative;
-
-//   .swiper-pagination {
-//     position: absolute;
-//     left: 50%;
-//     bottom: -30px;
-//     transform: translateX(-50%);
-
-//   }
-// }
-
 .images-container {
   min-height: 15rem;
 }
