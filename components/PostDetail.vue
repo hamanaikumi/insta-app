@@ -34,6 +34,7 @@
         <DeletePost
           v-if="loginUserId === currentPostUserInfo.userId"
           :post-id="givePostId"
+          @update="emitUpdate"
         />
       </div>
     </div>
@@ -145,8 +146,8 @@ export default Vue.extend({
   },
 
   computed: {
+    // 現在ログインしているユーザーIDを取得
     loginUserId() {
-      // 現在ログインしているユーザーID取得
       return this.$store.getters['user/getLoginUserId']
     },
   },
@@ -279,6 +280,12 @@ export default Vue.extend({
      */
     closeCommentModal() {
       this.showCommentFlag = false
+    },
+    /**
+     * 親コンポーネント(Home.vue)のイベントを発火し、ホーム画面を更新する.
+     */
+    emitUpdate() {
+      this.$emit('update')
     },
   },
 })

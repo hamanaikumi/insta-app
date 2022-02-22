@@ -9,7 +9,7 @@
         v-if="menuFlag"
         class="absolute top-100 right-0 border border-light-gray rounded text-sm bg-white"
       >
-        <div class="flex justify-center p-2">
+        <div class="flex justify-center px-3 py-2">
           <button @click="showModal">Delete</button>
         </div>
       </div>
@@ -22,6 +22,7 @@
         :click-to-close="false"
         width="300px"
         height="auto"
+        class="z-30 mx-auto"
       >
         <div name="modal-body" class="p-4">
           <div class="text-center text-sm">
@@ -95,15 +96,16 @@ export default Vue.extend({
         'https://api-instagram-app.herokuapp.com/post',
         { data: { postId: this.postId } }
       )
-      console.log(res)
-
+      // 削除成功時
       if (res.data.status === 'success') {
         this.hideModal()
+        // 投稿詳細画面にいた場合、マイページに遷移
         if (this.$route.path.includes('/PostDetail')) {
           this.$router.push('/Mypage')
+        } else {
+          //  親コンポーネント(PostDetail.vue)のイベントを発火し、ホーム画面を更新する
+          this.$emit('update')
         }
-      } else {
-        this.$router.push('/Home')
       }
     },
   },
