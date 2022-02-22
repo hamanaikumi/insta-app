@@ -2,10 +2,7 @@
   <div class="w-full py-2">
     <div class="items-center flex flex-row mb-0.5 max-w-full">
       <div class="icon-container">
-        <nuxt-link
-          :to="'/UserPage/' + currentPostUserInfo.userId"
-          @click="testclick()"
-        >
+        <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
           <img
             :src="currentPostUserInfo.icon"
             alt="icon"
@@ -20,7 +17,7 @@
           </div>
         </nuxt-link>
         <div
-          class="prefecture-name font-light text-xs"
+          class="cursor-pointer font-light text-xs"
           @click="searchPrefecture(currentPostDetail.prefectureName)"
         >
           {{ currentPostDetail.prefectureName }}
@@ -52,24 +49,28 @@
         <!-- いいねボタン -->
         <!-- いいねする -->
         <button v-show="!likesFlag" type="button" @click="clickLiked()">
-          <i class="far fa-heart text-xl"></i>
+          <i class="far fa-heart text-xl animated-hover faa-pulse"></i>
         </button>
         <!-- いいね解除 -->
         <button v-show="likesFlag" type="button" @click="clickUnLiked()">
-          <i class="fas fa-heart text-xl" style="color: crimson"></i>
+          <i
+            class="fas fa-heart text-xl animated-hover faa-pulse"
+            style="color: crimson"
+          ></i>
         </button>
         <!-- コメントボタン -->
         <button class="ml-3" @click="openCommentModal()">
           <i class="far fa-comment text-xl"></i>
         </button>
       </div>
-      <div class="liked-container">
+      <div class="cursor-pointer" @click="showLikesList()">
         <span>
           Liked by
-          {{ currentPostDetail.likes.length }}!</span
+          <strong> {{ currentPostDetail.likes.length }}</strong> !</span
         >
       </div>
     </div>
+
     <!-- caption -->
     <div class="font-light">
       <div class="user-name font-normal">
@@ -112,18 +113,20 @@ export default Vue.extend({
       },
       // 現在取得している投稿のユーザー情報
       currentPostUserInfo: Object,
-      // 現在の投稿のいいね数
+      // 現在の投稿のいいね
       currentLikes: [],
       // 投稿日時 ENGLISH
       postDateByEnglish: '',
       // いいね する済(true) / 解除する(false)
       likesFlag: false,
+      // ログインしてるユーザーID
+      loginUserId: 0,
       // ログインしているユーザー名
       loginUserName: '',
       // コメントModalの表示の有無
       showCommentFlag: false,
 
-      // カルーセル
+      // 投稿画像 カルーセル
       swiperOption: {
         // 中略
         pagination: {
@@ -140,8 +143,19 @@ export default Vue.extend({
 
     // 現在ログインしているユーザー名取得
     this.loginUserName = this.$store.getters['user/getLoginUserName']
+    this.loginUserId = this.$store.getters['user/getLoginUserId']
   },
   methods: {
+    /**
+     * いいねリストを表示する.
+     */
+    showLikesList() {
+      this.$store.commit(
+        'likesList/getLikesUsers',
+        this.currentPostDetail.likes
+      )
+      this.$router.push('/likesList/' + this.currentPostDetail.postId)
+    },
     /**
      * 都道府県をクリックする.
      * @remarks 都道府県をクリックするとその都道府県の投稿一覧へ
