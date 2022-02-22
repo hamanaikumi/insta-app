@@ -15,7 +15,7 @@
     </div>
     <article>
       <div v-for="postId of postsId" :key="postId" class="article-container">
-        <PostDetail :give-post-id="postId"></PostDetail>
+        <PostDetail :give-post-id="postId" @update="emitUpdate"></PostDetail>
       </div>
     </article>
   </div>
@@ -61,6 +61,12 @@ export default Vue.extend({
         postIdArray.push(post.postId)
       }
       this.postsId = postIdArray
+    },
+    /**
+     * ホーム画面を更新する.
+     */
+    emitUpdate() {
+      this.getMyFollowUsersPost()
     },
   },
 })

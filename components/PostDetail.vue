@@ -1,27 +1,41 @@
 <template>
   <div class="w-full py-2">
-    <div class="items-center flex flex-row mb-0.5 max-w-full">
-      <div class="icon-container">
-        <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
-          <img
-            :src="currentPostUserInfo.icon"
-            alt="icon"
-            class="h-10 w-10 rounded-full object-cover"
-          />
-        </nuxt-link>
-      </div>
-      <div class="top-item-container ml-2">
-        <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
-          <div class="user-name font-medium text-sm">
-            {{ currentPostUserInfo.userName }}
-          </div>
-        </nuxt-link>
-        <div
-          class="cursor-pointer font-light text-xs"
-          @click="searchPrefecture(currentPostDetail.prefectureName)"
-        >
-          {{ currentPostDetail.prefectureName }}
+    <div class="flex justify-between">
+      <div class="items-center flex mb-0.5 max-w-full">
+        <div class="icon-container">
+          <nuxt-link
+            :to="'/UserPage/' + currentPostUserInfo.userId"
+            @click="testclick()"
+          >
+            <img
+              :src="currentPostUserInfo.icon"
+              alt="icon"
+              class="h-10 w-10 rounded-full object-cover"
+            />
+          </nuxt-link>
         </div>
+        <div class="top-item-container ml-2">
+          <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+            <div class="user-name font-medium text-sm">
+              {{ currentPostUserInfo.userName }}
+            </div>
+          </nuxt-link>
+
+          <div
+            class="prefecture-name font-light text-xs"
+            @click="searchPrefecture(currentPostDetail.prefectureName)"
+          >
+            {{ currentPostDetail.prefectureName }}
+          </div>
+        </div>
+      </div>
+      <!-- 投稿削除 -->
+      <div class="overflow-visible z-10">
+        <DeletePost
+          v-if="loginUserId === currentPostUserInfo.userId"
+          :post-id="givePostId"
+          @update="emitUpdate"
+        />
       </div>
     </div>
 
@@ -145,6 +159,7 @@ export default Vue.extend({
     this.loginUserName = this.$store.getters['user/getLoginUserName']
     this.loginUserId = this.$store.getters['user/getLoginUserId']
   },
+
   methods: {
     /**
      * いいねリストを表示する.
@@ -216,7 +231,6 @@ export default Vue.extend({
       this.currentPostUserInfo = response.data.userinfo
 
       // ログインユーザーが各投稿をいいねしているかをuserNameで判断
-
       const RESULT = this.currentPostDetail.likes.find(
         (name) => name === this.loginUserName
       )
@@ -276,6 +290,12 @@ export default Vue.extend({
      */
     closeCommentModal() {
       this.showCommentFlag = false
+    },
+    /**
+     * 親コンポーネント(Home.vue)のイベントを発火し、ホーム画面を更新する.
+     */
+    emitUpdate() {
+      this.$emit('update')
     },
   },
 })
