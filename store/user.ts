@@ -71,4 +71,7 @@ export const getters = {
   getLoginUserInfo(state: any) {
     return state.user
   },
+  getLoginStatus(state: any) {
+    return state.isLogin
+  },
 }
