@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5 box-border p-5">
+  <div class="container box-border p-5">
     <hr />
     <div class="tab-content">
       <!-- いいねしたユーザーリスト -->

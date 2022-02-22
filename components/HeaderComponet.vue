@@ -3,11 +3,7 @@
     <div class="w-full flex">
       <div>
         <nuxt-link
-          v-if="
-            $route.path === '/Home' ||
-            $route.path === '/Search' ||
-            $route.path.toLowerCase().includes('/postdetail')
-          "
+          v-if="$route.path === '/Home' || $route.path === '/Search'"
           to="/Home"
         >
           <!-- 後で変更 -->
@@ -19,14 +15,35 @@
             $route.path === '/Mypage' ||
             $route.path.includes('/userPage') ||
             $route.path === '/Setting' ||
-            $route.path.includes('/FollowFollower') ||
-            $route.path === '/activity'
+            $route.path.includes('/FollowFollower')
           "
           to="/Mypage"
           class="font-bold"
         >
           {{ userName }}
         </nuxt-link>
+
+        <!-- 前のページに戻るボタン -->
+        <button
+          v-if="
+            $route.path.includes('/likesList') ||
+            $route.path.includes('/postDetail') ||
+            $route.path === '/activity'
+          "
+          class="mr-4"
+          @click="$router.go(-1)"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+      </div>
+
+      <!-- Likes、Activity タイトル -->
+      <div
+        v-if="$route.path.includes('/likesList') || $route.path === '/activity'"
+        class="w-full text-right text-lg font-semibold"
+      >
+        <h2 v-if="$route.path.includes('/likesList')">Likes</h2>
+        <h2 v-if="$route.path === '/activity'">Activity</h2>
       </div>
       <div class="w-full text-right">
         <!-- 投稿アイコン -->
@@ -74,7 +91,7 @@
             $route.path.includes('/userPage') ||
             $route.path === '/activity' ||
             $route.path.includes('/FollowFollower') ||
-            $route.path.toLowerCase().includes('/postdetail')
+            $route.path.toLowerCase().includes('/postDetail')
           "
           to="/Setting"
           class="mr-4"
