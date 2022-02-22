@@ -1,18 +1,20 @@
 <template>
-  <div class="mx-auto">
-    <!-- navbar -->
-    <div class="flex justify-end">
-      <button @click="showMenu"><i class="fas fa-ellipsis-h"></i></button>
-    </div>
+  <div class="overflow-visible relative mx-auto w-4 h-8">
+    <!-- pulldown -->
+    <button class="" @click="showMenu">
+      <i class="fas fa-ellipsis-h"></i>
+    </button>
     <transition name="fade">
-      <div v-if="menuFlag" class="flex justify-end">
-        <div
-          class="flex justify-center w-16 h-8 border border-light-gray rounded text-sm"
-        >
+      <div
+        v-if="menuFlag"
+        class="absolute top-100 right-0 border border-light-gray rounded text-sm bg-white"
+      >
+        <div class="flex justify-center p-2">
           <button @click="showModal">Delete</button>
         </div>
       </div>
     </transition>
+
     <!-- modal -->
     <client-only>
       <modal
@@ -88,19 +90,26 @@ export default Vue.extend({
     /**
      * 投稿を削除する.
      */
-    deletePost() {
-      const res = this.$axios.post(
+    async deletePost() {
+      const res: any = await this.$axios.delete(
         'https://api-instagram-app.herokuapp.com/post',
-        this.postId
+        { data: { postId: this.postId } }
       )
       console.log(res)
+
+      if (res.data.status === 'success') {
+        this.hideModal()
+        if (this.$route.path.includes('/PostDetail')) {
+          this.$router.push('/Mypage')
+        }
+      } else {
+        this.$router.push('/Home')
+      }
     },
   },
 })
 </script>
-delete：postId
-返り値：{status:”success”,data:送られてきたpostId,message:”削除完了”}
-URL：https://api-instagram-app.herokuapp.com/post
+
 <style>
 .modal-body {
   padding: 5px 25px;
