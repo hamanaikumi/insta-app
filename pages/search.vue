@@ -104,7 +104,7 @@ export default Vue.extend({
   components: {
     AccountList,
   },
-
+  middleware: 'auth',
   data() {
     return {
       // 表示切り替え用

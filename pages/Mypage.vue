@@ -72,6 +72,7 @@ export default Vue.extend({
     Post,
     Prefecture,
   },
+  middleware: 'auth',
   data() {
     return {
       // ログイン中のユーザー情報

@@ -1,5 +1,11 @@
 <template>
   <div>
+    <!-- ローディング中 -->
+    <div v-if="loading" class="flex justify-center items-center h-[80vh]">
+      <div
+        class="animate-spin h-10 w-10 border-4 border-gray-400 rounded-full border-t-transparent"
+      ></div>
+    </div>
     <!-- 通知がなにもないとき -->
     <div
       v-if="notices.length === 0"
@@ -18,35 +24,35 @@
             />
           </nuxt-link>
           <!-- いいねのとき -->
-          <div v-if="notice.type === 'favorite'" class="p-1">
+          <div v-if="notice.type === 'favorite'" class="p-1 w-[80%]">
             <nuxt-link :to="'/postdetail/' + notice.contents.postId">
-              <div class="w-full h-full">
-                <p class="font-bold inline-block">
+              <div class="w-full h-full font-body">
+                <strong>
                   {{ notice.contents.newUser.userName }}
-                </p>
-                さんがあなたの投稿にいいねしました！
+                </strong>
+                liked your post
               </div>
             </nuxt-link>
           </div>
           <!-- 新しいコメントのとき -->
-          <div v-if="notice.type === 'comment'" class="p-1">
+          <div v-if="notice.type === 'comment'" class="p-1 w-[80%]">
             <nuxt-link :to="'/postdetail/' + notice.contents.postId">
-              <div class="w-full h-full">
-                <p class="font-bold inline-block">
+              <div class="w-full h-full font-body">
+                <strong>
                   {{ notice.contents.newUser.userName }}
-                </p>
-                さんがあなたの投稿にコメントしました！
+                </strong>
+                commented on your post
               </div>
             </nuxt-link>
           </div>
           <!-- 新しいフォロワーのとき -->
-          <div v-if="notice.type === 'follow'" class="p-1">
+          <div v-if="notice.type === 'follow'" class="p-1 w-[80%]">
             <nuxt-link :to="'/userPage/' + notice.contents.newUser.userId">
-              <div class="w-full h-full">
-                <p class="font-bold inline-block">
+              <div class="w-full h-full font-body">
+                You were followed by
+                <strong>
                   {{ notice.contents.newUser.userName }}
-                </p>
-                さんがあなたをフォローしました！
+                </strong>
               </div>
             </nuxt-link>
           </div>
@@ -68,35 +74,35 @@
             />
           </nuxt-link>
           <!-- いいねのとき -->
-          <div v-if="notice.type === 'favorite'" class="p-1">
+          <div v-if="notice.type === 'favorite'" class="p-1 w-[80%]">
             <nuxt-link :to="'/postdetail/' + notice.contents.postId">
-              <div class="w-full h-full">
-                <p class="font-bold inline-block">
+              <div class="w-full h-full font-body">
+                <strong>
                   {{ notice.contents.newUser.userName }}
-                </p>
-                さんがあなたの投稿にいいねしました！
+                </strong>
+                liked your post
               </div>
             </nuxt-link>
           </div>
           <!-- 新しいコメントのとき -->
-          <div v-if="notice.type === 'comment'" class="p-1">
+          <div v-if="notice.type === 'comment'" class="p-1 w-[80%]">
             <nuxt-link :to="'/postdetail/' + notice.contents.postId">
-              <div class="w-full h-full">
-                <p class="font-bold inline-block">
+              <div class="w-full h-full font-body">
+                <strong>
                   {{ notice.contents.newUser.userName }}
-                </p>
-                さんがあなたの投稿にコメントしました！
+                </strong>
+                commented on your post
               </div>
             </nuxt-link>
           </div>
           <!-- 新しいフォロワーのとき -->
-          <div v-if="notice.type === 'follow'" class="p-1">
+          <div v-if="notice.type === 'follow'" class="p-1 w-[80%]">
             <nuxt-link :to="'/userPage/' + notice.contents.newUser.userId">
-              <div class="w-full h-full">
-                <p class="font-bold inline-block">
+              <div class="w-full h-full font-body">
+                You were followed by
+                <strong>
                   {{ notice.contents.newUser.userName }}
-                </p>
-                さんがあなたをフォローしました！
+                </strong>
               </div>
             </nuxt-link>
           </div>
@@ -115,10 +121,12 @@
 import Vue from 'vue'
 import moment from 'moment'
 export default Vue.extend({
+  middleware: 'auth',
   data() {
     return {
       notices: {} as any,
       loginUserId: Number,
+      loading: true,
     }
   },
 
@@ -139,6 +147,7 @@ export default Vue.extend({
         `https://api-instagram-app.herokuapp.com/notice/${this.loginUserId}`
       )
       this.notices = res.data
+      this.loading = false
     },
     /**
      * 日付を今からどれくらい前の表示にする
