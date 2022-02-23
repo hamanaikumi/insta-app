@@ -1,5 +1,5 @@
-export default function ({ store, redirect }) {
-  // ログインしていない状態でURL直アクセスした時にログインページに遷移する
-  const loginUser = store.getters['user/getLoginStatus']
-  if (!loginUser) return redirect('/')
-}
+// export default function ({ redirect }) {
+//   // ログインしていない状態でURL直アクセスした時にログインページに遷移する
+//   const login = this.$cookies.get('login')
+//   if (!login) return redirect('/')
+// }

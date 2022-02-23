@@ -107,6 +107,11 @@ export default Vue.extend({
           // ユーザー情報をVuexに保管
           this.$store.commit('user/setLoginUserInfo', res.data.data)
           this.$store.commit('user/login')
+          // cookies
+          this.$cookies.set('login', 'authenticated', {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+          })
           // ホーム画面に遷移
           await this.$router.push('/Home')
           // ログイン失敗時

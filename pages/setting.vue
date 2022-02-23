@@ -77,7 +77,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  middleware: 'auth',
+  // middleware: 'auth',
   data() {
     return {
       // アイコンのURL
@@ -94,6 +94,8 @@ export default Vue.extend({
       iconFile: {},
       // アップデート用アイコンURL
       imageUrl: '',
+      // cookie
+      loginStatus: this.$cookies.get('login'),
     }
   },
   /**
@@ -101,6 +103,9 @@ export default Vue.extend({
    */
   created() {
     this.showUserInfo()
+    if (!this.loginStatus) {
+      this.$router.push('/')
+    }
   },
   methods: {
     /**
