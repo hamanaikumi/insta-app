@@ -17,6 +17,7 @@
     "@amcharts/amcharts4-geodata": "^4.1.22",
     "@nuxtjs/axios": "^5.13.6",
     "@svg-maps/japan": "^1.0.1",
+    "cookie-universal-nuxt": "^2.1.5",
     "core-js": "^3.19.3",
     "date-fns": "^2.28.0",
     "moment": "^2.29.1",

@@ -87,6 +87,7 @@ export default Vue.extend({
     Post,
     Prefecture,
   },
+  middleware: 'auth',
   data() {
     return {
       // 対象ユーザーのid

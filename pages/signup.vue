@@ -106,7 +106,12 @@ export default Vue.extend({
         if (res.data.status === 'success') {
           // ユーザー情報をVuexに保管
           this.$store.commit('user/setLoginUserInfo', res.data.data)
-          this.$store.commit('user/login')
+          // cookiesに保存
+          this.$cookies.set('login', 'authenticated', {
+            path: '/',
+            // 有効期限（秒単位）
+            maxAge: 60 * 60 * 24 * 7,
+          })
           // ホーム画面に遷移
           await this.$router.push('/Home')
           // 登録失敗時

@@ -58,6 +58,7 @@ export default Vue.extend({
   components: {
     Follow,
   },
+  middleware: 'auth',
   data() {
     return {
       // フォローユーザー情報一覧

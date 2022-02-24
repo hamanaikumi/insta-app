@@ -231,6 +231,7 @@ import SelectPrefecture from '~/components/SelectPrefecture.vue'
 
 export default Vue.extend({
   components: { SelectPrefecture },
+  middleware: 'auth',
   data() {
     return {
       // 画像が選択されたかの判定（選択窓の表示切替）

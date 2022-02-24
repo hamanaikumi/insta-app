@@ -2,9 +2,9 @@
   <div class="container mx-auto px-4 py-8">
     <div
       v-show="postsId.length === 0"
-      class="none-posts flex flex-col justify-center"
+      class="none-posts flex flex-col justify-center w-full"
     >
-      <div class="msg text-dark-gray text-lg">
+      <div class="msg text-dark-gray text-lg text-center items-center">
         <strong class="font-medium"> Welcome to まるまるgram</strong>
         <br /><br />
         <span class="font-extralight">
@@ -15,7 +15,7 @@
     </div>
     <article>
       <div v-for="postId of postsId" :key="postId" class="article-container">
-        <PostDetail :give-post-id="postId"></PostDetail>
+        <PostDetail :give-post-id="postId" @update="emitUpdate"></PostDetail>
       </div>
     </article>
   </div>
@@ -25,6 +25,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
+  middleware: 'auth',
   data() {
     return {
       // ログインユーザーID
@@ -61,24 +62,22 @@ export default Vue.extend({
       }
       this.postsId = postIdArray
     },
+    /**
+     * ホーム画面を更新する.
+     */
+    emitUpdate() {
+      this.getMyFollowUsersPost()
+    },
   },
 })
 </script>
 
 <style scoped lang="scss">
-article {
-  padding: 0.63rem;
-}
 .article-container {
   border-bottom: 0.3px solid #b3b3b3;
 }
 
 .none-posts {
-  width: 100%;
   height: 75vh;
-  .msg {
-    text-align: center;
-    align-items: center;
-  }
 }
 </style>

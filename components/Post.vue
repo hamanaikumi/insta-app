@@ -9,7 +9,7 @@
         :key="postInformation.postId"
         class="mt-px flex justify-center relative"
       >
-        <nuxt-link :to="`/PostDetail/${postInformation.postId}`">
+        <nuxt-link :to="`/postDetail/${postInformation.postId}`">
           <img :src="postInformation.imageUrl[0]"
         /></nuxt-link>
         <div

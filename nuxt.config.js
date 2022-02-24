@@ -19,6 +19,13 @@ export default {
         href: 'https://use.fontawesome.com/releases/v5.15.4/css/all.css',
         // href: 'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
       },
+      // fontAwesomeのアニメーション CDN
+      {
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.2.1/font-awesome-animation.css',
+        type: 'text/css',
+        media: 'all',
+      },
     ],
   },
 
@@ -49,6 +56,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    ['cookie-universal-nuxt', { parseJSON: false }],
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
