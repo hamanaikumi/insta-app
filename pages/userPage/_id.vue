@@ -13,7 +13,6 @@
             <span class="text-xs">投稿数</span>
           </div>
           <button
-            :to="'/FollowFollower/' + userId"
             type="button"
             class="folower-number text-center p-1"
             @click="jumpFollowFollowerPage(userId, false)"
@@ -23,7 +22,6 @@
             <span class="text-xs">フォロワー</span>
           </button>
           <button
-            :to="'/FollowFollower/' + userId"
             type="button"
             class="folow-number text-center p-1"
             @click="jumpFollowFollowerPage(userId, true)"
