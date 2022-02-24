@@ -44,7 +44,7 @@
         <swiper-slide
           v-for="url of currentPostDetail.imageUrl"
           :key="url"
-          class="images-container w-full"
+          class="images-container w-full relative pb-5"
         >
           <img :src="url" alt="投稿画像" class="max-w-full my-0 mx-auto" />
         </swiper-slide>
@@ -52,7 +52,7 @@
         <div
           v-show="currentPostDetail.imageUrl.length > 1"
           slot="pagination"
-          class="swiper-pagination swiper-pagination-black"
+          class="swiper-pagination swiper-pagination-black absolute bottom-0"
         ></div>
       </swiper>
     </div>
@@ -76,11 +76,22 @@
           <i class="far fa-comment text-xl"></i>
         </button>
       </div>
-      <div class="cursor-pointer" @click="showLikesList()">
+      <div
+        v-if="currentPostDetail.likes.length !== 0"
+        class="cursor-pointer"
+        @click="showLikesList()"
+      >
         <span>
           Liked by
-          <strong> {{ currentPostDetail.likes.length }}</strong> !</span
-        >
+          <strong>{{ currentPostDetail.likes[0] }}</strong>
+          <span v-if="currentPostDetail.likes.length > 1">
+            and
+            <strong>
+              {{ currentPostDetail.likes.length - 1 }}
+            </strong>
+            others !
+          </span>
+        </span>
       </div>
     </div>
 
@@ -127,8 +138,6 @@ export default Vue.extend({
       },
       // 現在取得している投稿のユーザー情報
       currentPostUserInfo: Object,
-      // 現在の投稿のいいね
-      currentLikes: [],
       // 投稿日時 ENGLISH
       postDateByEnglish: '',
       // いいね する済(true) / 解除する(false)
@@ -312,13 +321,7 @@ export default Vue.extend({
 .images-container {
   min-height: 15rem;
 }
-.swiper-container {
-  position: relative;
-  padding-bottom: 1.2rem;
-  .swiper-pagination {
-    position: absolute;
-    z-index: 10;
-    bottom: 0;
-  }
+.swiper-pagination {
+  bottom: 0;
 }
 </style>
