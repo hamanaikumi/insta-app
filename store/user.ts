@@ -10,8 +10,6 @@ export const state = () => ({
     userId: 0,
     userName: '',
   },
-  // ログイン状態
-  isLogin: false,
 })
 
 // actions
@@ -26,22 +24,6 @@ export const mutations = {
    */
   setLoginUserInfo(state: any, user: any) {
     state.user = user
-  },
-  /**
-   * 会員登録/ログインしたらログイン状態をtrueにする.
-   * @param state ステート
-   */
-  login(state: any) {
-    state.isLogin = true
-  },
-  /**
-   * ログイン状態をfalseにする.
-   * @param state ステート
-   */
-  logout(state: any) {
-    state.isLogin = false
-    // ユーザー情報を初期化
-    state.user = {}
   },
 }
 

@@ -1,5 +1,7 @@
-export default function ({ store, redirect }) {
+export default function ({ app, redirect }) {
   // ログインしていない状態でURL直アクセスした時にログインページに遷移する
-  const loginUser = store.getters['user/getLoginStatus']
-  if (!loginUser) return redirect('/')
+  const loginUser = app.$cookies.get('login')
+  if (!loginUser) {
+    return redirect('/')
+  }
 }
