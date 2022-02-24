@@ -109,7 +109,6 @@ export default Vue.extend({
           // AuthプラグインでtokenをCookieに保存
           const token = res.data.token
           Auth.login(this.$cookies, token)
-          console.log(token)
 
           // ホーム画面に遷移
           await this.$router.push('/Home')
