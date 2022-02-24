@@ -56,6 +56,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Auth from '../plugins/auth'
 
 export default Vue.extend({
   data() {
@@ -95,23 +96,21 @@ export default Vue.extend({
       }
       // APIにPOST
       if (!this.hasError) {
-        const res = await this.$axios.post(
-          'https://api-instagram-app.herokuapp.com/login',
-          {
-            userName: this.userName,
-            password: this.password,
-          }
-        )
+        const res = await this.$axios.post('http://localhost:8080/login', {
+          userName: this.userName,
+          password: this.password,
+        })
+
         // ログイン成功時
         if (res.data.status === 'success') {
           // ユーザー情報をVuexに保管
           this.$store.commit('user/setLoginUserInfo', res.data.data)
-          // cookiesに保存
-          this.$cookies.set('login', 'authenticated', {
-            path: '/',
-            // 有効期限（秒単位）
-            maxAge: 60 * 60 * 24 * 7,
-          })
+
+          // AuthプラグインでtokenをCookieに保存
+          const token = res.data.token
+          Auth.login(this.$cookies, token)
+          console.log(token)
+
           // ホーム画面に遷移
           await this.$router.push('/Home')
           // ログイン失敗時
