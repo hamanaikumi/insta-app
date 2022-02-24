@@ -109,6 +109,7 @@ export default Vue.extend({
           // cookiesに保存
           this.$cookies.set('login', 'authenticated', {
             path: '/',
+            // 有効期限（秒単位）
             maxAge: 60 * 60 * 24 * 7,
           })
           // ホーム画面に遷移
