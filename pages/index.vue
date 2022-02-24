@@ -96,10 +96,13 @@ export default Vue.extend({
       }
       // APIにPOST
       if (!this.hasError) {
-        const res = await this.$axios.post('http://localhost:8080/login', {
-          userName: this.userName,
-          password: this.password,
-        })
+        const res = await this.$axios.post(
+          'https://api-instagram-app.herokuapp.com/login',
+          {
+            userName: this.userName,
+            password: this.password,
+          }
+        )
 
         // ログイン成功時
         if (res.data.status === 'success') {
