@@ -1,5 +1,7 @@
-// export default function ({ redirect }) {
-//   // ログインしていない状態でURL直アクセスした時にログインページに遷移する
-//   const login = this.$cookies.get('login')
-//   if (!login) return redirect('/')
-// }
+export default function ({ app, redirect }) {
+  // ログインしていない状態でURL直アクセスした時にログインページに遷移する
+  const loginUser = app.$cookies.get('login')
+  if (!loginUser) {
+    return redirect('/')
+  }
+}

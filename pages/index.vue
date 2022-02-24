@@ -106,8 +106,7 @@ export default Vue.extend({
         if (res.data.status === 'success') {
           // ユーザー情報をVuexに保管
           this.$store.commit('user/setLoginUserInfo', res.data.data)
-          this.$store.commit('user/login')
-          // cookies
+          // cookiesに保存
           this.$cookies.set('login', 'authenticated', {
             path: '/',
             maxAge: 60 * 60 * 24 * 7,

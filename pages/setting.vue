@@ -77,7 +77,7 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  // middleware: 'auth',
+  middleware: 'auth',
   data() {
     return {
       // アイコンのURL
@@ -94,8 +94,6 @@ export default Vue.extend({
       iconFile: {},
       // アップデート用アイコンURL
       imageUrl: '',
-      // cookie
-      loginStatus: this.$cookies.get('login'),
     }
   },
   /**
@@ -103,9 +101,6 @@ export default Vue.extend({
    */
   created() {
     this.showUserInfo()
-    if (!this.loginStatus) {
-      this.$router.push('/')
-    }
   },
   methods: {
     /**
@@ -195,8 +190,11 @@ export default Vue.extend({
      * ログアウトしてログイン画面に遷移する.
      */
     logout() {
-      // ログイン状態をfalseにして、Vuexのユーザー情報を初期化。
-      this.$store.commit('user/logout')
+      // cookies消去
+      this.$cookies.remove('login', {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7,
+      })
       this.$router.push('/')
     },
   },
