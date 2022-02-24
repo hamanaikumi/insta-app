@@ -12,22 +12,24 @@
             <br />
             <span class="text-xs">投稿数</span>
           </div>
-          <nuxt-link
-            :to="'/FollowFollower/' + userInformation.userId"
+          <button
+            type="button"
             class="folower-number text-center p-1"
+            @click="jumpFollowFollowerPage(userInformation.userId, false)"
           >
             <span class="font-medium">{{ numberOfFollower }}</span>
             <br />
             <span class="text-xs">フォロワー</span>
-          </nuxt-link>
-          <nuxt-link
-            :to="'/FollowFollower/' + userInformation.userId"
+          </button>
+          <button
+            type="button"
             class="folow-number text-center p-1"
+            @click="jumpFollowFollowerPage(userInformation.userId, true)"
           >
             <span class="font-medium">{{ numberOfFollow }}</span>
             <br />
             <span class="text-xs">フォロー</span>
-          </nuxt-link>
+          </button>
         </div>
       </div>
       <div class="bio-contents py-2.5">
@@ -117,6 +119,19 @@ export default Vue.extend({
         prefectures.push(myPost.prefecture)
       }
       this.postedPrefectures = Array.from(new Set(prefectures))
+    },
+    /**
+     * フォロー・フォロワー一覧に飛ぶ.
+     *
+     * @param userId - 現在表示されているプロフィールのユーザーid
+     * @param fromFollow - フォローをクリック:true、フォロワーをクリック:false
+     */
+    jumpFollowFollowerPage(userId: number, fromFollow: boolean) {
+      this.$router.push({
+        path: '/FollowFollower/' + userId,
+        // 型判定のエラーを消すためString型で渡す
+        query: { clickFromFollow: String(fromFollow) },
+      })
     },
   },
 })

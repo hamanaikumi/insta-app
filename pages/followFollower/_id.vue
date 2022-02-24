@@ -111,6 +111,8 @@ export default Vue.extend({
       this.followerUserInformations = response.follower
       this.numberOfFollow = response.follow.length
       this.numberOfFollower = response.follower.length
+      // console.dir(JSON.stringify(this.followUserInformations))
+      // console.dir(JSON.stringify(this.followerUserInformations))
     },
     /**
      * フォローの表示を1減らす.
