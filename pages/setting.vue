@@ -75,6 +75,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Auth from '../plugins/auth'
 
 export default Vue.extend({
   middleware: 'auth',
@@ -190,11 +191,8 @@ export default Vue.extend({
      * ログアウトしてログイン画面に遷移する.
      */
     logout() {
-      // cookies消去
-      this.$cookies.remove('login', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7,
-      })
+      // AuthプラグインでtokenをCookieから削除
+      Auth.logout(this.$cookies)
       this.$router.push('/')
     },
   },
