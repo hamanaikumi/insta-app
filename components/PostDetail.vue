@@ -39,7 +39,7 @@
       </div>
     </div>
     <!-- 投稿画像 2枚以上 -->
-    <div>
+    <div @dblclick="clickLiked()">
       <swiper :options="swiperOption" class="c-swiper">
         <swiper-slide
           v-for="url of currentPostDetail.imageUrl"
