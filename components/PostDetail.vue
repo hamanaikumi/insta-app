@@ -39,8 +39,8 @@
       </div>
     </div>
     <!-- 投稿画像 2枚以上 -->
-    <div @dblclick="clickLiked()">
-      <swiper :options="swiperOption" class="c-swiper relative">
+    <div class="c-img" @dblclick="clickLiked()">
+      <swiper :options="swiperOption" class="c-swiper">
         <swiper-slide
           v-for="url of currentPostDetail.imageUrl"
           :key="url"
@@ -55,6 +55,12 @@
           class="swiper-pagination swiper-pagination-black absolute"
         ></div>
       </swiper>
+      <!-- いいねすると表示されるハート -->
+      <transition name="heart">
+        <span v-if="showHeartFlag" class="show-heart">
+          <i class="fas fa-heart text-7xl" style="color: white"></i>
+        </span>
+      </transition>
     </div>
 
     <div class="activity-container">
@@ -146,6 +152,8 @@ export default Vue.extend({
       postDateByEnglish: '',
       // いいね する済(true) / 解除する(false)
       likesFlag: false,
+      // いいねした時のハートを表示するためのフラグ
+      showHeartFlag: false,
       // ログインしてるユーザーID
       loginUserId: 0,
       // ログインしているユーザー名
@@ -266,6 +274,10 @@ export default Vue.extend({
       })
       // いいねフラグをいいね済み(true)に変更
       this.likesFlag = true
+      this.showHeartFlag = true
+      setTimeout(() => {
+        this.showHeartFlag = false
+      }, 1)
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
@@ -285,6 +297,7 @@ export default Vue.extend({
       })
       // いいねフラグをいいね解除(false)に変更
       this.likesFlag = false
+      // this.showHeartFlag = false
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
@@ -292,6 +305,7 @@ export default Vue.extend({
       // いいねの表示件数更新
       this.currentPostDetail.likes = responseLikes.data.favorites
     },
+
     /**
      * モーダルでコメント一覧を表示する.
      */
@@ -326,5 +340,31 @@ export default Vue.extend({
 .swiper-pagination-custom,
 .swiper-container-horizontal > .swiper-pagination-bullets {
   bottom: 0px;
+}
+
+.c-img {
+  position: relative;
+  .show-heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+  }
+}
+// いいねしたとに表示されるハート
+.heart-leave-active {
+  transition: opacity 2s;
+}
+.heart-after-enter {
+  transition-duration: 0.7s;
+  transform: scale(1.2);
+  opacity: 0.6;
+}
+.heart-leave {
+  opacity: 1;
+}
+.heart-leave-to {
+  opacity: 0;
 }
 </style>
