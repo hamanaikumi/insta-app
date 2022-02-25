@@ -54,6 +54,7 @@
             v-model="inputComment"
             class="appearance-none bg-gray-100 border-none focus:outline-none px-2 w-10/12"
             type="text"
+            @keydown.enter="addComment"
           />
 
           <button
@@ -124,7 +125,10 @@ export default Vue.extend({
     /**
      * コメントを追加する.
      */
-    async addComment(): Promise<void> {
+    async addComment(e: any): Promise<void> {
+      // 日本語入力中のEnterキーは無効
+      if (e.keyCode === 229) return
+
       // コメントが未入力だとコメントできない
       if (this.inputComment === '') {
         this.errorMsg = 'コメントを入力してください'

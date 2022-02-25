@@ -20,7 +20,7 @@
             </nuxt-link>
             <div class="flex justify-between">
               <div
-                class="prefecture-name font-light text-xs"
+                class="prefecture-name font-light text-xs cursor-pointer"
                 @click="searchPrefecture(currentPostDetail.prefectureName)"
               >
                 {{ currentPostDetail.prefectureName }}
@@ -98,9 +98,13 @@
     <!-- caption -->
     <div class="font-light">
       <div class="user-name font-normal">
-        @{{ currentPostUserInfo.userName }}
+        <strong>
+          <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+            {{ currentPostUserInfo.userName }}
+          </nuxt-link>
+        </strong>
       </div>
-      <div class="font-light">{{ currentPostDetail.caption }}</div>
+      <div class="font-light py-1">{{ currentPostDetail.caption }}</div>
       <div class="text-sm">{{ currentPostDetail.postData }}</div>
     </div>
     <!-- コメントモーダル表示 -->
