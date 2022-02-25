@@ -27,7 +27,7 @@ export default class Auth {
   public static login(cookie: NuxtCookies, token: string): void {
     return cookie.set(this.ACCESS_TOKEN_KEY, token, {
       // 有効期限（秒単位）
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60 * 24 * 1,
     })
   }
 
