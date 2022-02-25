@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5 box-border p-5">
-    <div class="post-container">
+    <div class="post-container w-full">
       <PostDetail :give-post-id="postId"></PostDetail>
     </div>
   </div>
@@ -25,9 +25,4 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped lang="scss">
-.post-container {
-  width: 100%;
-  padding: 0.63rem;
-}
-</style>
+<style scoped lang="scss"></style>

@@ -20,7 +20,7 @@
             </nuxt-link>
             <div class="flex justify-between">
               <div
-                class="prefecture-name font-light text-xs"
+                class="prefecture-name font-light text-xs cursor-pointer"
                 @click="searchPrefecture(currentPostDetail.prefectureName)"
               >
                 {{ currentPostDetail.prefectureName }}
@@ -39,12 +39,12 @@
       </div>
     </div>
     <!-- 投稿画像 2枚以上 -->
-    <div>
+    <div class="c-img" @dblclick="clickLiked()">
       <swiper :options="swiperOption" class="c-swiper">
         <swiper-slide
           v-for="url of currentPostDetail.imageUrl"
           :key="url"
-          class="images-container w-full relative pb-5"
+          class="images-container w-full pb-5 relative"
         >
           <img :src="url" alt="投稿画像" class="max-w-full my-0 mx-auto" />
         </swiper-slide>
@@ -52,9 +52,15 @@
         <div
           v-show="currentPostDetail.imageUrl.length > 1"
           slot="pagination"
-          class="swiper-pagination swiper-pagination-black absolute bottom-0"
+          class="swiper-pagination swiper-pagination-black absolute"
         ></div>
       </swiper>
+      <!-- いいねすると表示されるハート -->
+      <transition name="heart">
+        <span v-if="showHeartFlag" class="show-heart">
+          <i class="fas fa-heart text-7xl" style="color: white"></i>
+        </span>
+      </transition>
     </div>
 
     <div class="activity-container">
@@ -98,9 +104,13 @@
     <!-- caption -->
     <div class="font-light">
       <div class="user-name font-normal">
-        @{{ currentPostUserInfo.userName }}
+        <strong>
+          <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+            {{ currentPostUserInfo.userName }}
+          </nuxt-link>
+        </strong>
       </div>
-      <div class="font-light">{{ currentPostDetail.caption }}</div>
+      <div class="font-light py-1">{{ currentPostDetail.caption }}</div>
       <div class="text-sm">{{ currentPostDetail.postData }}</div>
     </div>
     <!-- コメントモーダル表示 -->
@@ -142,6 +152,8 @@ export default Vue.extend({
       postDateByEnglish: '',
       // いいね する済(true) / 解除する(false)
       likesFlag: false,
+      // いいねした時のハートを表示するためのフラグ
+      showHeartFlag: false,
       // ログインしてるユーザーID
       loginUserId: 0,
       // ログインしているユーザー名
@@ -262,6 +274,10 @@ export default Vue.extend({
       })
       // いいねフラグをいいね済み(true)に変更
       this.likesFlag = true
+      this.showHeartFlag = true
+      setTimeout(() => {
+        this.showHeartFlag = false
+      }, 1)
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
@@ -281,6 +297,7 @@ export default Vue.extend({
       })
       // いいねフラグをいいね解除(false)に変更
       this.likesFlag = false
+      // this.showHeartFlag = false
       // いいねの表示件数を更新するための処理
       const responseLikes = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
@@ -288,6 +305,7 @@ export default Vue.extend({
       // いいねの表示件数更新
       this.currentPostDetail.likes = responseLikes.data.favorites
     },
+
     /**
      * モーダルでコメント一覧を表示する.
      */
@@ -318,10 +336,35 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.images-container {
-  min-height: 15rem;
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-container-horizontal > .swiper-pagination-bullets {
+  bottom: 0px;
 }
-.swiper-pagination {
-  bottom: 0;
+
+.c-img {
+  position: relative;
+  .show-heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+  }
+}
+// いいねしたとに表示されるハート
+.heart-leave-active {
+  transition: opacity 2s;
+}
+.heart-after-enter {
+  transition-duration: 0.7s;
+  transform: scale(1.2);
+  opacity: 0.6;
+}
+.heart-leave {
+  opacity: 1;
+}
+.heart-leave-to {
+  opacity: 0;
 }
 </style>
