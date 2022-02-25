@@ -40,11 +40,11 @@
     </div>
     <!-- 投稿画像 2枚以上 -->
     <div @dblclick="clickLiked()">
-      <swiper :options="swiperOption" class="c-swiper">
+      <swiper :options="swiperOption" class="c-swiper relative">
         <swiper-slide
           v-for="url of currentPostDetail.imageUrl"
           :key="url"
-          class="images-container w-full relative pb-5"
+          class="images-container w-full pb-5 relative"
         >
           <img :src="url" alt="投稿画像" class="max-w-full my-0 mx-auto" />
         </swiper-slide>
@@ -52,7 +52,7 @@
         <div
           v-show="currentPostDetail.imageUrl.length > 1"
           slot="pagination"
-          class="swiper-pagination swiper-pagination-black absolute bottom-0"
+          class="swiper-pagination swiper-pagination-black absolute"
         ></div>
       </swiper>
     </div>
@@ -322,10 +322,9 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.images-container {
-  min-height: 15rem;
-}
-.swiper-pagination {
-  bottom: 0;
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-container-horizontal > .swiper-pagination-bullets {
+  bottom: 0px;
 }
 </style>
