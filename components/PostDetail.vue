@@ -111,7 +111,20 @@
         </strong>
       </div>
       <div class="font-normal py-1">{{ currentPostDetail.caption }}</div>
-      <div class="text-sm text-light-gray">
+      <!-- コメント１件のとき -->
+      <div
+        v-if="commentCount === 1"
+        class="text-sm text-light-gray"
+        @click="openCommentModal()"
+      >
+        View all {{ commentCount }} comment
+      </div>
+      <!-- コメント２件以上のとき -->
+      <div
+        v-if="commentCount > 1"
+        class="text-sm text-light-gray"
+        @click="openCommentModal()"
+      >
         View all {{ commentCount }} comments
       </div>
       <div class="text-sm">{{ currentPostDetail.postData }}</div>
@@ -119,6 +132,7 @@
     <!-- コメントモーダル表示 -->
     <CommentsModal
       v-if="showCommentFlag"
+      ref="commentComponent"
       :get-post-id="givePostId"
       :post-user-id="currentPostUserInfo.userId"
       @commentClose="closeCommentModal()"
@@ -139,6 +153,7 @@ export default Vue.extend({
     // 親コンポーネント（PostModal.vueやHome.vue）から受けたpostID
     givePostId: { type: Number, required: true },
   },
+
   data() {
     return {
       // 現在取得している投稿
@@ -214,7 +229,11 @@ export default Vue.extend({
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
       // responseの投稿内容
-      const responsePostDetail = response.data
+      const resPostDetail = response.data
+
+      // 現在のコメント数取得
+      const resComments = response.data.comments
+      this.commentCount = resComments.length
 
       // 投稿日時format化
       const MONTH_EN_LIST = [
@@ -232,7 +251,7 @@ export default Vue.extend({
         'December',
       ]
       // 投稿日時をnew DATE()
-      const DATE = new Date(responsePostDetail.postData)
+      const DATE = new Date(resPostDetail.postData)
       // dateから月を取り出してmonthに代入
       const month: number = DATE.getMonth()
       // MONTH_EN_LISTのmonth番目の要素を代入。<getMonth()は0-11までの整数が返るので、[month-1]とする必要はない >
@@ -247,11 +266,11 @@ export default Vue.extend({
       // 投稿詳細オブジェクト生成
       this.currentPostDetail = {
         postId: this.givePostId,
-        caption: responsePostDetail.caption,
-        prefectureName: responsePostDetail.prefecture.name,
+        caption: resPostDetail.caption,
+        prefectureName: resPostDetail.prefecture.name,
         postData: this.postDateByEnglish,
-        imageUrl: responsePostDetail.imageUrl,
-        likes: responsePostDetail.favorites,
+        imageUrl: resPostDetail.imageUrl,
+        likes: resPostDetail.favorites,
       }
 
       // 現在のpostのユーザー情報

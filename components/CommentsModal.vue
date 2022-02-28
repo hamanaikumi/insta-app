@@ -211,6 +211,7 @@ export default Vue.extend({
         }
         this.commentList.push(commentInfo)
       }
+
       // コメント数をpostDetailに渡す
       this.$emit('getCommentCount', this.commentList.length)
     },
