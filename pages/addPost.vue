@@ -30,10 +30,11 @@
                   name="file-upload"
                   type="file"
                   class="sr-only"
+                  accept="image/jpeg, image/jpg, image/png"
                   @change="fileSelected"
               /></span>
             </label>
-            <div class="pt-4 text-sm text-warning-color">
+            <div class="pt-4 px-6 text-sm text-warning-color">
               {{ errorImage }}
             </div>
           </div>
@@ -197,13 +198,16 @@
       </div>
     </div>
     <!-- caption -->
-    <div class="mx-2">
+    <div class="mx-2 text-sm">
       <textarea
         v-model="caption"
         rows="5"
-        class="block w-full text-sm border border-light-gray p-2 focus:outline-none"
+        class="block w-full border border-light-gray p-2 focus:outline-none"
         placeholder="Write a caption..."
+        maxlength="200"
       />
+
+      <p class="text-right text-input-value-color">{{ caption.length }}/200</p>
     </div>
     <!-- button -->
     <div class="px-4 py-3 text-center mt-2">
@@ -270,8 +274,21 @@ export default Vue.extend({
     fileSelected(e: any): void {
       const file = e.target.files[0]
       if (file) {
-        if (!file.type.includes('image/')) {
-          this.errorImage = '画像ファイルを選択してください'
+        // ファイル数が4枚以上の場合のエラー
+        if (this.cropImageFiles.length > 4) {
+          this.errorImage = '画像枚数は4枚以下にしてください'
+          return
+        }
+        // ファイル形式が画像以外の場合のエラー
+        // if (!file.type.includes('image/')) {
+        //   this.errorImage = '画像ファイルを選択してください'
+        //   return
+        // }
+        // 制限サイズ(3MB)
+        const sizeLimit = 1024 * 1024 * 3
+        // ファイルサイズが制限以上の場合のエラー
+        if (file.size > sizeLimit) {
+          this.errorImage = 'ファイルサイズは3MB以下にしてください'
           return
         }
         if (typeof FileReader === 'function') {

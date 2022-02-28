@@ -14,6 +14,7 @@
             name="file-upload"
             type="file"
             class="sr-only"
+            accept="image/jpeg, image/jpg, image/png"
             @change="fileSelected"
         /></span>
       </label>
@@ -126,10 +127,14 @@ export default Vue.extend({
       this.errorIcon = ''
       const file = e.target.files[0]
       if (file) {
-        if (!file.type.includes('image/')) {
-          this.errorIcon = '画像ファイルを選択してください'
+        // 制限サイズ(3MB)
+        const sizeLimit = 1024 * 1024 * 3
+        // ファイルサイズが制限以上の場合のエラー
+        if (file.size > sizeLimit) {
+          this.errorIcon = 'ファイルサイズは3MB以下にしてください'
           return
         }
+
         this.icon = window.URL.createObjectURL(file)
         this.iconFile = file
       }
