@@ -413,6 +413,8 @@ export default Vue.extend({
         this.errorImage = '画像ファイルを選択してください'
         return
       }
+      // ローディング開始
+      this.$nuxt.$loading.start()
       const urlArray = []
       // S3からURLを取得
       for (let i = 0; i < this.cropImageCodes.length; i++) {
@@ -445,6 +447,8 @@ export default Vue.extend({
         prefecture: this.selectedPrefecture,
         postDate: new Date(),
       })
+      // ローディング終了
+      this.$nuxt.$loading.finish()
       // ホーム画面に遷移
       this.$router.push('/Home')
     },

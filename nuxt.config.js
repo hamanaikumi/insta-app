@@ -70,4 +70,6 @@ export default {
     transpile: ['amCharts'],
     vendor: ['vue-cropperjs'],
   },
+  // ローディング
+  loading: '~/components/Loading.vue',
 }
