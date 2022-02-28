@@ -1,6 +1,7 @@
 <template>
   <div class="overflow-visible relative mx-auto w-4 h-8">
     <!-- pulldown -->
+    {{ postImageUrl }}
     <button class="" @click="showMenu">
       <i class="fas fa-ellipsis-h"></i>
     </button>
@@ -57,6 +58,8 @@ export default Vue.extend({
   props: {
     // 親コンポーネント(Home.vue）から受けたpostID
     postId: { type: Number, required: true },
+    // 親コンポーネント(Home.vue）から受けたpostImageUrl
+    postImageUrl: { type: Array, required: true },
   },
   data() {
     return {
@@ -92,10 +95,13 @@ export default Vue.extend({
      * 投稿を削除する.
      */
     async deletePost() {
-      const res: any = await this.$axios.delete(
-        'https://api-instagram-app.herokuapp.com/post',
-        { data: { postId: this.postId } }
-      )
+      const res: any = await this.$axios.delete('http://localhost:8001/post', {
+        data: { postId: this.postId },
+      })
+      // S3のバケットから写真を削除
+      await this.$axios.delete('http://localhost:8001/s3Url', {
+        data: { urlArray: this.postImageUrl },
+      })
       // 削除成功時
       if (res.data.status === 'success') {
         this.hideModal()
