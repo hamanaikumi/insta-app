@@ -284,11 +284,11 @@ export default Vue.extend({
         //   this.errorImage = '画像ファイルを選択してください'
         //   return
         // }
-        // 制限サイズ(1MB)
-        const sizeLimit = 1024 * 1024 * 1
+        // 制限サイズ(3MB)
+        const sizeLimit = 1024 * 1024 * 3
         // ファイルサイズが制限以上の場合のエラー
         if (file.size > sizeLimit) {
-          this.errorImage = 'ファイルサイズは1MB以下にしてください'
+          this.errorImage = 'ファイルサイズは3MB以下にしてください'
           return
         }
         if (typeof FileReader === 'function') {
