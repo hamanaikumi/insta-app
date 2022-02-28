@@ -54,7 +54,7 @@
             v-model="inputComment"
             class="appearance-none bg-gray-100 border-none focus:outline-none px-2 w-10/12"
             type="text"
-            @keydown.enter="addComment"
+            @keydown.enter="addCommentByEnter"
           />
 
           <button
@@ -107,6 +107,7 @@ export default Vue.extend({
       commentList: [] as any,
     }
   },
+
   created() {
     // コメント一覧を取得する
     this.getComment()
@@ -125,7 +126,37 @@ export default Vue.extend({
     /**
      * コメントを追加する.
      */
-    async addComment(e: any): Promise<void> {
+    async addComment(): Promise<void> {
+      // コメントが未入力だとコメントできない
+      if (this.inputComment === '') {
+        this.errorMsg = 'コメントを入力してください'
+        return
+      }
+
+      // コメントをAPIにpost
+      const LOGIN_USER_ID = this.$store.getters['user/getLoginUserId']
+
+      const response = await axios.post(
+        'https://api-instagram-app.herokuapp.com/comment',
+        {
+          postId: this.getPostId,
+          userId: LOGIN_USER_ID,
+          comment: this.inputComment,
+        }
+      )
+      if (response.data.status === 'success') {
+        // コメント入力欄初期化
+        this.inputComment = ''
+        // コメント一覧初期化と更新
+        this.commentList = []
+        this.getComment()
+      }
+    },
+
+    /**
+     * EnterKeyでコメントを追加する.
+     */
+    async addCommentByEnter(e: any): Promise<void> {
       // 日本語入力中のEnterキーは無効
       if (e.keyCode === 229) return
 
@@ -180,6 +211,8 @@ export default Vue.extend({
         }
         this.commentList.push(commentInfo)
       }
+      // コメント数をpostDetailに渡す
+      this.$emit('getCommentCount', this.commentList.length)
     },
     /**
      * コメントを削除する.

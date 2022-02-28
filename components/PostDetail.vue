@@ -110,7 +110,10 @@
           </nuxt-link>
         </strong>
       </div>
-      <div class="font-light py-1">{{ currentPostDetail.caption }}</div>
+      <div class="font-normal py-1">{{ currentPostDetail.caption }}</div>
+      <div class="text-sm text-light-gray">
+        View all {{ commentCount }} comments
+      </div>
       <div class="text-sm">{{ currentPostDetail.postData }}</div>
     </div>
     <!-- コメントモーダル表示 -->
@@ -119,6 +122,7 @@
       :get-post-id="givePostId"
       :post-user-id="currentPostUserInfo.userId"
       @commentClose="closeCommentModal()"
+      @getCommentCount="commentCount = $event"
     ></CommentsModal>
   </div>
 </template>
@@ -160,6 +164,8 @@ export default Vue.extend({
       loginUserName: '',
       // コメントModalの表示の有無
       showCommentFlag: false,
+      // コメント数
+      commentCount: 0,
 
       // 投稿画像 カルーセル
       swiperOption: {
