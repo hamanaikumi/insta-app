@@ -127,11 +127,11 @@ export default Vue.extend({
       this.errorIcon = ''
       const file = e.target.files[0]
       if (file) {
-        // 制限サイズ(1MB)
-        const sizeLimit = 1024 * 1024 * 1
+        // 制限サイズ(3MB)
+        const sizeLimit = 1024 * 1024 * 3
         // ファイルサイズが制限以上の場合のエラー
         if (file.size > sizeLimit) {
-          this.errorIcon = 'ファイルサイズは1MB以下にしてください'
+          this.errorIcon = 'ファイルサイズは3MB以下にしてください'
           return
         }
 
