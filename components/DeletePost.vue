@@ -1,7 +1,6 @@
 <template>
   <div class="overflow-visible relative mx-auto w-4 h-8">
     <!-- pulldown -->
-    {{ postImageUrl }}
     <button class="" @click="showMenu">
       <i class="fas fa-ellipsis-h"></i>
     </button>
@@ -17,38 +16,38 @@
     </transition>
 
     <!-- modal -->
-    <client-only>
-      <modal
-        name="delete-modal"
-        :click-to-close="false"
-        width="300px"
-        height="auto"
-        class="z-30 mx-auto"
-      >
-        <div name="modal-body" class="p-4">
-          <div class="text-center text-sm">
-            <p>投稿を削除しますか？</p>
-            <p>削除後の投稿は復元できません</p>
-          </div>
-          <div class="flex justify-center mt-4">
-            <button
-              class="inline-flex justify-center px-4 text-xl text-dark-gray"
-              type="button"
-              @click="hideModal"
-            >
-              Cancel
-            </button>
-            <button
-              class="inline-flex justify-center px-4 text-xl text-warning-color"
-              type="button"
-              @click="deletePost"
-            >
-              Delete
-            </button>
+    <div v-if="modalFlag">
+      <transition name="modal" appear>
+        <div class="modal__overlay">
+          <div class="modal__window">
+            <div class="modal__content">
+              <div class="flex flex-col justify-center mt-4">
+                <div class="text-center text-sm">
+                  <p>投稿を削除しますか？</p>
+                  <p>削除後の投稿は復元できません</p>
+                </div>
+                <div class="flex justify-center mt-4">
+                  <button
+                    class="inline-flex justify-center px-4 text-xl text-dark-gray"
+                    type="button"
+                    @click="hideModal"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    class="inline-flex justify-center px-4 text-xl text-warning-color"
+                    type="button"
+                    @click="deletePost"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </modal>
-    </client-only>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -56,15 +55,17 @@
 import Vue from 'vue'
 export default Vue.extend({
   props: {
-    // 親コンポーネント(Home.vue）から受けたpostID
+    // 親コンポーネント(PostDetail.vue）から受けたpostID
     postId: { type: Number, required: true },
-    // 親コンポーネント(Home.vue）から受けたpostImageUrl
+    // 親コンポーネント(PostDetail.vue）から受けたpostImageUrl
     postImageUrl: { type: Array, required: true },
   },
   data() {
     return {
       // 削除のプルダウン表示判定用
       menuFlag: false,
+      //  モーダル表示判定用
+      modalFlag: false,
     }
   },
   methods: {
@@ -82,26 +83,30 @@ export default Vue.extend({
      * モーダルウィンドウを表示する.
      */
     showModal() {
-      ;(this as any).$modal.show('delete-modal')
+      this.modalFlag = true
       this.menuFlag = false
     },
     /**
      * モーダルウィンドウを閉じる.
      */
     hideModal() {
-      ;(this as any).$modal.hide('delete-modal')
+      this.modalFlag = false
     },
     /**
      * 投稿を削除する.
      */
     async deletePost() {
-      const res: any = await this.$axios.delete('http://localhost:8001/post', {
+      console.log(this.postId)
+      const res: any = await this.$axios.delete('https://api-instagram-app.herokuapp.com/post', {
         data: { postId: this.postId },
       })
       // S3のバケットから写真を削除
-      await this.$axios.delete('http://localhost:8001/s3Url', {
+      console.log(this.postImageUrl)
+      await this.$axios.delete('https://api-instagram-app.herokuapp.com/s3Url', {
         data: { urlArray: this.postImageUrl },
       })
+      console.log(res.data.status);
+      
       // 削除成功時
       if (res.data.status === 'success') {
         this.hideModal()
@@ -118,18 +123,65 @@ export default Vue.extend({
 })
 </script>
 
-<style>
-.modal-body {
-  padding: 5px 25px;
-}
-/* トランジションが始まる/終わるフェーズ中 */
+<style lang="scss" scoped>
+// プルダウンのトランジションが始まる/終わるフェーズ中
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s;
 }
-/* 開始/終了状態 */
+// 開始/終了状態
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+// 削除モーダル
+.modal {
+  &__overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  &__window {
+    height: 15%;
+    width: 70%;
+    overflow: hidden;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  &__content {
+    height: 100%;
+    padding: 10px;
+  }
+}
+// 削除モーダルのトランジションが始まる/終わるフェーズ中
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.4s;
+  .modal__window {
+    transition: opacity 0.4s, transform 0.4s;
+  }
+}
+.modal-leave-active {
+  transition: opacity 0.6s ease 0.4s;
+}
+// 開始/終了状態
+.modal-enter,
+.modal-leave-to {
+  opacity: 0;
+  .modal__window {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
 }
 </style>
