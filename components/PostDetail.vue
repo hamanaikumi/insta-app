@@ -33,6 +33,7 @@
           <DeletePost
             v-if="loginUserId === currentPostUserInfo.userId"
             :post-id="givePostId"
+            :post-image-url="currentPostDetail.imageUrl"
             @update="emitUpdate"
           />
         </div>
