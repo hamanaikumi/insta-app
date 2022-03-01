@@ -15,7 +15,7 @@
         <div>
           <div class="flex">
             <div>
-              <nuxt-link :to="'/UserPage/' + comment.userId">
+              <nuxt-link :to="'/userPage/' + comment.userId">
                 <img
                   :src="comment.userIconUrl"
                   alt=""
@@ -23,7 +23,7 @@
                 />
               </nuxt-link>
             </div>
-            <nuxt-link :to="'/UserPage/' + comment.userId">
+            <nuxt-link :to="'/userPage/' + comment.userId">
               <div class="ml-2">{{ comment.userName }}</div>
             </nuxt-link>
           </div>

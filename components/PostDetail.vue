@@ -4,7 +4,7 @@
       <div class="flex justify-between w-full items-center">
         <div class="flex">
           <div class="icon-container">
-            <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+            <nuxt-link :to="'/userPage/' + currentPostUserInfo.userId">
               <img
                 :src="currentPostUserInfo.icon"
                 class="h-10 w-10 rounded-full object-cover"
@@ -13,7 +13,7 @@
             </nuxt-link>
           </div>
           <div class="top-item-container ml-2">
-            <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+            <nuxt-link :to="'/userPage/' + currentPostUserInfo.userId">
               <div class="user-name font-medium text-sm">
                 {{ currentPostUserInfo.userName }}
               </div>
@@ -106,7 +106,7 @@
     <div class="font-light">
       <div class="user-name font-normal">
         <strong>
-          <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+          <nuxt-link :to="'/userPage/' + currentPostUserInfo.userId">
             {{ currentPostUserInfo.userName }}
           </nuxt-link>
         </strong>

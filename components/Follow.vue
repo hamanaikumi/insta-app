@@ -155,7 +155,7 @@ export default Vue.extend({
       if (this.myUserId === targetId) {
         this.$router.push('/mypage')
       } else {
-        this.$router.push('/UserPage/' + targetId)
+        this.$router.push('/userPage/' + targetId)
       }
     },
   },
