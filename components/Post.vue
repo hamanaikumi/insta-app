@@ -5,15 +5,15 @@
       class="post-contents w-full grid grid-cols-3 gap-x-px"
     >
       <div
-        v-for="postInformation of postInformations"
-        :key="postInformation.postId"
+        v-for="post of posts"
+        :key="post.postId"
         class="mt-px flex justify-center relative"
       >
-        <nuxt-link :to="`/postDetail/${postInformation.postId}`">
-          <img :src="postInformation.imageUrl[0]"
+        <nuxt-link :to="`/postDetail/${post.postId}`">
+          <img :src="post.imageUrl[0]"
         /></nuxt-link>
         <div
-          v-if="multipleImages(postInformation.imageUrl)"
+          v-if="multipleImages(post.imageUrl)"
           class="absolute top-1 right-1.5"
         >
           <i class="far fa-images text-white"></i>
@@ -41,6 +41,7 @@ export default Vue.extend({
   data() {
     return {
       hasPost: true,
+      posts: [] as any[],
     }
   },
   watch: {
@@ -49,6 +50,12 @@ export default Vue.extend({
       if (this.postInformations.length === 0) {
         this.hasPost = false
       }
+      this.posts = Array.from(this.postInformations)
+      this.posts.sort(function (a, b) {
+        return a.postData < b.postData ? 1 : -1
+      })
+      console.dir(JSON.stringify(this.postInformations))
+      console.dir(JSON.stringify(this.posts))
     },
   },
   created() {
