@@ -2,16 +2,24 @@
   <div class="w-full py-2">
     <div class="items-center flex flex-row mb-0.5 max-w-full">
       <div class="flex justify-between w-full items-center">
-        <div class="flex">
-          <div class="icon-container">
+        <!-- icon skeleton screen -->
+        <div v-if="skeleton" class="flex items-center animate-pulse w-full">
+          <div class="bg-gray-200 h-10 w-10 rounded-full"></div>
+          <div class="h-3 bg-gray-200 rounded w-1/6"></div>
+        </div>
+
+        <div v-if="skeleton === false" class="flex">
+          <!-- ユーザーアイコン-->
+          <div class="h-10 w-10 rounded-full">
             <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
               <img
                 :src="currentPostUserInfo.icon"
-                class="h-10 w-10 rounded-full object-cover"
+                class="object-cover h-10 w-10 rounded-full"
                 @error="errorImg"
               />
             </nuxt-link>
           </div>
+
           <div class="top-item-container ml-2">
             <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
               <div class="user-name font-medium text-sm">
@@ -20,6 +28,7 @@
             </nuxt-link>
             <div class="flex justify-between">
               <div
+                v-if="skeleton === false"
                 class="prefecture-name font-light text-xs cursor-pointer"
                 @click="searchPrefecture(currentPostDetail.prefectureName)"
               >
@@ -39,8 +48,11 @@
         </div>
       </div>
     </div>
-    <!-- 投稿画像 2枚以上 -->
-    <div class="c-img" @dblclick="clickLiked()">
+    <!-- 投稿画像  -->
+    <!-- postImages skeleton screen -->
+    <div v-if="skeleton" class="img-skeleton bg-gray-200 animate-pulse"></div>
+
+    <div v-if="skeleton === false" class="c-img" @dblclick="clickLiked()">
       <swiper :options="swiperOption" class="c-swiper">
         <swiper-slide
           v-for="url of currentPostDetail.imageUrl"
@@ -83,8 +95,9 @@
           <i class="far fa-comment text-xl"></i>
         </button>
       </div>
+
       <div
-        v-if="currentPostDetail.likes.length !== 0"
+        v-if="currentPostDetail.likes.length !== 0 && skeleton === false"
         class="cursor-pointer"
         @click="showLikesList()"
       >
@@ -110,6 +123,14 @@
             {{ currentPostUserInfo.userName }}
           </nuxt-link>
         </strong>
+      </div>
+      <!-- caption skeleton screen -->
+      <div v-if="skeleton" class="space-y-2 animate-pulse">
+        <div class="h-4 bg-gray-200 rounded w-1/6"></div>
+        <div class="h-3 bg-gray-200 rounded w-4/6"></div>
+        <div class="h-3 bg-gray-200 rounded w-4/6"></div>
+        <div class="h-3 bg-gray-200 rounded w-5/6"></div>
+        <div class="h-3 bg-gray-200 rounded w-1/6"></div>
       </div>
       <div class="font-normal py-1">{{ currentPostDetail.caption }}</div>
       <!-- コメント１件のとき -->
@@ -182,6 +203,8 @@ export default Vue.extend({
       showCommentFlag: false,
       // コメント数
       commentCount: 0,
+      // スケルトンスクリーン
+      skeleton: true,
 
       // 投稿画像 カルーセル
       swiperOption: {
@@ -222,6 +245,7 @@ export default Vue.extend({
       this.$store.commit('searchPrefecture/catchPrefecture', prefecture)
       this.$router.push('/search')
     },
+
     /**
      *  親から渡されたpostIDに基づいて、投稿詳細内容をAPIから取得する.
      */
@@ -229,6 +253,9 @@ export default Vue.extend({
       const response = await axios.get(
         `https://api-instagram-app.herokuapp.com/postdetail/${this.givePostId}`
       )
+      // スケルトンスクリーン非表示に
+      this.skeleton = false
+
       // responseの投稿内容
       const resPostDetail = response.data
 
@@ -367,7 +394,10 @@ export default Vue.extend({
 .swiper-container-horizontal > .swiper-pagination-bullets {
   bottom: 0px;
 }
-
+.img-skeleton {
+  width: 100%;
+  height: 50vh;
+}
 .c-img {
   position: relative;
   .show-heart {
