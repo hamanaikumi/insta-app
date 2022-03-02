@@ -21,7 +21,7 @@
         <div class="modal__overlay">
           <div class="modal__window">
             <div class="modal__content">
-              <div class="flex flex-col justify-center mt-4">
+              <div class="flex flex-col justify-center">
                 <div class="text-center text-sm">
                   <p>投稿を削除しますか？</p>
                   <p>削除後の投稿は復元できません</p>
@@ -85,12 +85,16 @@ export default Vue.extend({
     showModal() {
       this.modalFlag = true
       this.menuFlag = false
+      // ヘッダーフッターにoverlay適用
+      this.$store.commit('modal/modalOn')
     },
     /**
      * モーダルウィンドウを閉じる.
      */
     hideModal() {
       this.modalFlag = false
+      // ヘッダーフッターからoverlayを外す
+      this.$store.commit('modal/modalOff')
     },
     /**
      * 投稿を削除する.
@@ -154,17 +158,20 @@ export default Vue.extend({
   }
 
   &__window {
-    height: 15%;
+    height: 20%;
     width: 70%;
-    overflow: hidden;
+    overflow: visible;
     background-color: white;
     border-radius: 3px;
     box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.5);
   }
 
   &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 100%;
-    padding: 10px;
+    width: 100%;
   }
 }
 // 削除モーダルのトランジションが始まる/終わるフェーズ中

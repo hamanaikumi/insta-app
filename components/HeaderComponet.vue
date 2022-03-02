@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 bg-white">
+  <div :class="{ overlay: deleteModal }" class="p-4 bg-white">
     <div class="w-full flex">
       <div>
         <nuxt-link
@@ -111,6 +111,7 @@ export default Vue.extend({
   props: {
     giveNotice: { type: Boolean, required: true },
   },
+
   computed: {
     /**
      * ログインしているユーザー名を取得する
@@ -118,6 +119,7 @@ export default Vue.extend({
     userName(): string {
       return this.$store.getters['user/getLoginUserName']
     },
+
     /**
      * 親から最新の通知を受け取ってそれが確認済みの場合はtrue,していない場合はfalseを渡す.
      */
@@ -128,8 +130,30 @@ export default Vue.extend({
         return true
       }
     },
+    deleteModal(): boolean {
+      return this.$store.getters['modal/getDeleteModalStatus']
+    },
+  },
+  created() {
+    // ヘッダーフッターからoverlayを外す
+    this.$store.commit('modal/modalOff')
   },
 })
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.overlay {
+  animation: fade 0.3s ease-out forwards;
+}
+@keyframes fade {
+  0% {
+    background: white;
+  }
+  50% {
+    background: #e6e6e6;
+  }
+  100% {
+    background: #cccccc;
+  }
+}
+</style>
