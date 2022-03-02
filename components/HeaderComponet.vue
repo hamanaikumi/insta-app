@@ -19,7 +19,7 @@
           to="/Home"
         >
           <!-- 後で変更 -->
-          <p class="font-serif">instagram</p>
+          <img src="../static/images/logo.png" class="h-10 w-auto" />
         </nuxt-link>
         <nuxt-link
           v-if="
