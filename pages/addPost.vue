@@ -231,8 +231,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import imageCompression from 'browser-image-compression'
 import SelectPrefecture from '~/components/SelectPrefecture.vue'
-
 export default Vue.extend({
   components: { SelectPrefecture },
   middleware: 'auth',
@@ -279,11 +279,6 @@ export default Vue.extend({
           this.errorImage = '画像枚数は4枚以下にしてください'
           return
         }
-        // ファイル形式が画像以外の場合のエラー
-        // if (!file.type.includes('image/')) {
-        //   this.errorImage = '画像ファイルを選択してください'
-        //   return
-        // }
         // 制限サイズ(3MB)
         const sizeLimit = 1024 * 1024 * 3
         // ファイルサイズが制限以上の場合のエラー
@@ -314,7 +309,7 @@ export default Vue.extend({
     /**
      * 画像をトリミングする.
      */
-    cropImage(): void {
+    async cropImage(): Promise<void> {
       if (this.$refs.cropper) {
         const fileData = (this as any).$refs.cropper
           .getCroppedCanvas()
@@ -334,7 +329,15 @@ export default Vue.extend({
         const imageFile = new File([buffer.buffer], fileName, {
           type: fileType,
         })
-        this.cropImageFiles.push(imageFile)
+        // Fileオブジェクトを圧縮
+        const options = {
+          maxSizeMB: 0.1,
+          maxWidthOrHeight: 1200,
+          useWebWorker: true,
+        }
+        const compFile = await imageCompression(imageFile, options)
+
+        this.cropImageFiles.push(compFile)
         // 初期化
         this.selectedImage = ''
         // トリミング後のコードを配列に格納
