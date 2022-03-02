@@ -1,6 +1,18 @@
 <template>
   <div class="p-4 bg-white">
-    <div class="w-full flex">
+    <div
+      v-if="
+        $route.path.includes('/userPage') ||
+        $route.path.includes('/followFollower')
+      "
+      class="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 font-semibold"
+      v-on="getUserName()"
+    >
+      {{ displayUserName }}
+    </div>
+    <div
+      class="flex justify-between absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12"
+    >
       <div>
         <nuxt-link
           v-if="$route.path === '/Home' || $route.path === '/Search'"
@@ -13,9 +25,7 @@
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path.includes('/userPage') ||
-            $route.path === '/Setting' ||
-            $route.path.includes('/followFollower')
+            $route.path === '/Setting'
           "
           to="/Mypage"
           class="font-bold"
@@ -28,7 +38,9 @@
           v-if="
             $route.path.includes('/likesList') ||
             $route.path.includes('/postDetail') ||
-            $route.path === '/activity'
+            $route.path === '/activity' ||
+            $route.path.includes('/userPage') ||
+            $route.path.includes('/followFollower')
           "
           class="mr-4"
           @click="$router.go(-1)"
@@ -36,7 +48,17 @@
           <i class="fas fa-chevron-left"></i>
         </button>
       </div>
-
+      <!-- 各ページに合わせたユーザーネームの表示
+      <div
+        v-if="
+          $route.path.includes('/userPage') ||
+          $route.path.includes('/followFollower')
+        "
+        class="text-center"
+        v-on="getUserName()"
+      >
+        {{ displayUserName }}
+      </div> -->
       <!-- Likes、Activity タイトル -->
       <div
         v-if="$route.path.includes('/likesList') || $route.path === '/activity'"
@@ -45,7 +67,7 @@
         <h2 v-if="$route.path.includes('/likesList')">Likes</h2>
         <h2 v-if="$route.path === '/activity'">Activity</h2>
       </div>
-      <div class="w-full text-right">
+      <div class="text-right">
         <!-- 投稿アイコン -->
         <nuxt-link
           v-if="
@@ -111,6 +133,11 @@ export default Vue.extend({
   props: {
     giveNotice: { type: Boolean, required: true },
   },
+  data() {
+    return {
+      displayUserName: '',
+    }
+  },
   computed: {
     /**
      * ログインしているユーザー名を取得する
@@ -127,6 +154,15 @@ export default Vue.extend({
       } else {
         return true
       }
+    },
+  },
+  methods: {
+    async getUserName() {
+      const userId = this.$route.params.id
+      const response = await this.$axios.$get(
+        `https://api-instagram-app.herokuapp.com/mypage/${userId}`
+      )
+      this.displayUserName = response.user.userName
     },
   },
 })
