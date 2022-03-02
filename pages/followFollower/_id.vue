@@ -10,7 +10,7 @@
         :checked="fromFollower"
       />
       <label class="tab-label text-base" for="TAB-FOLLOWER">
-        {{ numberOfFollower }}フォロワー
+        {{ numberOfFollower }}Followers
       </label>
       <div class="tab-content">
         <Follow
@@ -33,7 +33,7 @@
         :checked="fromFollow"
       />
       <label class="tab-label text-base" for="TAB-FOLLOW">
-        {{ numberOfFollow }}フォロー中
+        {{ numberOfFollow }}Following
       </label>
       <div class="tab-content">
         <Follow

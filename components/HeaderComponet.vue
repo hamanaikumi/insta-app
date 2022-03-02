@@ -15,7 +15,7 @@
             $route.path === '/Mypage' ||
             $route.path.includes('/userPage') ||
             $route.path === '/Setting' ||
-            $route.path.includes('/FollowFollower')
+            $route.path.includes('/followFollower')
           "
           to="/Mypage"
           class="font-bold"
@@ -56,7 +56,7 @@
             $route.path === '/Search' ||
             $route.path === '/activity' ||
             $route.path.toLowerCase().includes('/postdetail') ||
-            $route.path.includes('/FollowFollower')
+            $route.path.includes('/followFollower')
           "
           to="/addPost"
           class="mr-4"
@@ -90,7 +90,7 @@
             $route.path === '/Mypage' ||
             $route.path.includes('/userPage') ||
             $route.path === '/activity' ||
-            $route.path.includes('/FollowFollower') ||
+            $route.path.includes('/followFollower') ||
             $route.path.toLowerCase().includes('/postDetail')
           "
           to="/Setting"

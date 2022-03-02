@@ -10,7 +10,7 @@
           <div class="posts-number text-center p-1">
             <span class="font-medium">{{ numberOfPost }}</span>
             <br />
-            <span class="text-xs">投稿数</span>
+            <span class="text-xs">Posts</span>
           </div>
           <button
             type="button"
@@ -19,7 +19,7 @@
           >
             <span class="font-medium">{{ numberOfFollower }}</span>
             <br />
-            <span class="text-xs">フォロワー</span>
+            <span class="text-xs">Followers</span>
           </button>
           <button
             type="button"
@@ -28,7 +28,7 @@
           >
             <span class="font-medium">{{ numberOfFollow }}</span>
             <br />
-            <span class="text-xs">フォロー</span>
+            <span class="text-xs">Following</span>
           </button>
         </div>
       </div>
@@ -128,7 +128,7 @@ export default Vue.extend({
      */
     jumpFollowFollowerPage(userId: number, fromFollow: boolean) {
       this.$router.push({
-        path: '/FollowFollower/' + userId,
+        path: '/followFollower/' + userId,
         // 型判定のエラーを消すためString型で渡す
         query: { clickFromFollow: String(fromFollow) },
       })

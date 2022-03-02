@@ -24,7 +24,7 @@
       v-if="hasPost === false"
       class="text-center pt-5 text-xl text-gray-600"
     >
-      投稿がありません
+      No posts
     </div>
   </div>
 </template>
