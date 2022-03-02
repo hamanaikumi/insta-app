@@ -4,20 +4,26 @@
       <div class="flex justify-between w-full items-center">
         <div class="flex">
           <div class="icon-container">
-            <nuxt-link :to="'/userPage/' + currentPostUserInfo.userId">
+            <button
+              type="button"
+              @click="jumpUserPage(currentPostUserInfo.userId)"
+            >
               <img
                 :src="currentPostUserInfo.icon"
                 class="h-10 w-10 rounded-full object-cover"
                 @error="errorImg"
               />
-            </nuxt-link>
+            </button>
           </div>
           <div class="top-item-container ml-2">
-            <nuxt-link :to="'/userPage/' + currentPostUserInfo.userId">
+            <button
+              type="button"
+              @click="jumpUserPage(currentPostUserInfo.userId)"
+            >
               <div class="user-name font-medium text-sm">
                 {{ currentPostUserInfo.userName }}
               </div>
-            </nuxt-link>
+            </button>
             <div class="flex justify-between">
               <div
                 class="prefecture-name font-light text-xs cursor-pointer"
@@ -106,9 +112,13 @@
     <div class="font-light">
       <div class="user-name font-normal">
         <strong>
-          <nuxt-link :to="'/userPage/' + currentPostUserInfo.userId">
+          <button
+            type="button"
+            class="font-bold"
+            @click="jumpUserPage(currentPostUserInfo.userId)"
+          >
             {{ currentPostUserInfo.userName }}
-          </nuxt-link>
+          </button>
         </strong>
       </div>
       <div class="font-normal py-1">{{ currentPostDetail.caption }}</div>
@@ -356,6 +366,18 @@ export default Vue.extend({
      */
     emitUpdate() {
       this.$emit('update')
+    },
+    /**
+     * リンク先が自分のプロフィールの場合とリンク先を分ける.
+     *
+     * @param targetId - リンク先のユーザーid
+     */
+    jumpUserPage(targetId: number) {
+      if (this.loginUserId === targetId) {
+        this.$router.push('/Mypage')
+      } else {
+        this.$router.push('/userPage/' + targetId)
+      }
     },
   },
 })

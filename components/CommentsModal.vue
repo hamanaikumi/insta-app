@@ -15,17 +15,17 @@
         <div>
           <div class="flex">
             <div>
-              <nuxt-link :to="'/userPage/' + comment.userId">
+              <button type="button" @click="jumpUserPage(comment.userId)">
                 <img
                   :src="comment.userIconUrl"
                   alt=""
                   class="h-6 w-6 rounded-full object-cover"
                 />
-              </nuxt-link>
+              </button>
             </div>
-            <nuxt-link :to="'/userPage/' + comment.userId">
+            <button type="button" @click="jumpUserPage(comment.userId)">
               <div class="ml-2">{{ comment.userName }}</div>
-            </nuxt-link>
+            </button>
           </div>
           <div class="c-comment font-light p-px pb-0">
             {{ comment.comment }}
@@ -226,6 +226,18 @@ export default Vue.extend({
       // コメント一覧初期化と更新
       this.commentList = []
       this.getComment()
+    },
+    /**
+     * リンク先が自分のプロフィールの場合とリンク先を分ける.
+     *
+     * @param targetId - リンク先のユーザーid
+     */
+    jumpUserPage(targetId: number) {
+      if (this.loginUserId === targetId) {
+        this.$router.push('/Mypage')
+      } else {
+        this.$router.push('/userPage/' + targetId)
+      }
     },
   },
 })

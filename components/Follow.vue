@@ -153,7 +153,7 @@ export default Vue.extend({
      */
     jumpUserPage(targetId: number) {
       if (this.myUserId === targetId) {
-        this.$router.push('/mypage')
+        this.$router.push('/Mypage')
       } else {
         this.$router.push('/userPage/' + targetId)
       }
