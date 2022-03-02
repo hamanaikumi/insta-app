@@ -59,6 +59,7 @@
       >
         {{ displayUserName }}
       </div> -->
+
       <!-- Likes、Activity タイトル -->
       <div
         v-if="$route.path.includes('/likesList') || $route.path === '/activity'"
@@ -67,7 +68,7 @@
         <h2 v-if="$route.path.includes('/likesList')">Likes</h2>
         <h2 v-if="$route.path === '/activity'">Activity</h2>
       </div>
-      <div class="text-right">
+      <div class="text-right flex items-center justify-between w-2/12">
         <!-- 投稿アイコン -->
         <nuxt-link
           v-if="
@@ -81,7 +82,6 @@
             $route.path.includes('/followFollower')
           "
           to="/addPost"
-          class="mr-4"
         >
           <i class="far fa-plus-square fa-lg fa-fw"></i>
         </nuxt-link>
@@ -89,7 +89,6 @@
         <nuxt-link
           v-if="$route.path === '/Home' || $route.path === '/Search'"
           to="/activity"
-          class="mr-4"
         >
           <i class="far fa-heart fa-lg fa-fw relative">
             <!-- まだ通知を確認していないときの点滅アイコン -->
@@ -116,7 +115,6 @@
             $route.path.toLowerCase().includes('/postDetail')
           "
           to="/Setting"
-          class="mr-4"
         >
           <i class="fas fa-cog fa-lg fa-fw"></i>
         </nuxt-link>
