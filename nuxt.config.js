@@ -39,6 +39,7 @@ export default {
     { src: '~/plugins/amCharts.js', mode: 'client' },
     { src: '~/plugins/persistedstate.js', mode: 'client' },
     { src: '~/plugins/swiper', mode: 'client' },
+    // { src: '~/plugins/skelton', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
