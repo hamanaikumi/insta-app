@@ -1,5 +1,6 @@
 <template>
   <div class="p-4 bg-white">
+    <!-- 各ページに合わせたユーザーネームの表示 -->
     <div
       v-if="
         $route.path.includes('/userPage') ||
@@ -9,6 +10,15 @@
       v-on="getUserName()"
     >
       {{ displayUserName }}
+    </div>
+    <!-- ここまで -->
+    <!-- Likes、Activity タイトル -->
+    <div
+      v-if="$route.path.includes('/likesList') || $route.path === '/activity'"
+      class="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 font-semibold"
+    >
+      <h2 v-if="$route.path.includes('/likesList')">Likes</h2>
+      <h2 v-if="$route.path === '/activity'">Activity</h2>
     </div>
     <div
       class="flex justify-between absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12"
@@ -47,26 +57,6 @@
         >
           <i class="fas fa-chevron-left"></i>
         </button>
-      </div>
-      <!-- 各ページに合わせたユーザーネームの表示
-      <div
-        v-if="
-          $route.path.includes('/userPage') ||
-          $route.path.includes('/followFollower')
-        "
-        class="text-center"
-        v-on="getUserName()"
-      >
-        {{ displayUserName }}
-      </div> -->
-
-      <!-- Likes、Activity タイトル -->
-      <div
-        v-if="$route.path.includes('/likesList') || $route.path === '/activity'"
-        class="w-full text-right text-lg font-semibold"
-      >
-        <h2 v-if="$route.path.includes('/likesList')">Likes</h2>
-        <h2 v-if="$route.path === '/activity'">Activity</h2>
       </div>
       <div class="text-right flex items-center justify-between w-2/12">
         <!-- 投稿アイコン -->
