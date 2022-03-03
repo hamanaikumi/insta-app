@@ -96,6 +96,8 @@ export default Vue.extend({
       iconFile: {},
       // アップデート用アイコンURL
       imageUrl: '',
+      // S3に送信する削除するアイコンURL
+      deleteIcon: '',
     }
   },
   /**
@@ -111,10 +113,11 @@ export default Vue.extend({
     async showUserInfo() {
       const res = await this.$store.getters['user/getLoginUserInfo']
       if (res.icon === '') {
-        this.icon = 'https://jmva.or.jp/wp-content/uploads/2018/07/noimage.png'
+        this.icon = '/images/user.png'
       } else {
         this.icon = res.icon
         this.imageUrl = res.icon
+        this.deleteIcon = res.icon
       }
       this.userName = res.userName
       this.bio = res.bio
@@ -148,6 +151,8 @@ export default Vue.extend({
         this.errorUserName = 'ユーザー名を入力してください'
         return
       }
+      // ローディング開始
+      this.$nuxt.$loading.start()
       // アイコンの変更チェック
       if (this.icon !== this.imageUrl) {
         // S3からURLを取得
@@ -163,6 +168,13 @@ export default Vue.extend({
           body: this.iconFile as any,
         })
         this.imageUrl = url.split('?')[0]
+        // S3のバケットから写真を削除
+        await this.$axios.delete(
+          'https://api-instagram-app.herokuapp.com/s3Url',
+          {
+            data: { urlArray: [this.deleteIcon] },
+          }
+        )
       }
       // ログインしているユーザーIDを取得.
       const userId = await this.$store.getters['user/getLoginUserId']
@@ -176,11 +188,13 @@ export default Vue.extend({
           bio: this.bio,
         }
       )
+      // ローディング終了
+      this.$nuxt.$loading.finish()
       // 変更成功時
       if (res.data.status === 'success') {
         // ユーザー情報をVuexに保管
         await this.$store.commit('user/setLoginUserInfo', res.data.data)
-        await this.showUserInfo()
+        this.$router.push('/Mypage')
         // 変更失敗時
       } else if (res.data.status === 'error') {
         this.errorUserName = 'そのユーザー名は既に使われています'

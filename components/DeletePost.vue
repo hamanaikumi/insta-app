@@ -96,18 +96,22 @@ export default Vue.extend({
      * 投稿を削除する.
      */
     async deletePost() {
-      console.log(this.postId)
-      const res: any = await this.$axios.delete('https://api-instagram-app.herokuapp.com/post', {
-        data: { postId: this.postId },
-      })
+      const res: any = await this.$axios.delete(
+        'https://api-instagram-app.herokuapp.com/post',
+        {
+          data: { postId: this.postId },
+        }
+      )
       // S3のバケットから写真を削除
-      console.log(this.postImageUrl)
-     const s3res: any= await this.$axios.delete('https://api-instagram-app.herokuapp.com/s3Url', {
-        data: { urlArray: this.postImageUrl },
-      })
- 
+      const s3res: any = await this.$axios.delete(
+        'https://api-instagram-app.herokuapp.com/s3Url',
+        {
+          data: { urlArray: this.postImageUrl },
+        }
+      )
+
       // 削除成功時
-      if (res.data.status === 'success'&&s3res.data.status === 'success') {
+      if (res.data.status === 'success' && s3res.data.status === 'success') {
         this.hideModal()
         // 投稿詳細画面にいた場合、マイページに遷移
         if (this.$route.path === `/postDetail/${this.postId}`) {
