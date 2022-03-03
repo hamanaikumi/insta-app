@@ -2,7 +2,7 @@
   <div class="content-center px-4 py-8">
     <div class="flex justify-center mt-16">
       <!-- 仮logo -->
-      <img src="https://svgsilh.com/svg/1594387.svg" alt="" width="200" />
+      <img src="../static/images/logo.png" alt="ロゴ" width="200" />
     </div>
     <!-- input -->
     <div class="my-4 text-xl">
