@@ -3,7 +3,7 @@
     <main>
       <header-componet
         v-if="$route.path !== '/' && $route.path !== '/Signup'"
-        class="fixed top-0 w-full z-20 max-w-[428px]"
+        class="fixed top-0 w-full z-20 max-w-[428px] h-14"
         :give-notice="notice"
       />
       <Nuxt class="pt-[56px] z-10 mb-20" />

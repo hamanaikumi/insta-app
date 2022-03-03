@@ -11,21 +11,27 @@
         <div v-if="skeleton === false" class="flex">
           <!-- ユーザーアイコン-->
           <div class="h-10 w-10 rounded-full">
-            <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+            <button
+              type="button"
+              @click="jumpUserPage(currentPostUserInfo.userId)"
+            >
               <img
                 :src="currentPostUserInfo.icon"
                 class="object-cover h-10 w-10 rounded-full"
                 @error="errorImg"
               />
-            </nuxt-link>
+            </button>
           </div>
 
           <div class="top-item-container ml-2">
-            <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+            <button
+              type="button"
+              @click="jumpUserPage(currentPostUserInfo.userId)"
+            >
               <div class="user-name font-medium text-sm">
                 {{ currentPostUserInfo.userName }}
               </div>
-            </nuxt-link>
+            </button>
             <div class="flex justify-between">
               <div
                 v-if="skeleton === false"
@@ -119,9 +125,13 @@
     <div class="font-light">
       <div class="user-name font-normal">
         <strong>
-          <nuxt-link :to="'/UserPage/' + currentPostUserInfo.userId">
+          <button
+            type="button"
+            class="font-bold"
+            @click="jumpUserPage(currentPostUserInfo.userId)"
+          >
             {{ currentPostUserInfo.userName }}
-          </nuxt-link>
+          </button>
         </strong>
       </div>
       <!-- caption skeleton screen -->
@@ -383,6 +393,18 @@ export default Vue.extend({
      */
     emitUpdate() {
       this.$emit('update')
+    },
+    /**
+     * リンク先が自分のプロフィールの場合とリンク先を分ける.
+     *
+     * @param targetId - リンク先のユーザーid
+     */
+    jumpUserPage(targetId: number) {
+      if (this.loginUserId === targetId) {
+        this.$router.push('/Mypage')
+      } else {
+        this.$router.push('/userPage/' + targetId)
+      }
     },
   },
 })

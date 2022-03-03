@@ -1,21 +1,41 @@
 <template>
   <div class="p-4 bg-white">
-    <div class="w-full flex">
+    <!-- 各ページに合わせたユーザーネームの表示 -->
+    <div
+      v-if="
+        $route.path.includes('/userPage') ||
+        $route.path.includes('/followFollower')
+      "
+      class="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 font-semibold"
+      :v-on="getUserName()"
+    >
+      {{ displayUserName }}
+    </div>
+    <!-- ここまで -->
+    <!-- Likes、Activity タイトル -->
+    <div
+      v-if="$route.path.includes('/likesList') || $route.path === '/activity'"
+      class="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 font-semibold"
+    >
+      <h2 v-if="$route.path.includes('/likesList')">Likes</h2>
+      <h2 v-if="$route.path === '/activity'">Activity</h2>
+    </div>
+    <div
+      class="flex justify-between absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12"
+    >
       <div>
         <nuxt-link
           v-if="$route.path === '/Home' || $route.path === '/Search'"
           to="/Home"
         >
           <!-- 後で変更 -->
-          <p class="font-serif">instagram</p>
+          <img src="../static/images/logo.png" class="h-10 w-auto" />
         </nuxt-link>
         <nuxt-link
           v-if="
             $route.path === '/addPost' ||
             $route.path === '/Mypage' ||
-            $route.path.includes('/userPage') ||
-            $route.path === '/Setting' ||
-            $route.path.includes('/FollowFollower')
+            $route.path === '/Setting'
           "
           to="/Mypage"
           class="font-bold"
@@ -28,7 +48,9 @@
           v-if="
             $route.path.includes('/likesList') ||
             $route.path.includes('/postDetail') ||
-            $route.path === '/activity'
+            $route.path === '/activity' ||
+            $route.path.includes('/userPage') ||
+            $route.path.includes('/followFollower')
           "
           class="mr-4"
           @click="$router.go(-1)"
@@ -36,16 +58,7 @@
           <i class="fas fa-chevron-left"></i>
         </button>
       </div>
-
-      <!-- Likes、Activity タイトル -->
-      <div
-        v-if="$route.path.includes('/likesList') || $route.path === '/activity'"
-        class="w-full text-right text-lg font-semibold"
-      >
-        <h2 v-if="$route.path.includes('/likesList')">Likes</h2>
-        <h2 v-if="$route.path === '/activity'">Activity</h2>
-      </div>
-      <div class="w-full text-right">
+      <div class="text-right flex items-center justify-between w-2/12">
         <!-- 投稿アイコン -->
         <nuxt-link
           v-if="
@@ -56,10 +69,9 @@
             $route.path === '/Search' ||
             $route.path === '/activity' ||
             $route.path.toLowerCase().includes('/postdetail') ||
-            $route.path.includes('/FollowFollower')
+            $route.path.includes('/followFollower')
           "
           to="/addPost"
-          class="mr-4"
         >
           <i class="far fa-plus-square fa-lg fa-fw"></i>
         </nuxt-link>
@@ -67,7 +79,6 @@
         <nuxt-link
           v-if="$route.path === '/Home' || $route.path === '/Search'"
           to="/activity"
-          class="mr-4"
         >
           <i class="far fa-heart fa-lg fa-fw relative">
             <!-- まだ通知を確認していないときの点滅アイコン -->
@@ -90,11 +101,10 @@
             $route.path === '/Mypage' ||
             $route.path.includes('/userPage') ||
             $route.path === '/activity' ||
-            $route.path.includes('/FollowFollower') ||
+            $route.path.includes('/followFollower') ||
             $route.path.toLowerCase().includes('/postDetail')
           "
           to="/Setting"
-          class="mr-4"
         >
           <i class="fas fa-cog fa-lg fa-fw"></i>
         </nuxt-link>
@@ -110,6 +120,11 @@ import Vue from 'vue'
 export default Vue.extend({
   props: {
     giveNotice: { type: Boolean, required: true },
+  },
+  data() {
+    return {
+      displayUserName: '',
+    }
   },
   computed: {
     /**
@@ -127,6 +142,15 @@ export default Vue.extend({
       } else {
         return true
       }
+    },
+  },
+  methods: {
+    async getUserName() {
+      const userId = this.$route.params.id
+      const response = await this.$axios.$get(
+        `https://api-instagram-app.herokuapp.com/mypage/${userId}`
+      )
+      this.displayUserName = response.user.userName
     },
   },
 })
