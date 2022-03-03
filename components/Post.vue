@@ -1,7 +1,16 @@
 <template>
   <div>
+    <!-- posts skeleton screen -->
+    <div v-if="skeleton" class="animate-pulse w-full grid grid-cols-3 gap-x-px">
+      <div
+        v-for="i of 9"
+        :key="i"
+        class="mt-px flex justify-center bg-gray-200 w-32 h-32"
+      ></div>
+    </div>
+    <!-- 投稿一覧 -->
     <div
-      v-if="hasPost === true"
+      v-if="hasPost === true && !skeleton"
       class="post-contents w-full grid grid-cols-3 gap-x-px"
     >
       <div
@@ -20,8 +29,9 @@
         </div>
       </div>
     </div>
+    <!-- 投稿がない時の表示 -->
     <div
-      v-if="hasPost === false"
+      v-if="hasPost === false && !skeleton"
       class="text-center pt-5 text-xl text-gray-600"
     >
       No posts
@@ -33,6 +43,7 @@
 import Vue, { PropType } from 'vue'
 export default Vue.extend({
   props: {
+    // ユーザーの投稿一覧
     postInformations: {
       type: Array as PropType<any[]>,
       required: true,
@@ -40,11 +51,16 @@ export default Vue.extend({
   },
   data() {
     return {
+      // 投稿あり：true,投稿なし：false
       hasPost: true,
+      // 投稿日時の降順に並べ替えた投稿一覧
       posts: [] as any[],
+      // スケルトンスクリーン
+      skeleton: true,
     }
   },
   watch: {
+    // 投稿の有無を判断し、投稿日時の降順に並び替え新しい配列に格納
     postInformations() {
       this.hasPost = true
       if (this.postInformations.length === 0) {
@@ -54,8 +70,7 @@ export default Vue.extend({
       this.posts.sort(function (a, b) {
         return a.postData < b.postData ? 1 : -1
       })
-      console.dir(JSON.stringify(this.postInformations))
-      console.dir(JSON.stringify(this.posts))
+      this.skeleton = false
     },
   },
   created() {
@@ -64,6 +79,12 @@ export default Vue.extend({
     }
   },
   methods: {
+    /**
+     * 複数投稿の際に画像にアイコンをつける.
+     *
+     * @param images - イメージURLの配列
+     * @returns 複数画像：true、単独画像：false
+     */
     multipleImages(images: []) {
       if (images.length > 1) {
         return true

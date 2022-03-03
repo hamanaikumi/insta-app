@@ -1,35 +1,55 @@
 <template>
   <div class="pt-2">
-    <div
-      v-for="followUserInformation of followUserInformations"
-      :key="followUserInformation.userId"
-      class="follow-user-list flex flex-row items-center p-2"
-    >
-      <button
-        class="follow-user-icon w-3/12"
-        type="button"
-        @click="jumpUserPage(followUserInformation.userId)"
+    <!-- follow skeleton screen -->
+    <div v-if="skeleton">
+      <div
+        v-for="i of 8"
+        :key="i"
+        class="animate-pulse flex flex-row items-center p-2"
       >
-        <img :src="followUserInformation.icon" class="w-16 h-16 rounded-full" />
-      </button>
-      <button
-        class="follow-user-name w-6/12 text-left"
-        type="button"
-        @click="jumpUserPage(followUserInformation.userId)"
+        <div class="w-3/12">
+          <div class="bg-gray-200 w-16 h-16 rounded-full"></div>
+        </div>
+        <div class="bg-gray-200 w-6/12 h-5 rounded"></div>
+        <div class="ml-auto bg-gray-200 w-2/12 h-5 rounded"></div>
+      </div>
+    </div>
+    <!-- end of skeleton screen -->
+    <div v-if="!skeleton">
+      <div
+        v-for="followUserInformation of followUserInformations"
+        :key="followUserInformation.userId"
+        class="follow-user-list flex flex-row items-center p-2"
       >
-        {{ followUserInformation.userName }}
-      </button>
+        <button
+          class="follow-user-icon w-3/12"
+          type="button"
+          @click="jumpUserPage(followUserInformation.userId)"
+        >
+          <img
+            :src="followUserInformation.icon"
+            class="w-16 h-16 rounded-full"
+          />
+        </button>
+        <button
+          class="follow-user-name w-6/12 text-left"
+          type="button"
+          @click="jumpUserPage(followUserInformation.userId)"
+        >
+          {{ followUserInformation.userName }}
+        </button>
 
-      <div class="delete-follow ml-auto">
-        <DeleteFollow
-          :status-id="statusId"
-          :my-follow-lists="myFollowLists"
-          :follow-user-id="followUserInformation.userId"
-          :my-user-id="myUserId"
-          @deleteFollow="deleteFollow(followUserInformation.userId)"
-          @deleteFollower="deleteFollower(followUserInformation.userId)"
-          @follow="addFollow(followUserInformation.userId)"
-        ></DeleteFollow>
+        <div class="delete-follow ml-auto">
+          <DeleteFollow
+            :status-id="statusId"
+            :my-follow-lists="myFollowLists"
+            :follow-user-id="followUserInformation.userId"
+            :my-user-id="myUserId"
+            @deleteFollow="deleteFollow(followUserInformation.userId)"
+            @deleteFollower="deleteFollower(followUserInformation.userId)"
+            @follow="addFollow(followUserInformation.userId)"
+          ></DeleteFollow>
+        </div>
       </div>
     </div>
   </div>
@@ -61,6 +81,11 @@ export default Vue.extend({
     // ログイン中のユーザーid
     myUserId: {
       type: Number,
+      required: true,
+    },
+    // スケルトンスクリーン
+    skeleton: {
+      type: Boolean,
       required: true,
     },
   },

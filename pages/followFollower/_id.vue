@@ -18,6 +18,7 @@
           :is-follow="false"
           :my-user-id="myUserId"
           :is-my-list="isMyList"
+          :skeleton="skeleton"
           @deleteFollowNumber="deleteFollowNumber()"
           @deleteFollowerNumber="deleteFollowerNumber()"
           @addFollowNumber="addFollowNumber()"
@@ -41,6 +42,7 @@
           :is-follow="true"
           :my-user-id="myUserId"
           :is-my-list="isMyList"
+          :skeleton="skeleton"
           @deleteFollowNumber="deleteFollowNumber()"
           @deleteFollowerNumber="deleteFollowerNumber()"
           @addFollowNumber="addFollowNumber()"
@@ -66,9 +68,9 @@ export default Vue.extend({
       // フォロワー情報一覧
       followerUserInformations: [] as any,
       // フォロー数
-      numberOfFollow: 0,
+      numberOfFollow: undefined as undefined | number,
       // フォロワー数
-      numberOfFollower: 0,
+      numberOfFollower: undefined as undefined | number,
       // ログイン中のユーザーid
       myUserId: -1,
       // 遷移元のユーザーid
@@ -80,6 +82,8 @@ export default Vue.extend({
       fromFollow: true,
       // フォロワーをクリックして遷移:true
       fromFollower: false,
+      // スケルトンスクリーン
+      skeleton: true,
     }
   },
   created() {
@@ -111,26 +115,37 @@ export default Vue.extend({
       this.followerUserInformations = response.follower
       this.numberOfFollow = response.follow.length
       this.numberOfFollower = response.follower.length
-      // console.dir(JSON.stringify(this.followUserInformations))
-      // console.dir(JSON.stringify(this.followerUserInformations))
+      this.skeleton = false
     },
     /**
      * フォローの表示を1減らす.
      */
     deleteFollowNumber() {
-      this.numberOfFollow--
+      if (this.numberOfFollow === undefined) {
+        console.log('フォロー数が未定義です')
+      } else {
+        this.numberOfFollow--
+      }
     },
     /**
      * フォロワーの表示を1減らす.
      */
     deleteFollowerNumber() {
-      this.numberOfFollower--
+      if (this.numberOfFollower === undefined) {
+        console.log('フォロワー数が未定義です')
+      } else {
+        this.numberOfFollower--
+      }
     },
     /**
      * フォローの表示を1増やす.
      */
     addFollowNumber() {
-      this.numberOfFollow++
+      if (this.numberOfFollow === undefined) {
+        console.log('フォロー数が未定義です')
+      } else {
+        this.numberOfFollow++
+      }
     },
   },
 })
