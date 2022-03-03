@@ -87,6 +87,14 @@ export default Vue.extend({
         this.errorUsername = 'ユーザー名を入力してください'
         this.hasError = true
       }
+      if (this.userName.length > 30) {
+        this.errorUsername = 'ユーザー名は30字以内で入力してください'
+        this.hasError = true
+      }
+      if (!/^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/.test(this.userName)) {
+        this.errorUsername = 'ユーザー名は半角英数記号で入力してください'
+        this.hasError = true
+      }
       if (
         !(/[a-z]+/.test(this.password) && /[0-9]+/.test(this.password)) ||
         this.password.length < 6
