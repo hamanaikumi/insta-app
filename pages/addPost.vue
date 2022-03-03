@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto mt-10">
+  <div class="container mx-auto">
     <div class="flex justify-center grid grid-cols-6 gap-1 mb-4 mx-2">
       <!-- image -->
       <div
@@ -63,16 +63,16 @@
                   :aspect-ratio="1"
                 >
                 </vue-cropper>
-                <div>
+                <div class="mt-4">
                   <button
-                    class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
+                    class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray font-semibold"
                     type="button"
                     @click="hideImageModal"
                   >
                     Cancel
                   </button>
                   <button
-                    class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
+                    class="inline-flex justify-center py-2 px-4 text-xl text-accent-color font-semibold"
                     type="button"
                     @click="cropImage"
                   >
@@ -162,21 +162,20 @@
               name="prefecture-modal"
               :click-to-close="false"
               width="300px"
-              height="400px"
+              height="auto"
             >
               <div class="modal-body my-8 flex flex-col">
                 <SelectPrefecture @givePrefecture="catchPrefecture" />
-
-                <div>
+                <div class="mt-2">
                   <button
-                    class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
+                    class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray font-semibold"
                     type="button"
                     @click="hidePrefectureModal"
                   >
                     Cancel
                   </button>
                   <button
-                    class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
+                    class="inline-flex justify-center py-2 px-4 text-xl text-accent-color font-semibold"
                     type="button"
                     @click="addPrefecture"
                   >
@@ -198,7 +197,7 @@
       </div>
     </div>
     <!-- caption -->
-    <div class="mx-2 text-sm">
+    <div class="mx-2">
       <textarea
         v-model="caption"
         rows="5"
@@ -213,13 +212,13 @@
     <div class="px-4 py-3 text-center mt-2">
       <button
         type="button"
-        class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
+        class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray font-semibold"
         @click="cancel"
       >
         Cancel
       </button>
       <button
-        class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
+        class="inline-flex justify-center py-2 px-4 text-xl text-accent-color font-semibold"
         type="button"
         @click="submit"
       >
@@ -279,11 +278,11 @@ export default Vue.extend({
           this.errorImage = '画像枚数は4枚以下にしてください'
           return
         }
-        // 制限サイズ(3MB)
-        const sizeLimit = 1024 * 1024 * 3
+        // 制限サイズ(5MB)
+        const sizeLimit = 1024 * 1024 * 5
         // ファイルサイズが制限以上の場合のエラー
         if (file.size > sizeLimit) {
-          this.errorImage = 'ファイルサイズは3MB以下にしてください'
+          this.errorImage = 'ファイルサイズは5MB以下にしてください'
           return
         }
         if (typeof FileReader === 'function') {
