@@ -2,14 +2,14 @@
   <div>
     <div class="flex w-full my-1">
       <div class="w-1/4 flex justify-center flex-none self-center">
-        <router-link :to="'/UserPage/' + user.userId">
+        <button type="button" @click="jumpUserPage(user.userId)">
           <img :src="user.icon" class="rounded-full w-16 h-16" alt="" />
-        </router-link>
+        </button>
       </div>
       <div class="flex-grow self-center">
-        <router-link :to="'/UserPage/' + user.userId">
+        <button type="button" @click="jumpUserPage(user.userId)">
           {{ user.userName }} <br />
-        </router-link>
+        </button>
       </div>
       <div class="flex-none self-center">
         <button
@@ -108,6 +108,18 @@ export default Vue.extend({
       this.followButton = true
       this.followingButton = false
       this.buttonName = 'Follow'
+    },
+    /**
+     * リンク先が自分のプロフィールの場合とリンク先を分ける.
+     *
+     * @param targetId - リンク先のユーザーid
+     */
+    jumpUserPage(targetId: number) {
+      if (Number(this.userId) === targetId) {
+        this.$router.push('/Mypage')
+      } else {
+        this.$router.push('/userPage/' + targetId)
+      }
     },
   },
 })

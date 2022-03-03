@@ -1,18 +1,16 @@
 <template>
-  <body class="">
-    <main>
-      <header-componet
-        v-if="$route.path !== '/' && $route.path !== '/Signup'"
-        class="fixed top-0 w-full z-20 max-w-[428px]"
-        :give-notice="notice"
-      />
-      <Nuxt class="pt-[56px] z-10 mb-20" />
-      <footer-componet
-        v-if="$route.path !== '/' && $route.path !== '/Signup'"
-        class="fixed bottom-0 w-full z-20 max-w-[428px]"
-      />
-    </main>
-  </body>
+  <main>
+    <header-componet
+      v-if="$route.path !== '/' && $route.path !== '/Signup'"
+      class="fixed top-0 w-full z-20 max-w-[428px] h-14"
+      :give-notice="notice"
+    />
+    <Nuxt class="pt-[56px] z-10 mb-20" />
+    <footer-componet
+      v-if="$route.path !== '/' && $route.path !== '/Signup'"
+      class="fixed bottom-0 w-full z-20 max-w-[428px]"
+    />
+  </main>
 </template>
 <script lang="ts">
 import Vue from 'vue'

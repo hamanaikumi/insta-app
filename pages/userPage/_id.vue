@@ -1,7 +1,22 @@
 <template>
   <div class="container mt-5 box-border p-5">
+    <!-- profile skeleton screen -->
+    <div v-if="skeleton" class="animate-pulse">
+      <div class="flex flex-row items-center justify-between">
+        <div class="bg-gray-200 w-20 h-20 rounded-full"></div>
+        <div class="w-2/4 flex flex-row justify-between">
+          <div class="bg-gray-200 w-12 h-12 rounded"></div>
+          <div class="bg-gray-200 w-12 h-12 rounded"></div>
+          <div class="bg-gray-200 w-12 h-12 rounded"></div>
+        </div>
+      </div>
+      <div class="py-2.5 space-y-2">
+        <div class="h-4 w-1/5 bg-gray-200 rounded mb"></div>
+        <div class="h-4 w-2/3 bg-gray-200 rounded"></div>
+      </div>
+    </div>
     <!-- プロフィール -->
-    <div class="user-information">
+    <div v-if="!skeleton" class="user-information">
       <div class="icon-follow flex flex-row items-center justify-between">
         <div class="icon">
           <img :src="userInformation.icon" class="w-20 h-20 rounded-full" />
@@ -10,7 +25,7 @@
           <div class="posts-number text-center p-1">
             <span class="font-medium">{{ numberOfPost }}</span>
             <br />
-            <span class="text-xs">投稿数</span>
+            <span class="text-xs">Posts</span>
           </div>
           <button
             type="button"
@@ -19,7 +34,7 @@
           >
             <span class="font-medium">{{ numberOfFollower }}</span>
             <br />
-            <span class="text-xs">フォロワー</span>
+            <span class="text-xs">Followers</span>
           </button>
           <button
             type="button"
@@ -28,7 +43,7 @@
           >
             <span class="font-medium">{{ numberOfFollow }}</span>
             <br />
-            <span class="text-xs">フォロー</span>
+            <span class="text-xs">Following</span>
           </button>
         </div>
       </div>
@@ -38,9 +53,13 @@
         <span class="text-sm">{{ userInformation.bio }}</span>
       </div>
     </div>
-
+    <!-- followbutton skeleton screen -->
+    <div
+      v-if="skeleton"
+      class="animate-pulse bg-gray-200 w-full h-6 py-1 px-2 border border-gray-300 rounded"
+    ></div>
     <!-- フォローボタン -->
-    <div>
+    <div v-if="!skeleton">
       <button
         class="text-xs bg-transparent w-full text-black font-semibold py-1 px-2 border border-gray-300 rounded"
         type="button"
@@ -110,6 +129,8 @@ export default Vue.extend({
       followButton: '',
       // ログイン中のユーザーがフォローしているかを表すフラグ
       isFollowing: true,
+      // スケルトンスクリーン
+      skeleton: true,
     }
   },
   async created() {
@@ -126,11 +147,11 @@ export default Vue.extend({
     for (const myFollowList of myFollowLists) {
       if (this.userId === myFollowList) {
         this.isFollowing = true
-        this.followButton = 'フォロー中'
+        this.followButton = 'Following'
         break
       } else {
         this.isFollowing = false
-        this.followButton = 'フォローする'
+        this.followButton = 'Follow'
       }
     }
     this.asyncPost()
@@ -149,6 +170,7 @@ export default Vue.extend({
       this.numberOfFollower = response.user.follower.length
       this.numberOfPost = response.post.length
       this.getPostedPrefecture()
+      this.skeleton = false
     },
     /**
      * 子コンポーネントに渡す用の、投稿された都道府県配列を作成.
@@ -166,11 +188,11 @@ export default Vue.extend({
     onClickFollowButton() {
       if (this.isFollowing === true) {
         this.isFollowing = false
-        this.followButton = 'フォローする'
+        this.followButton = 'Follow'
         this.deleteFollow()
       } else if (this.isFollowing === false) {
         this.isFollowing = true
-        this.followButton = 'フォロー中'
+        this.followButton = 'Following'
         this.addFollow()
       }
     },
@@ -205,7 +227,7 @@ export default Vue.extend({
      */
     jumpFollowFollowerPage(userId: number, fromFollow: boolean) {
       this.$router.push({
-        path: '/FollowFollower/' + userId,
+        path: '/followFollower/' + userId,
         // 型判定のエラーを消すためString型で渡す
         query: { clickFromFollow: String(fromFollow) },
       })
