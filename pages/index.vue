@@ -1,8 +1,8 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
-    <div class="flex justify-center mt-16">
-      <!-- 仮logo -->
-      <img src="../static/images/logo.png" alt="" width="200" />
+  <div class="container mx-auto px-4">
+    <div class="flex justify-center pb-4">
+      <!-- logo -->
+      <img src="../static/images/logo.png" alt="ロゴ" width="200" />
     </div>
     <!-- input -->
     <div class="my-4 text-lg">
@@ -48,7 +48,9 @@
     <div class="border-t text-center mt-12">
       <div class="mt-12 text-lg">Don&rsquo;t have an account ?</div>
       <router-link to="/Signup">
-        <div class="py-2 px-4 text-xl text-accent-color">Sign Up</div>
+        <div class="py-2 px-4 text-xl text-accent-color font-semibold">
+          Sign Up
+        </div>
       </router-link>
     </div>
   </div>

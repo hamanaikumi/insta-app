@@ -1,7 +1,7 @@
 <template>
-  <div class="content-center px-4 py-8">
-    <div class="flex justify-center mt-16">
-      <!-- 仮logo -->
+  <div class="content-center px-4">
+    <div class="flex justify-center pb-4">
+      <!-- logo -->
       <img src="../static/images/logo.png" alt="ロゴ" width="200" />
     </div>
     <!-- input -->

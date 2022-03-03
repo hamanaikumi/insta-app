@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto mt-6">
+  <div class="container mx-auto">
     <!-- icon -->
     <div class="grid justify-items-center py-6">
       <img class="h-28 w-28 rounded-full object-cover" :src="icon" />
@@ -7,7 +7,7 @@
         {{ errorIcon }}
       </span>
       <label for="file-upload" class="cursor-pointer rounded-md px-4">
-        <span class="text-xl text-accent-color">
+        <span class="text-xl text-accent-color font-semibold">
           Change Profile Photo
           <input
             id="file-upload"
@@ -20,10 +20,10 @@
       </label>
     </div>
     <!-- input -->
-    <div class="grid grid-cols-4 gap-2 border-t border-light-gray px-4 py-8">
+    <div class="grid grid-cols-3 gap-2 border-t border-light-gray px-4 py-8">
       <div class="col-span-1 py-2">User Name</div>
       <div
-        class="col-span-3 border-b border-light-gray text-input-value-color py-2 pl-2"
+        class="col-span-2 border-b border-light-gray text-input-value-color py-2 pl-2"
       >
         <input
           v-model="userName"
@@ -36,7 +36,7 @@
       </div>
       <div class="col-span-1 py-2">Bio</div>
       <div
-        class="col-span-3 border-b border-light-gray text-input-value-color py-2 pl-2"
+        class="col-span-2 border-b border-light-gray text-input-value-color py-2 pl-2"
       >
         <input
           v-model="bio"
@@ -49,13 +49,13 @@
     <div class="px-4 pb-4 text-center mt-2">
       <button
         type="button"
-        class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray"
+        class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray font-semibold"
         @click="cancel"
       >
         Cancel
       </button>
       <button
-        class="inline-flex justify-center py-2 px-4 text-xl text-accent-color"
+        class="inline-flex justify-center py-2 px-4 text-xl text-accent-color font-semibold"
         type="button"
         @click="updateUserInfo"
       >
@@ -65,7 +65,7 @@
     <!-- logout -->
     <div class="grid justify-items-center border-t border-light-gray py-8">
       <button
-        class="inline-flex justify-center py-2 px-4 text-xl text-warning-color"
+        class="inline-flex justify-center py-2 px-4 text-xl text-warning-color font-semibold"
         @click="logout"
       >
         Log out
