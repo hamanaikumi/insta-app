@@ -20,7 +20,10 @@
     <div v-if="!skeleton" class="user-information">
       <div class="icon-follow flex flex-row items-center justify-between">
         <div class="icon">
-          <img :src="userInformation.icon" class="w-20 h-20 rounded-full" />
+          <img
+            :src="userInformation.icon"
+            class="w-20 h-20 rounded-full object-cover"
+          />
         </div>
         <div class="follow-information w-2/4 flex flex-row justify-between">
           <div class="posts-number text-center p-1">

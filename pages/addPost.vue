@@ -278,11 +278,11 @@ export default Vue.extend({
           this.errorImage = '画像枚数は4枚以下にしてください'
           return
         }
-        // 制限サイズ(3MB)
-        const sizeLimit = 1024 * 1024 * 3
+        // 制限サイズ(5MB)
+        const sizeLimit = 1024 * 1024 * 5
         // ファイルサイズが制限以上の場合のエラー
         if (file.size > sizeLimit) {
-          this.errorImage = 'ファイルサイズは3MB以下にしてください'
+          this.errorImage = 'ファイルサイズは5MB以下にしてください'
           return
         }
         if (typeof FileReader === 'function') {

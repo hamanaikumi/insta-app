@@ -76,6 +76,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import imageCompression from 'browser-image-compression'
 import Auth from '../plugins/auth'
 
 export default Vue.extend({
@@ -126,20 +127,27 @@ export default Vue.extend({
      * 新しいアイコン画像に入れ替える.
      * @param e - 添付ファイル
      */
-    fileSelected(e: any): void {
+    async fileSelected(e: any): Promise<void> {
       this.errorIcon = ''
       const file = e.target.files[0]
       if (file) {
-        // 制限サイズ(3MB)
-        const sizeLimit = 1024 * 1024 * 3
+        // 制限サイズ(5MB)
+        const sizeLimit = 1024 * 1024 * 5
         // ファイルサイズが制限以上の場合のエラー
         if (file.size > sizeLimit) {
-          this.errorIcon = 'ファイルサイズは3MB以下にしてください'
+          this.errorIcon = 'ファイルサイズは5MB以下にしてください'
           return
         }
-
         this.icon = window.URL.createObjectURL(file)
-        this.iconFile = file
+
+        // Fileオブジェクトを圧縮
+        const options = {
+          maxSizeMB: 0.1,
+          maxWidthOrHeight: 1200,
+          useWebWorker: true,
+        }
+        const compFile = await imageCompression(file, options)
+        this.iconFile = compFile
       }
     },
     /**
