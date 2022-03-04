@@ -54,12 +54,14 @@
             v-model="inputComment"
             class="appearance-none bg-gray-100 border-none focus:outline-none px-2 w-10/12"
             type="text"
+            :disabled="btnActive"
             @keydown.enter="addCommentByEnter"
           />
 
           <button
             type="button"
             class="text-accent-color content-center"
+            :disabled="btnActive"
             @click="addComment()"
           >
             Post
@@ -101,6 +103,8 @@ export default Vue.extend({
       errorMsg: '',
       // ログインユーザー
       loginUserId: 0,
+      // ボタンの無効化
+      btnActive: false,
 
       // 現在の投稿のコメント一覧
       // eslint-disable-next-line no-array-constructor
@@ -132,7 +136,8 @@ export default Vue.extend({
         this.errorMsg = 'コメントを入力してください'
         return
       }
-
+      // ボタン無効化
+      this.btnActive = true
       // コメントをAPIにpost
       const LOGIN_USER_ID = this.$store.getters['user/getLoginUserId']
 
@@ -148,8 +153,12 @@ export default Vue.extend({
         // コメント入力欄初期化
         this.inputComment = ''
         // コメント一覧初期化と更新
+        this.errorMsg = ''
         this.commentList = []
         this.getComment()
+
+        // ボタン有効化
+        this.btnActive = false
       }
     },
 
@@ -166,6 +175,9 @@ export default Vue.extend({
         return
       }
 
+      // ボタン無効化
+      this.btnActive = true
+
       // コメントをAPIにpost
       const LOGIN_USER_ID = this.$store.getters['user/getLoginUserId']
 
@@ -181,8 +193,12 @@ export default Vue.extend({
         // コメント入力欄初期化
         this.inputComment = ''
         // コメント一覧初期化と更新
+        this.errorMsg = ''
         this.commentList = []
         this.getComment()
+
+        // ボタン有効化
+        this.btnActive = false
       }
     },
 
