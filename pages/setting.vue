@@ -20,10 +20,10 @@
       </label>
     </div>
     <!-- input -->
-    <div class="grid grid-cols-3 gap-2 border-t border-light-gray px-4 py-8">
+    <div class="grid grid-cols-3 gap-2 border-t border-light-gray px-3 pt-8">
       <div class="col-span-1 py-2">User Name</div>
       <div
-        class="col-span-2 border-b border-light-gray text-input-value-color py-2 pl-2"
+        class="col-span-2 border-b border-light-gray text-input-value-color py-2"
       >
         <input
           v-model="userName"
@@ -31,19 +31,23 @@
           class="appearance-none border-none w-full focus:outline-none"
         />
       </div>
-      <div class="col-start-2 col-span-3 text-sm pl-2 h-6 text-warning-color">
+      <div class="col-start-2 col-span-3 text-sm h-6 text-warning-color">
         {{ errorUserName }}
       </div>
       <div class="col-span-1 py-2">Bio</div>
       <div
-        class="col-span-2 border-b border-light-gray text-input-value-color py-2 pl-2"
+        class="col-span-2 border-b border-light-gray text-input-value-color py-2"
       >
         <input
           v-model="bio"
           type="text"
           class="appearance-none border-none w-full focus:outline-none"
+          maxlength="30"
         />
       </div>
+    </div>
+    <div class="mt-1 mx-4 pb-8">
+      <p class="text-right text-input-value-color">{{ bio.length }}/30</p>
     </div>
     <!-- button -->
     <div class="px-4 pb-4 text-center mt-2">
@@ -157,6 +161,10 @@ export default Vue.extend({
       // ユーザー名空欄チェック
       if (this.userName.length === 0) {
         this.errorUserName = 'ユーザー名を入力してください'
+        return
+      }
+      if (!/^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/.test(this.userName)) {
+        this.errorUserName = '半角英数記号で入力してください'
         return
       }
       // ローディング開始

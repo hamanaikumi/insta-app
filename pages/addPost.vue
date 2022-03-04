@@ -164,9 +164,9 @@
               width="300px"
               height="auto"
             >
-              <div class="modal-body my-8 flex flex-col">
+              <div class="modal-body my-4 flex flex-col">
                 <SelectPrefecture @givePrefecture="catchPrefecture" />
-                <div class="mt-2">
+                <div class="mt-4">
                   <button
                     class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray font-semibold"
                     type="button"
@@ -379,6 +379,9 @@ export default Vue.extend({
      */
     showPrefectureModal() {
       ;(this as any).$modal.show('prefecture-modal')
+      // 初期化
+      this.selectedPrefecture = { id: '', name: '' }
+      this.showPrefecture = ''
     },
 
     /**
