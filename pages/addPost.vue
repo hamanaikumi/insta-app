@@ -271,13 +271,13 @@ export default Vue.extend({
      * @param e - 添付ファイル
      */
     fileSelected(e: any): void {
+      // ファイル数が5枚以上の場合のエラー
+      if (this.cropImageFiles.length > 4) {
+        this.errorImage = '画像枚数は5枚以下にしてください'
+        return
+      }
       const file = e.target.files[0]
       if (file) {
-        // ファイル数が4枚以上の場合のエラー
-        if (this.cropImageFiles.length > 4) {
-          this.errorImage = '画像枚数は4枚以下にしてください'
-          return
-        }
         // 制限サイズ(5MB)
         const sizeLimit = 1024 * 1024 * 5
         // ファイルサイズが制限以上の場合のエラー
@@ -468,6 +468,7 @@ export default Vue.extend({
      * 選択した写真を削除する.
      */
     deleteImage(i: number) {
+      this.cropImageFiles.splice(i, 1)
       this.cropImageCodes.splice(i, 1)
       if (i !== 0) {
         this.prev()
