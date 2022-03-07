@@ -4,6 +4,9 @@
 export const state = () => ({
   // 取得した都道府県名
   prefectureName: '',
+
+  // 遷移元のpath(name)取得
+  referrerPath: '',
 })
 
 // mutaions
@@ -16,6 +19,14 @@ export const mutations = {
   catchPrefecture(state: any, context: any) {
     state.prefectureName = context
   },
+  /**
+   * 遷移元のパスを取得してstateに保存する.
+   * @param state -ステート
+   * @param context 遷移元のパス名
+   */
+  catchPath(state: any, context: any) {
+    state.referrerPath = context
+  },
 }
 
 // getters
@@ -27,5 +38,15 @@ export const getters = {
    */
   getPrefectureName(state: any) {
     return state.prefectureName
+  },
+
+  /**
+   * 遷移元のパス名を取得する.
+   * @param state -ステート
+   * @returns 遷移元のパス名
+   * @remarks 投稿詳細画面以外から画面遷移の場合空欄" "
+   */
+  getReferrerPath(state: any) {
+    return state.referrerPath
   },
 }

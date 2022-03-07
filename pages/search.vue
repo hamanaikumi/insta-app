@@ -104,6 +104,7 @@ export default Vue.extend({
   components: {
     AccountList,
   },
+
   middleware: 'auth',
   data() {
     return {
@@ -141,34 +142,45 @@ export default Vue.extend({
       userId: 3,
     }
   },
-  computed: {},
   created() {
     /**
-     * 全投稿情報を取得
+     * 投稿詳細画面から都道府県をクリックして画面遷移してきたときに、
+     * 都道府県で絞り込んだ結果のみを表示させるためのif文です。
+     *
+     * 遷移元のパスをもっと簡単に取得できればその方法に変更しても大丈夫です…
+     * 色々試したけど、よく分からなかった・・・
      */
-    this.$axios.$get(this.allPostsUrl).then((res) => {
-      this.displayCaptionList = res
-      this.displayPrefectureList = res
-      // 初期表示の写真をランダムに並べ替え
-      this.shuffleArray(this.displayCaptionList)
-      this.shuffleArray(this.displayPrefectureList)
-    })
+
+    // 投稿詳細画面から画面遷移したかを取得
+    const referrerPath = this.$store.getters['searchPrefecture/getReferrerPath']
 
     // 投稿詳細画面から都道府県名クリックの結果表示
-
-    // 投稿詳細から取得した都道府県
-    const PREFECTURE_NAME: any =
-      this.$store.getters['searchPrefecture/getPrefectureName']
-    // searchPrefectureのstateが空欄じゃない時の処理
-    if (PREFECTURE_NAME !== '') {
-      this.display = 'prefecture'
-      this.searchWord = PREFECTURE_NAME
-      this.onSearch()
+    if (referrerPath === 'Home' || referrerPath === 'postDetail-id') {
+      // 投稿詳細から取得した都道府県
+      const PREFECTURE_NAME: any =
+        this.$store.getters['searchPrefecture/getPrefectureName']
+      // searchPrefectureのstateが空欄じゃない時の処理
+      if (PREFECTURE_NAME !== '') {
+        this.display = 'prefecture'
+        this.searchWord = PREFECTURE_NAME
+        this.onSearch()
+      }
       // searchPrefectureのstateを初期化
-      this.$store.commit('searchPrefecture/catchPrefecture', '')
+      this.$store.commit('searchPrefecture/catchPath', '')
+    }
+    // フッター検索ボタンから画面遷移してきた時
+    else if (referrerPath === '') {
+      // 全投稿情報を取得
+      this.$axios.$get(this.allPostsUrl).then((res) => {
+        this.displayCaptionList = res
+        this.displayPrefectureList = res
+        // 初期表示の写真をランダムに並べ替え
+        this.shuffleArray(this.displayCaptionList)
+        this.shuffleArray(this.displayPrefectureList)
+      })
     }
   },
-  mounted() {},
+
   updated() {
     this.displayAccountList.length = 0
   },

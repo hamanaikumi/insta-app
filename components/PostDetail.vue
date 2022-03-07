@@ -252,7 +252,11 @@ export default Vue.extend({
      * @remarks 都道府県をクリックするとその都道府県の投稿一覧へ
      */
     searchPrefecture(prefecture: string) {
+      // クリックされた都道府県をstoreへ
       this.$store.commit('searchPrefecture/catchPrefecture', prefecture)
+      // 現在のページのpath名をstoreへ
+      this.$store.commit('searchPrefecture/catchPath', this.$route.name)
+      // 都道府県検索画面へ画面遷移
       this.$router.push('/search')
     },
 
