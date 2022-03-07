@@ -5,7 +5,7 @@
       class="none-posts flex flex-col justify-center w-full"
     >
       <div class="msg text-dark-gray text-lg text-center items-center">
-        <strong class="font-medium"> Welcome to まるまるgram</strong>
+        <strong class="font-medium"> Welcome to Zipangram</strong>
         <br /><br />
         <span class="font-extralight">
           When you follow people,<br />
