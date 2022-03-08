@@ -149,16 +149,22 @@ export default Vue.extend({
       `https://api-instagram-app.herokuapp.com/mypage/${this.myUserId}`
     )
     const myFollowLists = response.user.follow
-    for (const myFollowList of myFollowLists) {
-      if (this.userId === myFollowList) {
-        this.isFollowing = true
-        this.followButton = 'Following'
-        break
-      } else {
-        this.isFollowing = false
-        this.followButton = 'Follow'
+    if (myFollowLists.length === 0) {
+      this.isFollowing = false
+      this.followButton = 'Follow'
+    } else {
+      for (const myFollowList of myFollowLists) {
+        if (this.userId === myFollowList) {
+          this.isFollowing = true
+          this.followButton = 'Following'
+          break
+        } else {
+          this.isFollowing = false
+          this.followButton = 'Follow'
+        }
       }
     }
+
     this.asyncPost()
   },
   methods: {
