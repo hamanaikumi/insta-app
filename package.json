@@ -50,6 +50,7 @@
     "prettier": "^2.5.1",
     "sass": "^1.49.7",
     "sass-loader": "^10.2.0",
+    "terser-webpack-plugin": "^4.0.0",
     "vue-cropperjs": "^4.0.0"
   }
 }
