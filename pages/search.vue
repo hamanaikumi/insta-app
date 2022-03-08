@@ -143,6 +143,9 @@ export default Vue.extend({
     }
   },
   created() {
+    // ローディング開始
+    this.$nuxt.$loading.start()
+
     /**
      * 投稿詳細画面から都道府県をクリックして画面遷移してきたときに、
      * 都道府県で絞り込んだ結果のみを表示させるためのif文です。
@@ -168,6 +171,7 @@ export default Vue.extend({
       // searchPrefectureのstateを初期化
       this.$store.commit('searchPrefecture/catchPath', '')
     }
+
     // フッター検索ボタンから画面遷移してきた時
     else if (referrerPath === '') {
       // 全投稿情報を取得
@@ -177,6 +181,8 @@ export default Vue.extend({
         // 初期表示の写真をランダムに並べ替え
         this.shuffleArray(this.displayCaptionList)
         this.shuffleArray(this.displayPrefectureList)
+        // ローディング終了
+        this.$nuxt.$loading.finish()
       })
     }
   },
@@ -195,7 +201,8 @@ export default Vue.extend({
      * 検索機能
      */
     async onSearch() {
-      // this.displayAccountList.length = 0
+      // ローディング開始
+      this.$nuxt.$loading.start()
       if (this.display === 'keyword') {
         this.accErrorMessage = false
         this.preErrorMessage = false
@@ -220,6 +227,7 @@ export default Vue.extend({
       } else if (this.display === 'account') {
         this.keyErrorMessage = false
         this.accErrorMessage = false
+
         /**
          * アカウント検索機能
          */
@@ -262,6 +270,8 @@ export default Vue.extend({
             }
           })
       }
+      // ローディング終了
+      this.$nuxt.$loading.finish()
     },
   },
 })
