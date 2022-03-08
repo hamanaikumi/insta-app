@@ -265,6 +265,12 @@ export default Vue.extend({
     }
   },
 
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
+
   methods: {
     /**
      * 画像を選択し、添付する.

@@ -112,6 +112,11 @@ export default Vue.extend({
       skeleton: true,
     }
   },
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
   created() {
     this.asyncPost()
   },

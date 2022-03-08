@@ -85,6 +85,7 @@ import Auth from '../plugins/auth'
 
 export default Vue.extend({
   middleware: 'auth',
+
   data() {
     return {
       // アイコンのURL
@@ -103,6 +104,11 @@ export default Vue.extend({
       imageUrl: '',
       // S3に送信する削除するアイコンURL
       deleteIcon: '',
+    }
+  },
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
     }
   },
   /**

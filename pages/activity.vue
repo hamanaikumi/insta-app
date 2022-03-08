@@ -130,6 +130,12 @@ export default Vue.extend({
     }
   },
 
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
+
   created() {
     this.loginUserId = this.$store.getters['user/getLoginUserId']
     this.getLogs().then(() => {
