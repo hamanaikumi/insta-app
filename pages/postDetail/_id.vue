@@ -18,6 +18,12 @@ export default Vue.extend({
     }
   },
 
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
+
   created() {
     // パラメーターよりpostID取得
     this.postId = parseInt(this.$route.params.id)

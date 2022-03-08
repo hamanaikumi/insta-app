@@ -86,6 +86,13 @@ export default Vue.extend({
       skeleton: true,
     }
   },
+
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
+
   created() {
     this.myUserId = this.$store.getters['user/getLoginUserId']
     this.fromUserId = parseInt(this.$route.params.id)
@@ -103,6 +110,7 @@ export default Vue.extend({
     }
     this.asyncPost()
   },
+
   methods: {
     /**
      * ユーザーidを基にAPIからユーザー情報、投稿一覧を取得してdataに格納.

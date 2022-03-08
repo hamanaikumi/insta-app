@@ -35,6 +35,12 @@ export default Vue.extend({
     }
   },
 
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
+
   async created() {
     // ログイン中のユーザーID 取得
     this.myUserId = this.$store.getters['user/getLoginUserId']

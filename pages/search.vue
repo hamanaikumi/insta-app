@@ -142,6 +142,11 @@ export default Vue.extend({
       userId: 3,
     }
   },
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
   created() {
     // ローディング開始
     this.$nuxt.$loading.start()
@@ -175,7 +180,7 @@ export default Vue.extend({
     // フッター検索ボタンから画面遷移してきた時
     else if (referrerPath === '') {
       // 全投稿情報を取得
-      this.$axios.$get(this.allPostsUrl).then((res) => {
+      this.$axios.$get(this.allPostsUrl).then((res: any) => {
         this.displayCaptionList = res
         this.displayPrefectureList = res
         // 初期表示の写真をランダムに並べ替え
@@ -212,7 +217,7 @@ export default Vue.extend({
          */
         await this.$axios
           .$post(this.searchCaptionUrl, { caption: this.searchWord })
-          .then((res) => {
+          .then((res: any) => {
             if (res.status === 'error') {
               this.displayCaptionList.length = 0
               this.keyErrorMessage = true
@@ -233,7 +238,7 @@ export default Vue.extend({
          */
         await this.$axios
           .$post(this.searchAccountUrl, { userName: this.searchWord })
-          .then((res) => {
+          .then((res: any) => {
             // 検索結果がなかった時
             if (res.status === 'error') {
               this.displayAccountList.length = 0
@@ -257,7 +262,7 @@ export default Vue.extend({
          */
         await this.$axios
           .$post(this.searchPrefectureUrl, { prefecture: this.searchWord })
-          .then((res) => {
+          .then((res: any) => {
             if (res.status === 'error') {
               this.displayPrefectureList.length = 0
               this.preErrorMessage = true

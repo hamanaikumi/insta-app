@@ -133,6 +133,11 @@ export default Vue.extend({
       skeleton: true,
     }
   },
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
   async created() {
     // ログイン中のユーザーid
     this.myUserId = this.$store.getters['user/getLoginUserId']

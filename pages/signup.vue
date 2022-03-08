@@ -72,6 +72,11 @@ export default Vue.extend({
       errorSignup: '',
     }
   },
+  head(): any {
+    return {
+      title: `${this.$route.name} - Zipangram`,
+    }
+  },
   methods: {
     /**
      * ユーザー登録する.
