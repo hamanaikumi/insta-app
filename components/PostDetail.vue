@@ -257,7 +257,7 @@ export default Vue.extend({
       // 現在のページのpath名をstoreへ
       this.$store.commit('searchPrefecture/catchPath', this.$route.name)
       // 都道府県検索画面へ画面遷移
-      this.$router.push('/Search')
+      this.$router.push('/search')
     },
 
     /**
@@ -393,7 +393,7 @@ export default Vue.extend({
       element.target.src = '/images/user.png'
     },
     /**
-     * 親コンポーネント(Home.vue)のイベントを発火し、ホーム画面を更新する.
+     * 親コンポーネント(home.vue)のイベントを発火し、ホーム画面を更新する.
      */
     emitUpdate() {
       this.$emit('update')
@@ -405,7 +405,7 @@ export default Vue.extend({
      */
     jumpUserPage(targetId: number) {
       if (this.loginUserId === targetId) {
-        this.$router.push('/Mypage')
+        this.$router.push('/mypage')
       } else {
         this.$router.push('/userPage/' + targetId)
       }
