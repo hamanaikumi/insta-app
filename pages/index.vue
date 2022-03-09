@@ -116,7 +116,7 @@ export default Vue.extend({
           Auth.login(this.$cookies, token)
 
           // ホーム画面に遷移
-          await this.$router.push('/Home')
+          await this.$router.push('/home')
           // ログイン失敗時
         } else if (res.data.status === 'error') {
           this.errorLogin = 'ユーザー名とパスワードが一致しません'

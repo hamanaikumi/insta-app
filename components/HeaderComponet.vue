@@ -25,8 +25,8 @@
     >
       <div>
         <nuxt-link
-          v-if="$route.path === '/Home' || $route.path === '/Search'"
-          to="/Home"
+          v-if="$route.path === '/home' || $route.path === '/search'"
+          to="/home"
         >
           <!-- 後で変更 -->
           <img src="../static/images/logo.png" class="h-10 w-auto" />
@@ -34,10 +34,10 @@
         <nuxt-link
           v-if="
             $route.path === '/addPost' ||
-            $route.path === '/Mypage' ||
-            $route.path === '/Setting'
+            $route.path === '/mypage' ||
+            $route.path === '/setting'
           "
-          to="/Mypage"
+          to="/mypage"
           class="font-bold"
         >
           {{ userName }}
@@ -63,10 +63,10 @@
         <nuxt-link
           v-if="
             $route.path === '/addPost' ||
-            $route.path === '/Mypage' ||
+            $route.path === '/mypage' ||
             $route.path.includes('/userPage') ||
-            $route.path === '/Home' ||
-            $route.path === '/Search' ||
+            $route.path === '/home' ||
+            $route.path === '/search' ||
             $route.path === '/activity' ||
             $route.path.toLowerCase().includes('/postdetail') ||
             $route.path.includes('/followFollower')
@@ -77,7 +77,7 @@
         </nuxt-link>
         <!-- 通知アイコン -->
         <nuxt-link
-          v-if="$route.path === '/Home' || $route.path === '/Search'"
+          v-if="$route.path === '/home' || $route.path === '/search'"
           to="/activity"
         >
           <i class="far fa-heart fa-lg fa-fw relative">
@@ -98,13 +98,13 @@
         <nuxt-link
           v-if="
             $route.path === '/addPost' ||
-            $route.path === '/Mypage' ||
+            $route.path === '/mypage' ||
             $route.path.includes('/userPage') ||
             $route.path === '/activity' ||
             $route.path.includes('/followFollower') ||
             $route.path.toLowerCase().includes('/postDetail')
           "
-          to="/Setting"
+          to="/setting"
         >
           <i class="fas fa-cog fa-lg fa-fw"></i>
         </nuxt-link>

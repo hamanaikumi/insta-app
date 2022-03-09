@@ -160,7 +160,7 @@ export default Vue.extend({
     const referrerPath = this.$store.getters['searchPrefecture/getReferrerPath']
 
     // 投稿詳細画面から都道府県名クリックの結果表示
-    if (referrerPath === 'Home' || referrerPath === 'postDetail-id') {
+    if (referrerPath === 'home' || referrerPath === 'postDetail-id') {
       // 投稿詳細から取得した都道府県
       const PREFECTURE_NAME: any =
         this.$store.getters['searchPrefecture/getPrefectureName']
