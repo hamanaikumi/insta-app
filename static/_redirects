@@ -1,11 +1,1 @@
-# Redirect with a 301
-/home    /    301
-
-# Redirect with a 302
-/my-redirect    /    302
-
-# Show a custom 404 for this path
-/ecommerce    /store-closed    404
-
-# Rewrite a path
-/pass-through    /index.html    200
+/*  /index.html 200
