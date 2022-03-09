@@ -149,7 +149,7 @@ export default Vue.extend({
   },
   created() {
     // ローディング開始
-    this.$nuxt.$loading.start()
+    // this.$nuxt.$loading.start()
 
     /**
      * 投稿詳細画面から都道府県をクリックして画面遷移してきたときに、
@@ -187,7 +187,7 @@ export default Vue.extend({
         this.shuffleArray(this.displayCaptionList)
         this.shuffleArray(this.displayPrefectureList)
         // ローディング終了
-        this.$nuxt.$loading.finish()
+        // this.$nuxt.$loading.finish()
       })
     }
   },
