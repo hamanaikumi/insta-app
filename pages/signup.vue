@@ -126,7 +126,7 @@ export default Vue.extend({
           Auth.login(this.$cookies, token)
 
           // ホーム画面に遷移
-          await this.$router.push('/Home')
+          await this.$router.push('/home')
           // 登録失敗時
         } else if (res.data.status === 'error') {
           this.errorSignup = 'そのユーザー名は既に登録済みです'
