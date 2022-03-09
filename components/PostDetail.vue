@@ -257,7 +257,7 @@ export default Vue.extend({
       // 現在のページのpath名をstoreへ
       this.$store.commit('searchPrefecture/catchPath', this.$route.name)
       // 都道府県検索画面へ画面遷移
-      this.$router.push('/search')
+      this.$router.push('/Search')
     },
 
     /**

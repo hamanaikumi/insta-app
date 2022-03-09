@@ -1,3 +1,4 @@
+import TerserPlugin from 'terser-webpack-plugin'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -80,6 +81,15 @@ export default {
   build: {
     transpile: ['amCharts'],
     vendor: ['vue-cropperjs'],
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: false,
+        }),
+      ],
+    },
   },
   // ローディング
   loading: '~/components/Loading.vue',
