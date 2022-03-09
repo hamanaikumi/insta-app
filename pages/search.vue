@@ -147,7 +147,7 @@ export default Vue.extend({
       title: `${this.$route.name} - Zipangram`,
     }
   },
-  created() {
+  mounted() {
     /**
      * 投稿詳細画面から都道府県をクリックして画面遷移してきたときに、
      * 都道府県で絞り込んだ結果のみを表示させるためのif文です。
