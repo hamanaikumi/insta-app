@@ -148,12 +148,6 @@ export default Vue.extend({
     }
   },
   created() {
-<<<<<<< HEAD
-    // ローディング開始
-    // this.$nuxt.$loading.start()
-
-=======
->>>>>>> 3cdd1b7dcbe5a1cc5206fbfd160a10ac08864fd2
     /**
      * 投稿詳細画面から都道府県をクリックして画面遷移してきたときに、
      * 都道府県で絞り込んだ結果のみを表示させるためのif文です。
@@ -190,11 +184,6 @@ export default Vue.extend({
         // 初期表示の写真をランダムに並べ替え
         this.shuffleArray(this.displayCaptionList)
         this.shuffleArray(this.displayPrefectureList)
-<<<<<<< HEAD
-        // ローディング終了
-        // this.$nuxt.$loading.finish()
-=======
->>>>>>> 3cdd1b7dcbe5a1cc5206fbfd160a10ac08864fd2
       })
       // ローディング終了
       setTimeout(() => this.$nuxt.$loading.finish(), 500)
