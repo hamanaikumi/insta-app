@@ -461,14 +461,14 @@ export default Vue.extend({
       // ローディング終了
       this.$nuxt.$loading.finish()
       // ホーム画面に遷移
-      this.$router.push('/Home')
+      this.$router.push('/home')
     },
 
     /**
      * 投稿をキャンセルしてホーム画面に遷移する.
      */
     cancel() {
-      this.$router.push('/Home')
+      this.$router.push('/home')
     },
     /**
      * 選択した写真を削除する.

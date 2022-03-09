@@ -220,7 +220,7 @@ export default Vue.extend({
       if (res.data.status === 'success') {
         // ユーザー情報をVuexに保管
         await this.$store.commit('user/setLoginUserInfo', res.data.data)
-        this.$router.push('/Mypage')
+        this.$router.push('/mypage')
         // 変更失敗時
       } else if (res.data.status === 'error') {
         this.errorUserName = 'そのユーザー名は既に使われています'
@@ -230,7 +230,7 @@ export default Vue.extend({
      * 変更をキャンセルしマイページ画面に遷移する.
      */
     cancel() {
-      this.$router.push('/Mypage')
+      this.$router.push('/mypage')
     },
     /**
      * ログアウトしてログイン画面に遷移する.
