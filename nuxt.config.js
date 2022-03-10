@@ -93,4 +93,8 @@ export default {
   },
   // ローディング
   loading: '~/components/Loading.vue',
+  // :idのリロード問題
+    generate: {
+    fallback: true
+  },
 }
