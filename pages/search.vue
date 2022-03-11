@@ -164,11 +164,10 @@ export default Vue.extend({
         this.searchWord = PREFECTURE_NAME
         this.onSearch()
       }
-      // searchPrefectureのstateを初期化
-      this.$store.commit('searchPrefecture/catchPath', '')
     }
   },
   mounted() {
+    // 遷移元が投稿詳細でない時の処理
     if (this.referrerPath === '') {
       this.$nextTick(() => {
         // ローディング開始
@@ -185,6 +184,8 @@ export default Vue.extend({
         setTimeout(() => this.$nuxt.$loading.finish(), 500)
       })
     }
+    // searchPrefectureのstateを初期化
+    this.$store.commit('searchPrefecture/catchPath', '')
   },
 
   updated() {
