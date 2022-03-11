@@ -54,16 +54,19 @@
                   drag-mode="crop"
                   :auto-crop-area="1"
                   :background="true"
-                  :rotatable="false"
+                  :rotatable="true"
                   :src="selectedImage"
                   alt="Source Image"
-                  :min-container-width="30"
-                  :min-container-height="30"
                   :img-style="{ width: '100%', height: '100%' }"
                   :aspect-ratio="1"
                 >
                 </vue-cropper>
-                <div class="mt-4">
+                <div class="my-4">
+                  <button @click="rotate">
+                    <i class="fas fa-sync-alt"></i>
+                  </button>
+                </div>
+                <div>
                   <button
                     class="inline-flex justify-center py-2 px-4 text-xl text-dark-gray font-semibold"
                     type="button"
@@ -312,6 +315,15 @@ export default Vue.extend({
     },
 
     /**
+     * 画像を90°回転する.
+     */
+    rotate() {
+      if (this.$refs.cropper) {
+        ;(this as any).$refs.cropper.rotate(90)
+      }
+    },
+
+    /**
      * 画像をトリミングする.
      */
     async cropImage(): Promise<void> {
@@ -352,6 +364,7 @@ export default Vue.extend({
       this.isBeforeSelect = true
       this.hideImageModal()
     },
+
     /**
      * 次の画像を表示する.
      */
