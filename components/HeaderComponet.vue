@@ -14,18 +14,24 @@
     <!-- ここまで -->
     <!-- Likes、Activity タイトル -->
     <div
-      v-if="$route.path.includes('/likesList') || $route.path === '/activity'"
+      v-if="
+        $route.path.includes('/likesList') ||
+        $route.path === includes('/activity')
+      "
       class="text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12 font-semibold"
     >
       <h2 v-if="$route.path.includes('/likesList')">Likes</h2>
-      <h2 v-if="$route.path === '/activity'">Activity</h2>
+      <h2 v-if="$route.path === includes('/activity')">Activity</h2>
     </div>
     <div
       class="flex justify-between absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11/12"
     >
       <div>
         <nuxt-link
-          v-if="$route.path === '/home' || $route.path === '/search'"
+          v-if="
+            $route.path === includes('/home') ||
+            $route.path === includes('/search')
+          "
           to="/home"
         >
           <!-- 後で変更 -->
@@ -33,9 +39,9 @@
         </nuxt-link>
         <nuxt-link
           v-if="
-            $route.path === '/addPost' ||
-            $route.path === '/mypage' ||
-            $route.path === '/setting'
+            $route.path === includes('/addPost') ||
+            $route.path === includes('/mypage') ||
+            $route.path === includes('/setting')
           "
           to="/mypage"
           class="font-bold"
@@ -48,7 +54,7 @@
           v-if="
             $route.path.includes('/likesList') ||
             $route.path.includes('/postDetail') ||
-            $route.path === '/activity' ||
+            $route.path === includes('/activity') ||
             $route.path.includes('/userPage') ||
             $route.path.includes('/followFollower')
           "
@@ -62,12 +68,12 @@
         <!-- 投稿アイコン -->
         <nuxt-link
           v-if="
-            $route.path === '/addPost' ||
-            $route.path === '/mypage' ||
+            $route.path === includes('/addPost') ||
+            $route.path === includes('/mypage') ||
             $route.path.includes('/userPage') ||
-            $route.path === '/home' ||
-            $route.path === '/search' ||
-            $route.path === '/activity' ||
+            $route.path === includes('/home') ||
+            $route.path === includes('/search') ||
+            $route.path === includes('/activity') ||
             $route.path.toLowerCase().includes('/postdetail') ||
             $route.path.includes('/followFollower')
           "
@@ -77,7 +83,10 @@
         </nuxt-link>
         <!-- 通知アイコン -->
         <nuxt-link
-          v-if="$route.path === '/home' || $route.path === '/search'"
+          v-if="
+            $route.path === includes('/home') ||
+            $route.path === includes('/search')
+          "
           to="/activity"
           class="relative"
         >
@@ -95,10 +104,10 @@
         <!-- 設定アイコン -->
         <nuxt-link
           v-if="
-            $route.path === '/addPost' ||
-            $route.path === '/mypage' ||
+            $route.path === includes('/addPost') ||
+            $route.path === includes('/mypage') ||
             $route.path.includes('/userPage') ||
-            $route.path === '/activity' ||
+            $route.path === includes('/activity') ||
             $route.path.includes('/followFollower') ||
             $route.path.toLowerCase().includes('/postDetail')
           "
