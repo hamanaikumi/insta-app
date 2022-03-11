@@ -79,20 +79,18 @@
         <nuxt-link
           v-if="$route.path === '/home' || $route.path === '/search'"
           to="/activity"
+          class="relative"
         >
-          <i class="far fa-heart fa-lg fa-fw relative">
-            <!-- まだ通知を確認していないときの点滅アイコン -->
-            <div v-if="giveNotice === false">
-              <p
-                class="animate-ping absolute right-0 top-[-8px] text-red-400 text-[1px]"
-              >
-                ●
-              </p>
-              <p class="absolute right-0 top-[-8px] text-red-400 text-[1px]">
-                ●
-              </p>
-            </div>
-          </i>
+          <!-- まだ通知を確認していないときの点滅アイコン -->
+          <div v-if="giveNotice === false" class="absolute w-full h-full">
+            <p
+              class="animate-ping absolute right-0 top-[-4px] text-red-400 text-[1px]"
+            >
+              ●
+            </p>
+            <p class="absolute right-0 top-[-4px] text-red-400 text-[1px]">●</p>
+          </div>
+          <i class="far fa-heart fa-lg fa-fw"></i>
         </nuxt-link>
         <!-- 設定アイコン -->
         <nuxt-link
